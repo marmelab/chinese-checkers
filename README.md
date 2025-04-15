@@ -15,7 +15,7 @@ A simple two-player Chinese Checkers game playable in the terminal, written in G
 
 Clone the repository, then:
 
-# Tidy Go Modules:
+### Tidy Go Modules:
 
 Ensure dependencies are clean (optional, as Docker build might handle it, but good practice).
 
@@ -23,7 +23,7 @@ Ensure dependencies are clean (optional, as Docker build might handle it, but go
 make tidy
 ```
 
-# Build the Docker Image:
+### Build the Docker Image:
 
 This creates the development environment container image.
 
@@ -31,7 +31,7 @@ This creates the development environment container image.
 make docker-build
 ```
 
-# Run the Development Container:
+### Run the Development Container:
 
 This starts the container in detached mode and mounts your local code into `/app` inside the container.
 
@@ -41,7 +41,7 @@ make docker-run
 
 Your development container is now running in the background.
 
-# Accessing the Container Shell:
+### Accessing the Container Shell:
 
 If you need direct shell access inside the container:
 
@@ -52,7 +52,7 @@ docker exec -it chinese-checkers-dev-instance bash
 # Type 'exit' to leave the container shell
 ```
 
-# Stopping the Container:
+### Stopping the Container:
 
 When you're done developing for the session:
 
