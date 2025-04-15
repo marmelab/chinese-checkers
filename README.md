@@ -2,96 +2,103 @@
 
 A simple two-player Chinese Checkers game playable in the terminal, written in Go.
 
-## Features
+## Features ✨
 
 - Standard Go project structure (`cmd/`, `internal/`).
-- `Makefile` for automating common tasks (build, test, lint, run, Docker management).
+- `Makefile` for automating common development tasks (build, test, lint, run).
 - `Dockerfile` for a consistent Go development environment with necessary tools (including `staticcheck`).
 - Linting configured with `staticcheck`.
 - Basic `HelloWorld` example function with a corresponding unit test.
-- Ready for further development of the Chinese Checkers game logic.
+- Development workflow entirely containerized via Docker.
+- Ready for further development of the Chinese Checkers game logic!
+
+## 🛠️ Requirements
+
+Before you begin, ensure you have the following installed:
+
+- **Docker:** To build and run the development container. [Install Docker](https://docs.docker.com/get-docker/)
+- **Make:** To use the Makefile automation. (Usually pre-installed on Linux/macOS, may need installation on Windows).
+
+_(Note: Go and staticcheck do NOT need to be installed locally.)_
 
 ## 🚀 Getting Started
 
 Clone the repository, then:
 
-### Tidy Go Modules:
+1.  **Build the Docker Image:**
+    This creates the container image with the Go environment and tools. Run this once initially, or when the `Dockerfile` changes.
 
-Ensure dependencies are clean (optional, as Docker build might handle it, but good practice).
+    ```bash
+    make docker-build
+    ```
 
-```bash
-make tidy
-```
+2.  **Run the Development Container:**
+    This starts the container in the background and mounts your local code into `/app` inside it. **This container must be running** for most `make` commands below to work.
 
-### Build the Docker Image:
+    ```bash
+    make docker-run
+    ```
 
-This creates the development environment container image.
+3.  **Tidy Go Modules (via Docker):**
+    Ensures Go module files (`go.mod`, `go.sum`) are consistent.
 
-```bash
-make docker-build
-```
+    ```bash
+    make tidy
+    ```
 
-### Run the Development Container:
+4.  **Using Make Commands (via Docker):**
+    With the container running, use standard `make` commands directly from your terminal. They automatically execute _inside_ the Docker container:
 
-This starts the container in detached mode and mounts your local code into `/app` inside the container.
+    ```bash
+    make test      # Runs 'go test' inside the container
+    make lint      # Runs 'staticcheck' inside the container
+    make build     # Runs 'go build' inside the container
+    make format    # Runs 'go fmt' inside the container
+    make run       # Builds and runs the app inside the container
+    ```
 
-```bash
-make docker-run
-```
+    _(See Makefile Targets below or run `make help` for all commands)_
 
-Your development container is now running in the background.
+5.  **Accessing the Container Shell (Optional):**
+    If you need direct shell access inside the container:
 
-### Accessing the Container Shell:
+    ```bash
+    docker exec -it chinese-checkers-dev-instance bash
+    # Now you are inside the container at /app
+    # You can run Go commands (go test...) or make commands directly here.
+    # Type 'exit' to leave the container shell
+    ```
 
-If you need direct shell access inside the container:
+6.  **Stopping the Container:**
+    When you're done developing for the session:
+    ```bash
+    make docker-stop
+    ```
 
-```bash
-docker exec -it chinese-checkers-dev-instance bash
-# Now you are inside the container at /app
-# You can run make commands directly (run `make help` for more informations)
-# Type 'exit' to leave the container shell
-```
+## 🎯 Makefile Targets
 
-### Stopping the Container:
+The `Makefile` provides several commands for convenience, executed via Docker. Run `make help` to see all available targets. Key targets include:
 
-When you're done developing for the session:
+- `help`: Display this help screen.
+- `build`: Build the Go binary (inside Docker).
+- `run`: Build and run the application (inside Docker).
+- `test`: Run Go tests (inside Docker).
+- `format`: Format Go code using `go fmt` (inside Docker).
+- `lint`: Run `staticcheck` linter (inside Docker).
+- `tidy`: Tidy `go.mod` and `go.sum` files (inside Docker).
+- `clean`: Remove the built binary (via Docker).
 
-```bash
-make docker-stop
-```
+---
 
-## Makefile Targets
-
-The `Makefile` provides several commands for convenience. Run `make help` to see all available targets. Key targets include:
-
-- `help`: Display available Make targets and their descriptions.
-- `tidy`: Tidy `go.mod` and `go.sum` files (runs locally).
-- `build`: Build the Go binary (runs locally).
-- `run`: Build and run the application (runs locally).
-- `test`: Run Go tests (runs locally).
-- `format`: Format Go code using `go fmt` (runs locally).
-- `lint`: Run `staticcheck` linter (requires local installation).
-- `clean`: Remove the built binary.
-- ***
 - `docker-build`: Build the Docker development image.
-- `docker-run`: Start the development Docker container in the background.
+- `docker-run`: Start the development Docker container (Required!).
 - `docker-stop`: Stop the running development Docker container.
-- `docker-lint`: Run the `staticcheck` linter inside the Docker container.
-- `docker-exec TARGET=<target>`: Execute any `make` target (e.g., `test`, `build`) inside the Docker container.
+- `docker-exec CMD="..."`: Execute an arbitrary command inside the container.
 
-## 🧱 Project Structure
+## 🧱 Project Structure (main folders)
 
 ```bash
 cmd/chinese-checkers/ # Main entry point
 internal/game/        # Core game logic
 bin/                  # Binary file
 ```
-
-## 🛠️ Requirements
-
-Before you begin, ensure you have the following installed:
-
-- **Go:** Version 1.24 or later (check `go.mod` for the exact version).
-- **Docker:** To build and run the development container. [Install Docker](https://docs.docker.com/get-docker/)
-- **Make:** To use the Makefile automation. (Usually pre-installed on Linux/macOS, may need installation on Windows).
-- **(Optional)** `staticcheck`: If you want to run `make lint-local` directly on your host machine. [Install staticcheck](https://staticcheck.io/docs/getting-started/)

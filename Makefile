@@ -7,32 +7,37 @@ APP_NAME=chinese-checkers
 DOCKER_IMAGE=$(APP_NAME)-dev
 DOCKER_CONTAINER=$(APP_NAME)-dev-instance
 
-# -- Go --
-
-build: ## Build the Go binary (runs locally).
+# Internal target for building (only used by make inside docker)
+build-internal:
 	mkdir -p bin/
 	go build -o bin/$(APP_NAME) ./cmd/$(APP_NAME)
 
-tidy: ## Tidy `go.mod` and `go.sum` files (runs locally).
-	go mod tidy
-
-run: build ## Build and run the application (runs locally).
+# Internal target for running (only used by make inside docker)
+run-internal: build-internal
 	./bin/$(APP_NAME)
 
-test: ## Run Go tests (runs locally).
-	go test ./...
+build: ## Build the Go binary (inside Docker).
+	docker exec $(DOCKER_CONTAINER) make build-internal
 
-format: ## Format Go code using `go fmt` (runs locally).
-	go fmt ./...
+tidy: ## Tidy `go.mod` and `go.sum` files (inside Docker).
+	docker exec $(DOCKER_CONTAINER) go mod tidy
 
-lint: ## Run `staticcheck` linter (requires local installation).
-	@command -v staticcheck >/dev/null 2>&1 || { echo "Error: please install Staticcheck."; exit 1; }
-	staticcheck ./...
+run:  ## Build and run the application (inside Docker).
+	docker exec -it $(DOCKER_CONTAINER) make run-internal
 
-clean: ## Remove the built binary.
-	rm -Rf bin
+test: ## Run Go tests (inside Docker).
+	docker exec $(DOCKER_CONTAINER) go test -v ./...
 
-# -- Docker --
+format: ## Format Go code using `go fmt` (inside Docker).
+	docker exec $(DOCKER_CONTAINER) go fmt ./...
+
+lint: ## Run `staticcheck` linter (inside Docker).
+	docker exec $(DOCKER_CONTAINER) staticcheck ./...
+
+clean: ## Remove the built binary (inside Docker).
+	docker exec $(DOCKER_CONTAINER) rm -f bin/$(APP_NAME)
+
+# -- Docker management --
 
 docker-build:  ## Build the Docker development image.
 	docker build -t $(DOCKER_IMAGE) .
@@ -47,10 +52,7 @@ docker-run: ## Start the development Docker container in the background.
 docker-stop: ## Stop the running development Docker container.
 	docker stop $(DOCKER_CONTAINER)
 
-docker-lint: ## Run the `staticcheck` linter inside the Docker container.
-	$(MAKE) docker-exec TARGET=lint
-
-docker-exec:  ## Execute any `make` target (e.g., `test`, `build`) inside the Docker container. - Exemple: make docker-exec TARGET=test
-	docker exec $(DOCKER_CONTAINER) make $(TARGET)
+docker-exec: ## Run a command inside the docker container - Example: make docker-exec CMD="ls -l"
+	@docker exec $(DOCKER_CONTAINER) $(CMD)
 
 
