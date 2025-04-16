@@ -9,3 +9,5 @@ services:
     working_dir: /app
     command: sh -c "go run cmd/chinese-checkers/main.go && tail -f /dev/null"
     tty: true
+    environment:
+      - GOFLAGS=-buildvcs=false

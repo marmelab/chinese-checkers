@@ -32,11 +32,11 @@ Clone the repository, then:
     make install
     ```
 
-2.  **Start the Development Container:**
-    This starts the container in the background and run the application. **This container must be running** for most `make` commands below to work.
+2.  **Run the CLI:**
+    This runs the project inside the container.
 
     ```bash
-    make start
+    make run
     ```
 
 3.  **Test:**
@@ -46,29 +46,25 @@ Clone the repository, then:
     make test
     ```
 
-4.  **Stop the Development Container:**
-    When you're done developing for the session:
-
-    ```bash
-    make stop
-    ```
-
-5.  **Using Make Commands:**
+4.  **Using Make Commands:**
     With the container running, use standard `make` commands directly from your terminal. They automatically execute _inside_ the Docker container:
 
     ```bash
-    make help        # Show help message with available make targets
-    make deps        # Tidy `go.mod` and `go.sum` files inside the container
-    make lint        # Runs 'staticcheck' inside the container
-    make build       # Runs 'go build' inside the container
-    make run         # Builds and runs the app inside the container
-    make clean       # Remove the built binary (inside Docker).
-    make docker-exec # Run a command inside the docker container - Example: make docker-exec CMD="ls -l"
+    make build                          Build the Go binary (inside Docker).
+    make check                          Run `staticcheck` and `go vet` (inside Docker).
+    make clean                          Remove the built binary (inside Docker).
+    make deps                           Tidy `go.mod` and `go.sum` files (inside Docker).
+    make docker-exec                    Run a command inside the docker container - Example: make docker-exec CMD="ls -l"
+    make install                        Build the Docker development image.
+    make lint                           Run `staticcheck` linter (inside Docker).
+    make run                            run the application.
+    make test                           Run Go tests (inside Docker).
+    make vet                            Run `go vet` (inside Docker).
     ```
 
     _(See Makefile Targets below or run `make help` for all commands)_
 
-6.  **Accessing the Container Shell (Optional):**
+5.  **Accessing the Container Shell (Optional):**
     If you need direct shell access inside the container:
 
     ```bash
