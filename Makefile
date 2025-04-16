@@ -1,58 +1,43 @@
-.PHONY: help build tidy run test format lint clean docker-build docker-exec docker-run docker-lint docker-stop
+.PHONY: help install start stop test build run deps lint clean docker-exec
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 
 APP_NAME=chinese-checkers
-DOCKER_IMAGE=$(APP_NAME)-dev
-DOCKER_CONTAINER=$(APP_NAME)-dev-instance
+DOCKER_SERVICE=chinese-checkers
 
-# Internal target for building (only used by make inside docker)
-build-internal:
-	mkdir -p bin/
-	go build -o bin/$(APP_NAME) ./cmd/$(APP_NAME)
+# -- Main goals --
 
-# Internal target for running (only used by make inside docker)
-run-internal: build-internal
-	./bin/$(APP_NAME)
+install:  ## Build the Docker development image.
+	docker-compose build
 
-build: ## Build the Go binary (inside Docker).
-	docker exec $(DOCKER_CONTAINER) make build-internal
+start: ## Start the development Docker container.
+	docker-compose up -d --force-recreate 
 
-tidy: ## Tidy `go.mod` and `go.sum` files (inside Docker).
-	docker exec $(DOCKER_CONTAINER) go mod tidy
-
-run:  ## Build and run the application (inside Docker).
-	docker exec -it $(DOCKER_CONTAINER) make run-internal
+stop: ## Stop the running development Docker container.
+	docker-compose down
 
 test: ## Run Go tests (inside Docker).
-	docker exec $(DOCKER_CONTAINER) go test -v ./...
+	docker-compose exec $(DOCKER_SERVICE) go test -v ./...
 
-format: ## Format Go code using `go fmt` (inside Docker).
-	docker exec $(DOCKER_CONTAINER) go fmt ./...
+# -- Other DX goals 
+
+build: deps ## Build the Go binary (inside Docker).
+	docker-compose exec $(DOCKER_SERVICE) go build -o bin/$(APP_NAME) ./cmd/$(APP_NAME)
+
+run: ## run the application.
+	docker-compose exec $(DOCKER_SERVICE) go run cmd/$(APP_NAME)/main.go 
+
+deps: ## Tidy `go.mod` and `go.sum` files (inside Docker).
+	docker-compose exec $(DOCKER_SERVICE) go mod tidy
 
 lint: ## Run `staticcheck` linter (inside Docker).
-	docker exec $(DOCKER_CONTAINER) staticcheck ./...
+	docker-compose exec $(DOCKER_SERVICE) staticcheck ./...
 
 clean: ## Remove the built binary (inside Docker).
-	docker exec $(DOCKER_CONTAINER) rm -f bin/$(APP_NAME)
-
-# -- Docker management --
-
-docker-build:  ## Build the Docker development image.
-	docker build -t $(DOCKER_IMAGE) .
-
-docker-run: ## Start the development Docker container in the background.
-	docker run -d --rm \
-		--name $(DOCKER_CONTAINER) \
-		-v .:/app \
-		-w /app \
-		$(DOCKER_IMAGE)
-
-docker-stop: ## Stop the running development Docker container.
-	docker stop $(DOCKER_CONTAINER)
+	docker-compose exec $(DOCKER_SERVICE) rm -f bin/$(APP_NAME)
 
 docker-exec: ## Run a command inside the docker container - Example: make docker-exec CMD="ls -l"
-	@docker exec $(DOCKER_CONTAINER) $(CMD)
+	docker-compose exec $(DOCKER_SERVICE) $(CMD)
 
 

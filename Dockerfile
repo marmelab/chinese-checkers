@@ -1,15 +1,11 @@
 FROM golang:1.24 AS builder
 
-WORKDIR /app
+ENV GO111MODULE=on \
+    CGO_ENABLED=0 \
+    PATH="/go/bin:$PATH"
 
 RUN apt-get update && \
     apt-get install -y make && \
     go install honnef.co/go/tools/cmd/staticcheck@latest
 
-COPY . .
-
-RUN go mod download
-
-RUN staticcheck ./...
-
-CMD ["tail", "-f", "/dev/null"]
+WORKDIR /app

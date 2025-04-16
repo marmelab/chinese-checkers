@@ -25,41 +25,50 @@ _(Note: Go and staticcheck do NOT need to be installed locally.)_
 
 Clone the repository, then:
 
-1.  **Build the Docker Image:**
+1.  **Install the development Docker Image:**
     This creates the container image with the Go environment and tools. Run this once initially, or when the `Dockerfile` changes.
 
     ```bash
-    make docker-build
+    make install
     ```
 
-2.  **Run the Development Container:**
-    This starts the container in the background and mounts your local code into `/app` inside it. **This container must be running** for most `make` commands below to work.
+2.  **Start the Development Container:**
+    This starts the container in the background and run the application. **This container must be running** for most `make` commands below to work.
 
     ```bash
     make docker-run
     ```
 
-3.  **Tidy Go Modules (via Docker):**
-    Ensures Go module files (`go.mod`, `go.sum`) are consistent.
+3.  **Test:**
+    Runs all Go tests inside the container.
 
     ```bash
-    make tidy
+    make test
     ```
 
-4.  **Using Make Commands (via Docker):**
+4.  **Stop the Development Container:**
+    When you're done developing for the session:
+
+    ```bash
+    make stop
+    ```
+
+5.  **Using Make Commands:**
     With the container running, use standard `make` commands directly from your terminal. They automatically execute _inside_ the Docker container:
 
     ```bash
-    make test      # Runs 'go test' inside the container
-    make lint      # Runs 'staticcheck' inside the container
-    make build     # Runs 'go build' inside the container
-    make format    # Runs 'go fmt' inside the container
-    make run       # Builds and runs the app inside the container
+    make help        # Show help message with available make targets
+    make deps        # Tidy `go.mod` and `go.sum` files inside the container
+    make lint        # Runs 'staticcheck' inside the container
+    make build       # Runs 'go build' inside the container
+    make run         # Builds and runs the app inside the container
+    make clean       # Remove the built binary (inside Docker).
+    make docker-exec # Run a command inside the docker container - Example: make docker-exec CMD="ls -l"
     ```
 
     _(See Makefile Targets below or run `make help` for all commands)_
 
-5.  **Accessing the Container Shell (Optional):**
+6.  **Accessing the Container Shell (Optional):**
     If you need direct shell access inside the container:
 
     ```bash
@@ -68,32 +77,6 @@ Clone the repository, then:
     # You can run Go commands (go test...) or make commands directly here.
     # Type 'exit' to leave the container shell
     ```
-
-6.  **Stopping the Container:**
-    When you're done developing for the session:
-    ```bash
-    make docker-stop
-    ```
-
-## 🎯 Makefile Targets
-
-The `Makefile` provides several commands for convenience, executed via Docker. Run `make help` to see all available targets. Key targets include:
-
-- `help`: Display this help screen.
-- `build`: Build the Go binary (inside Docker).
-- `run`: Build and run the application (inside Docker).
-- `test`: Run Go tests (inside Docker).
-- `format`: Format Go code using `go fmt` (inside Docker).
-- `lint`: Run `staticcheck` linter (inside Docker).
-- `tidy`: Tidy `go.mod` and `go.sum` files (inside Docker).
-- `clean`: Remove the built binary (via Docker).
-
----
-
-- `docker-build`: Build the Docker development image.
-- `docker-run`: Start the development Docker container (Required!).
-- `docker-stop`: Stop the running development Docker container.
-- `docker-exec CMD="..."`: Execute an arbitrary command inside the container.
 
 ## 🧱 Project Structure (main folders)
 
