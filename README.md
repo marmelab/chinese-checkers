@@ -36,7 +36,7 @@ Clone the repository, then:
     This starts the container in the background and run the application. **This container must be running** for most `make` commands below to work.
 
     ```bash
-    make docker-run
+    make start
     ```
 
 3.  **Test:**
