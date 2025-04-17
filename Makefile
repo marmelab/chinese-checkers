@@ -1,4 +1,4 @@
-.PHONY: help install start stop test build run deps lint clean docker-exec
+.PHONY: help install test build run deps lint vet check clean docker-exec
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
