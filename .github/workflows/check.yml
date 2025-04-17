@@ -1,0 +1,45 @@
+name: Go
+
+on: [push]
+
+jobs:
+  lint:
+    name: Lint Project
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go 1.24.x
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.24.x
+
+      - name: Install
+        run: make install
+          
+      - name: Lint
+        run: make lint
+
+      - name: Vet
+        run: make vet
+
+  test:
+    name: Run Unit Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Go 1.24.x
+        uses: actions/setup-go@v5
+        with:
+          go-version: 1.24.x
+
+      - name: Install
+        run: make install
+          
+      - name: Build
+        run: make build
+
+      - name: Test
+        run: make test
+
