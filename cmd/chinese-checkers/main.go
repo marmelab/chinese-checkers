@@ -1,11 +1,11 @@
 package main
 
 import (
-	"fmt"
-
-	"github.com/marmelab/chinese-checkers/internal/game"
+	"os"
 )
 
 func main() {
-	fmt.Println(game.Hello())
+	if err := chineseCheckersCommand.Execute(); err != nil {
+		os.Exit(1)
+	}
 }
