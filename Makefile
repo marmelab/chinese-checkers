@@ -14,12 +14,12 @@ install:  ## Build the Docker development image.
 	docker compose build
 
 test: ## Run Go tests (inside Docker).
-	docker compose run $(DOCKER_SERVICE) go test -v ./...
+	docker compose run --rm $(DOCKER_SERVICE) go test -v ./...
 
 # -- Other DX goals 
 
 build: deps ## Build the Go binary (inside Docker).
-	docker compose run $(DOCKER_SERVICE) go build -o bin/$(APP_NAME) ./cmd/$(APP_NAME)
+	docker compose run --rm $(DOCKER_SERVICE) go build -o bin/$(APP_NAME) ./cmd/$(APP_NAME)
 
 run: ## run the application.
 	docker compose run --rm $(DOCKER_SERVICE) go run cmd/$(APP_NAME)/main.go 
