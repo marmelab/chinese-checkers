@@ -84,18 +84,22 @@ func InitBoard(filePath *string) (*BoardState, error) {
 
 // Print the game board to the console.
 func PrintBoard(board *BoardState) {
-	println("+-----+-----+-----+-----+-----+")
+	println("+----+----+----+----+----+")
 	for _, row := range board.Board {
 		print("|")
 		for _, cell := range row {
 			if cell != 0 {
-				print("  ", cell, "  ")
+				playerColor := "🟢"
+				if cell == 2 {
+					playerColor = "🔴"
+				}
+				print(" ", playerColor, " ")
 			} else {
-				print("     ")
+				print("    ")
 			}
 			print("|")
 		}
 		println()
-		println("+-----+-----+-----+-----+-----+")
+		println("+----+----+----+----+----+")
 	}
 }
