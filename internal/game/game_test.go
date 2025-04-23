@@ -6,7 +6,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-const ongoingGameTestStatePath = "../../tests/states/ongoing-game.json"
+const ongoingGameStateTestPath = "../../tests/states/ongoing-game.json"
+const invalidGameStateTestPath = "../../tests/states/invalid-board.json"
 
 func TestLoadBoard(t *testing.T) {
 	expected := &BoardState{
@@ -19,10 +20,17 @@ func TestLoadBoard(t *testing.T) {
 		},
 		CurrentPlayer: 2,
 	}
-	board, err := LoadBoard(ongoingGameTestStatePath)
+	board, err := LoadBoard(ongoingGameStateTestPath)
 
 	assert.Nil(t, err)
 	assert.Equal(t, expected, board, "should be an ongoing game board")
+}
+
+func TestLoadInvalidBoard(t *testing.T) {
+	board, err := LoadBoard(invalidGameStateTestPath)
+
+	assert.Nil(t, board)
+	assert.Equal(t, "invalid game state, please provide a valid game state", err.Error(), "should return an invalid game state error")
 }
 
 func TestInitBoardWithoutFilePath(t *testing.T) {
@@ -43,7 +51,7 @@ func TestInitBoardWithFilePath(t *testing.T) {
 		},
 		CurrentPlayer: 2,
 	}
-	path := ongoingGameTestStatePath
+	path := ongoingGameStateTestPath
 	board, err := InitBoard(&path)
 
 	assert.Nil(t, err)
