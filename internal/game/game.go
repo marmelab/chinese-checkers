@@ -91,6 +91,24 @@ func (board *BoardState) CheckBoardValidity() error {
 	return nil
 }
 
+// Clone the board state.
+func (board *BoardState) Clone() *BoardState {
+	// Initialize a new board.
+	clonedBoard := &BoardState{
+		Board:         make([][]Cell, len(board.Board)),
+		CurrentPlayer: board.CurrentPlayer,
+	}
+
+	// Clone all rows of the board.
+	for rowIndex, row := range board.Board {
+		// Clone the current row.
+		clonedBoard.Board[rowIndex] = make([]Cell, len(row))
+		copy(clonedBoard.Board[rowIndex], row)
+	}
+
+	return clonedBoard
+}
+
 // Initialize a default board state.
 func NewDefaultBoard() *BoardState {
 	defaultBoard := DefaultBoard
