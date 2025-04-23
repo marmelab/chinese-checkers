@@ -48,7 +48,7 @@ func LoadBoard(filePath string) (*BoardState, error) {
 	}
 
 	// Check board validity.
-	err = CheckBoard(&board)
+	err = board.Check()
 
 	if err != nil {
 		return nil, err
@@ -59,7 +59,7 @@ func LoadBoard(filePath string) (*BoardState, error) {
 
 // Check that the board is valid.
 // Automatically called after loading a board from a state file.
-func CheckBoard(board *BoardState) error {
+func (board *BoardState) Check() error {
 	// Check that there are the right count of rows in the board.
 	if len(board.Board) != BoardSize {
 		return errors.New("invalid game state, please provide a valid game state")
@@ -88,7 +88,7 @@ func InitBoard(filePath *string) (*BoardState, error) {
 }
 
 // Print the game board to the console.
-func PrintBoard(writer io.Writer, board *BoardState) {
+func (board *BoardState) Print(writer io.Writer) {
 	fmt.Fprintln(writer, "    1    2    3    4    5  ")
 	fmt.Fprintln(writer, ". +----+----+----+----+----+")
 	for rowIndex, row := range board.Board {

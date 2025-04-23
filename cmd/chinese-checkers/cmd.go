@@ -30,7 +30,7 @@ func RunCli() error {
 			if err != nil {
 				return err
 			}
-			game.PrintBoard(os.Stdout, board)
+			board.Print(os.Stdout)
 			return nil
 		},
 	}

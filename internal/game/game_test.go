@@ -75,7 +75,7 @@ e |    |    | 🔴 | 🔴 | 🔴 |
 `
 
 	var output bytes.Buffer
-	PrintBoard(&output, &DefaultBoard)
+	DefaultBoard.Print(&output)
 
 	assert.Equal(t, expected, output.String(), "should have printed a default board")
 }
@@ -99,7 +99,7 @@ e |    |    |    | 🔴 | 🔴 |
 	board, err := InitBoard(&path)
 
 	var output bytes.Buffer
-	PrintBoard(&output, board)
+	board.Print(&output)
 
 	assert.Nil(t, err)
 	assert.Equal(t, expected, output.String(), "should have printed an ongoing game board")
