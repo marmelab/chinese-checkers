@@ -8,6 +8,9 @@ import (
 	"os"
 )
 
+// Size of the board (in rows and columns).
+const BoardSize = 5
+
 type Cell int8
 type PlayerId int8
 
@@ -57,12 +60,12 @@ func LoadBoard(filePath string) (*BoardState, error) {
 // Check that the board is valid.
 // Automatically called after loading a board from a state file.
 func CheckBoard(board *BoardState) error {
-	// Check that there are 5 rows in the board.
-	if len(board.Board) != 5 {
+	// Check that there are the right count of rows in the board.
+	if len(board.Board) != BoardSize {
 		return errors.New("invalid game state, please provide a valid game state")
 	}
 
-	// Check that every row has 5 columns.
+	// Check that every row has the right count of columns.
 	for _, row := range board.Board {
 		if len(row) != len(board.Board) {
 			return errors.New("invalid game state, please provide a valid game state")
