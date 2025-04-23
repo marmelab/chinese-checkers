@@ -26,3 +26,25 @@ func ParseCellIdentifier(serializedCellIdentifier string) (*CellIdentifier, erro
 		return nil, errors.New("invalid cell format")
 	}
 }
+
+// Parse a move list (a list of cell identifiers) from the serialized move list string.
+func ParseMoveList(serializedMoveList string) ([]CellIdentifier, error) {
+	// Extract all the parts of the move list.
+	serializedCells := strings.Split(serializedMoveList, ",")
+	if len(serializedCells) < 2 {
+		return nil, errors.New("you must provide at least two cells in a move")
+	}
+
+	// Parse all identifiers of the list.
+	moveList := make([]CellIdentifier, len(serializedCells))
+	for moveIndex, serializedCellIdentifier := range serializedCells {
+		cellIdentifier, err := ParseCellIdentifier(serializedCellIdentifier)
+		if err != nil {
+			return nil, err
+		}
+		moveList[moveIndex] = *cellIdentifier
+	}
+
+	// Return the move list.
+	return moveList, nil
+}
