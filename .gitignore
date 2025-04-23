@@ -5,6 +5,7 @@ bin/
 *.exe
 *.test
 *.out
+.cache/
 
 # IDE/editor files
 .vscode/
