@@ -3,6 +3,7 @@ package game
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 )
 
@@ -84,8 +85,10 @@ func InitBoard(filePath *string) (*BoardState, error) {
 
 // Print the game board to the console.
 func PrintBoard(board *BoardState) {
-	println("+----+----+----+----+----+")
-	for _, row := range board.Board {
+	println("    1    2    3    4    5  ")
+	println(". +----+----+----+----+----+")
+	for rowIndex, row := range board.Board {
+		fmt.Printf("%c ", rune(int('a')+rowIndex))
 		print("|")
 		for _, cell := range row {
 			if cell != 0 {
@@ -100,6 +103,6 @@ func PrintBoard(board *BoardState) {
 			print("|")
 		}
 		println()
-		println("+----+----+----+----+----+")
+		println(". +----+----+----+----+----+")
 	}
 }
