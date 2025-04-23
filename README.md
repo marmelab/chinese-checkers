@@ -39,6 +39,12 @@ Clone the repository, then:
     make run
     ```
 
+3.  **Run the CLI with a state file:**
+    This runs the project inside the container with a state file argument.
+		```bash
+		STATE_FILE="tests/states/ongoing-game.json" make run-state
+		```
+
 3.  **Test:**
     Runs all Go tests inside the container.
 
