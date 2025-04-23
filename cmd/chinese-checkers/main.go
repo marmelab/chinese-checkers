@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	if err := chineseCheckersCommand.Execute(); err != nil {
+	if err := RunCli(); err != nil {
 		os.Exit(1)
 	}
 }

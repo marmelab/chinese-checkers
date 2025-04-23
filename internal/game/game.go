@@ -86,12 +86,12 @@ func InitBoard(filePath *string) (*BoardState, error) {
 func PrintBoard(board *BoardState) {
 	println("+-----+-----+-----+-----+-----+")
 	for _, row := range board.Board {
+		print("|")
 		for _, cell := range row {
-			print("|")
 			if cell != 0 {
-				print(" ", cell, " ")
+				print("  ", cell, "  ")
 			} else {
-				print("   ")
+				print("     ")
 			}
 			print("|")
 		}
