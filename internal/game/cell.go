@@ -11,10 +11,10 @@ type CellIdentifier [2]int8
 
 // Parse a cell identifier from the serialized cell identifier string.
 func ParseCellIdentifier(serializedCellIdentifier string) (*CellIdentifier, error) {
-	if len(serializedCellIdentifier) == 2 {
-		// Ensure the string is lowercased.
-		serializedCellIdentifier = strings.ToLower(serializedCellIdentifier)
+	// Ensure the string is lowercased and trim whitespaces.
+	serializedCellIdentifier = strings.ToLower(strings.Trim(serializedCellIdentifier, " \t\n"))
 
+	if len(serializedCellIdentifier) == 2 {
 		// Get the shift from 'a' character.
 		row := serializedCellIdentifier[0] - 'a'
 		// Get the shift from '1' character.

@@ -11,7 +11,7 @@ func TestCellIdentifierParser(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, &CellIdentifier{0, 2}, output, "should be the same identifier")
 
-	output, err = ParseCellIdentifier("h9")
+	output, err = ParseCellIdentifier(" H9")
 	assert.Nil(t, err)
 	assert.Equal(t, &CellIdentifier{7, 8}, output, "should be the same identifier")
 }
