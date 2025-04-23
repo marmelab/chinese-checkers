@@ -48,7 +48,7 @@ func LoadBoard(filePath string) (*BoardState, error) {
 	}
 
 	// Check board validity.
-	err = board.Check()
+	err = board.CheckBoardValidity()
 
 	if err != nil {
 		return nil, err
@@ -57,9 +57,9 @@ func LoadBoard(filePath string) (*BoardState, error) {
 	return &board, nil
 }
 
-// Check that the board is valid.
+// CheckBoardValidity that the board is valid.
 // Automatically called after loading a board from a state file.
-func (board *BoardState) Check() error {
+func (board *BoardState) CheckBoardValidity() error {
 	// Check that there are the right count of rows in the board.
 	if len(board.Board) != BoardSize {
 		return errors.New("invalid game state, please provide a valid game state")
@@ -90,8 +90,25 @@ func (board *BoardState) Check() error {
 	return nil
 }
 
+// Clone the board state.
+func (board *BoardState) Clone() *BoardState {
+	// Initialize a new board.
+	clonedBoard := &BoardState{
+		Board:         make([][]Cell, len(board.Board)),
+		CurrentPlayer: board.CurrentPlayer,
+	}
+
+	// Clone all rows of the board.
+	for rowIndex, row := range board.Board {
+		// Clone the current row.
+		clonedBoard.Board[rowIndex] = make([]Cell, len(row))
+		copy(clonedBoard.Board[rowIndex], row)
+	}
+
+	return clonedBoard
+}
+
 // Initialize a default board state.
 func NewDefaultBoard() *BoardState {
-	defaultBoard := DefaultBoard
-	return &defaultBoard
+	return DefaultBoard.Clone()
 }
