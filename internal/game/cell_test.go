@@ -18,7 +18,7 @@ func TestCellIdentifierParser(t *testing.T) {
 
 func TestInvalidCellIdentifierParsing(t *testing.T) {
 	_, err := ParseCellIdentifier("a")
-	assert.Equal(t, err.Error(), "invalid cell format", "should be an invalid format error")
+	assert.Equal(t, err.Error(), "invalid cell format 'a'", "should be an invalid format error")
 }
 
 func TestMoveListParser(t *testing.T) {
@@ -38,5 +38,5 @@ func TestMoveListSizeError(t *testing.T) {
 
 func TestMoveListFormatError(t *testing.T) {
 	_, err := ParseMoveList("a1,b,c3")
-	assert.Equal(t, "invalid cell format", err.Error(), "should be an invalid format error")
+	assert.Equal(t, "invalid cell format 'b'", err.Error(), "should be an invalid format error")
 }

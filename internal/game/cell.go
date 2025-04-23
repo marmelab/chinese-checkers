@@ -2,6 +2,7 @@ package game
 
 import (
 	"errors"
+	"fmt"
 	"strings"
 )
 
@@ -23,7 +24,7 @@ func ParseCellIdentifier(serializedCellIdentifier string) (*CellIdentifier, erro
 		// Return the built cell identifier.
 		return &CellIdentifier{int8(row), int8(column)}, nil
 	} else {
-		return nil, errors.New("invalid cell format")
+		return nil, fmt.Errorf("invalid cell format '%s'", serializedCellIdentifier)
 	}
 }
 
