@@ -10,11 +10,12 @@ import (
 
 var gameStateFilePath string
 
-func GetGameStateFilePath() *string {
+// Initialize a game state by using the provided state file path if there is one.
+func InitGameState() (*game.BoardState, error) {
 	if len(gameStateFilePath) > 0 {
-		return &gameStateFilePath
+		return game.LoadBoard(gameStateFilePath)
 	} else {
-		return nil
+		return game.NewDefaultBoard(), nil
 	}
 }
 
@@ -26,7 +27,7 @@ func RunCli() error {
 		Short: "Fun chinese checkers game implementation",
 		Long:  "A fun chinese checkers game implementation, to play with your sysadmin friends in a stealthy manner.",
 		RunE: func(cmd *cobra.Command, args []string) error {
-			board, err := game.InitBoard(GetGameStateFilePath())
+			board, err := InitGameState()
 			if err != nil {
 				return err
 			}

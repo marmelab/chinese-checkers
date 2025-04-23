@@ -43,8 +43,7 @@ e |    |    |    | 🔴 | 🔴 |
 . +----+----+----+----+----+
 `
 
-	path := ongoingGameStateTestPath
-	board, err := InitBoard(&path)
+	board, err := LoadBoard(ongoingGameStateTestPath)
 
 	var output bytes.Buffer
 	board.Print(&output)

@@ -74,13 +74,8 @@ func (board *BoardState) Check() error {
 	return nil
 }
 
-// Initialize a board state from the provided state file.
-func InitBoard(filePath *string) (*BoardState, error) {
-	if filePath != nil {
-		// A file path has been provided, load it.
-		return LoadBoard(*filePath)
-	} else {
-		// No file path, return the default board.
-		return &DefaultBoard, nil
-	}
+// Initialize a default board state.
+func NewDefaultBoard() *BoardState {
+	defaultBoard := DefaultBoard
+	return &defaultBoard
 }

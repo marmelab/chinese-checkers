@@ -33,10 +33,9 @@ func TestLoadInvalidBoard(t *testing.T) {
 	assert.Equal(t, "invalid game state, please provide a valid game state", err.Error(), "should return an invalid game state error")
 }
 
-func TestInitBoardWithoutFilePath(t *testing.T) {
+func TestNewDefaultBoard(t *testing.T) {
 	expected := &DefaultBoard
-	board, err := InitBoard(nil)
-	assert.Nil(t, err)
+	board := NewDefaultBoard()
 	assert.Equal(t, expected, board, "should be the default board")
 }
 
@@ -51,8 +50,7 @@ func TestInitBoardWithFilePath(t *testing.T) {
 		},
 		CurrentPlayer: 2,
 	}
-	path := ongoingGameStateTestPath
-	board, err := InitBoard(&path)
+	board, err := LoadBoard(ongoingGameStateTestPath)
 
 	assert.Nil(t, err)
 	assert.Equal(t, expected, board, "should be an ongoing game board")
