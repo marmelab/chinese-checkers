@@ -8,6 +8,7 @@ import (
 
 const ongoingGameStateTestPath = "../../tests/states/ongoing-game.json"
 const invalidGameStateTestPath = "../../tests/states/invalid-board.json"
+const invalidPawnsCountTestPath = "../../tests/states/invalid-pawns-count.json"
 
 func TestLoadBoard(t *testing.T) {
 	expected := &BoardState{
@@ -28,6 +29,13 @@ func TestLoadBoard(t *testing.T) {
 
 func TestLoadInvalidBoard(t *testing.T) {
 	board, err := LoadBoard(invalidGameStateTestPath)
+
+	assert.Nil(t, board)
+	assert.Equal(t, "invalid game state, please provide a valid game state", err.Error(), "should return an invalid game state error")
+}
+
+func TestLoadBoardWithInvalidPawnsCount(t *testing.T) {
+	board, err := LoadBoard(invalidPawnsCountTestPath)
 
 	assert.Nil(t, board)
 	assert.Equal(t, "invalid game state, please provide a valid game state", err.Error(), "should return an invalid game state error")

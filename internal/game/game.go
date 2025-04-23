@@ -9,6 +9,9 @@ import (
 // Size of the board (in rows and columns).
 const BoardSize = 5
 
+// Number of pawns of a player.
+const PlayerPawnsNumber = 6
+
 type Cell int8
 type PlayerId int8
 
@@ -63,11 +66,25 @@ func (board *BoardState) Check() error {
 		return errors.New("invalid game state, please provide a valid game state")
 	}
 
+	// Count of pawns for each player (index 0 = player 1, index 1 = player 2)
+	playerPawnsCounts := []int{0, 0}
 	// Check that every row has the right count of columns.
 	for _, row := range board.Board {
 		if len(row) != len(board.Board) {
 			return errors.New("invalid game state, please provide a valid game state")
 		}
+		// Count the pawns of each player in the current row.
+		for _, cell := range row {
+			if cell > 0 {
+				// There is a player on the current cell, increment its count.
+				playerPawnsCounts[cell-1] += 1
+			}
+		}
+	}
+
+	// Check that there are enough pawns for a player in the board.
+	if playerPawnsCounts[0] != PlayerPawnsNumber || playerPawnsCounts[1] != PlayerPawnsNumber {
+		return errors.New("invalid game state, please provide a valid game state")
 	}
 
 	// No error.
