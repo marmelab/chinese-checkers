@@ -21,21 +21,21 @@ func TestLoadBoard(t *testing.T) {
 		},
 		CurrentPlayer: 2,
 	}
-	board, err := LoadBoard(ongoingGameStateTestPath)
+	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
 
 	assert.Nil(t, err)
 	assert.Equal(t, expected, board, "should be an ongoing game board")
 }
 
 func TestLoadInvalidBoard(t *testing.T) {
-	board, err := LoadBoard(invalidGameStateTestPath)
+	board, err := NewBoardFromStateFile(invalidGameStateTestPath)
 
 	assert.Nil(t, board)
 	assert.Equal(t, "invalid game state, please provide a valid game state", err.Error(), "should return an invalid game state error")
 }
 
 func TestLoadBoardWithInvalidPawnsCount(t *testing.T) {
-	board, err := LoadBoard(invalidPawnsCountTestPath)
+	board, err := NewBoardFromStateFile(invalidPawnsCountTestPath)
 
 	assert.Nil(t, board)
 	assert.Equal(t, "invalid game state, please provide a valid game state", err.Error(), "should return an invalid game state error")
@@ -58,7 +58,7 @@ func TestInitBoardWithFilePath(t *testing.T) {
 		},
 		CurrentPlayer: 2,
 	}
-	board, err := LoadBoard(ongoingGameStateTestPath)
+	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
 
 	assert.Nil(t, err)
 	assert.Equal(t, expected, board, "should be an ongoing game board")
@@ -73,7 +73,7 @@ func TestBoardCloning(t *testing.T) {
 	assert.NotSame(t, &DefaultBoard.Board[0], &clonedBoard.Board[0], "shouldn't be the same pointer")
 
 	// Test to clone a loaded dashboard.
-	board, err := LoadBoard(ongoingGameStateTestPath)
+	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
 	assert.Nil(t, err)
 	clonedBoard = board.Clone()
 	assert.Equal(t, board, clonedBoard, "should be the same board")

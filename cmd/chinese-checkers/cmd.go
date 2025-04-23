@@ -13,7 +13,7 @@ var gameStateFilePath string
 // Initialize a game state by using the provided state file path if there is one.
 func InitGameState() (*game.BoardState, error) {
 	if len(gameStateFilePath) > 0 {
-		return game.LoadBoard(gameStateFilePath)
+		return game.NewBoardFromStateFile(gameStateFilePath)
 	} else {
 		return game.NewDefaultBoard(), nil
 	}

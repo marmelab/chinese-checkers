@@ -33,8 +33,8 @@ var DefaultBoard = BoardState{
 	CurrentPlayer: 1,
 }
 
-// Load a board from a state file.
-func LoadBoard(filePath string) (*BoardState, error) {
+// Initialize a board from a state file.
+func NewBoardFromStateFile(filePath string) (*BoardState, error) {
 	// Fully read the provided file.
 	fileData, err := os.ReadFile(filePath)
 	if err != nil {
