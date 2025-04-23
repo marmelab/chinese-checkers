@@ -1,6 +1,7 @@
 package game
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -156,4 +157,16 @@ func TestMovePawnWithInvalidPosition(t *testing.T) {
 	err = board.MovePawn("91,d1,e1")
 	assert.Equal(t, "91 is not a valid cell", err.Error(), "should be an invalid cell error")
 	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
+}
+
+func TestSaveBoardState(t *testing.T) {
+	testFilePath := "testFile.json"
+
+	board := NewDefaultBoard()
+	assert.Nil(t, board.SaveState(testFilePath))
+	loadedBoard, err := NewBoardFromStateFile(testFilePath)
+	assert.Nil(t, err)
+	assert.Equal(t, &DefaultBoard, loadedBoard, "saved board must be the default board")
+
+	os.Remove(testFilePath)
 }

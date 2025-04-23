@@ -41,7 +41,13 @@ func RunCli() error {
 
 			// Print the board with the moved pawn.
 			board.Print(os.Stdout)
-			return nil
+
+			// A game state file path has been provided, write the new state to the game state file.
+			if len(gameStateFilePath) > 0 {
+				return board.SaveState(gameStateFilePath)
+			} else {
+				return nil
+			}
 		},
 	}
 

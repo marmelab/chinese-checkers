@@ -161,3 +161,14 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 func NewDefaultBoard() *BoardState {
 	return DefaultBoard.Clone()
 }
+
+// Save the board state in memory.
+func (board *BoardState) SaveState(filePath string) error {
+	// Convert the board to JSON.
+	boardJson, err := json.Marshal(board)
+	if err != nil {
+		return err
+	}
+	// Write the new state file.
+	return os.WriteFile(filePath, boardJson, 0644)
+}
