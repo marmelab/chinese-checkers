@@ -3,6 +3,7 @@ package game
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 )
 
@@ -106,6 +107,54 @@ func (board *BoardState) Clone() *BoardState {
 	}
 
 	return clonedBoard
+}
+
+// Check that the board position is valid.
+func (board *BoardState) CheckBoardPositionValidity(position CellIdentifier) error {
+	if
+	// Check that the row index is valid.
+	(position[0] >= int8(len(board.Board)) || position[0] < 0) ||
+		// Check that the column index is valid.
+		(position[1] >= int8(len(board.Board[position[0]])) || position[1] < 0) {
+		return fmt.Errorf("%s is not a valid cell", position.String())
+	}
+	return nil
+}
+
+// Move a pawn of the board.
+func (board *BoardState) MovePawn(serializedMoveList string) error {
+	// Parse the move list.
+	moveList, err := ParseMoveList(serializedMoveList)
+	if err != nil {
+		return err
+	}
+
+	// Ensure that the position is valid for the current board.
+	if err = board.CheckBoardPositionValidity(moveList[0]); err != nil {
+		return err
+	}
+	// Ensure that there is a pawn at start position.
+	startPawn := board.Board[moveList[0][0]][moveList[0][1]]
+	if startPawn == 0 {
+		return fmt.Errorf("there is no pawn on %s", moveList[0].String())
+	}
+
+	// Ensure that the position is valid for the current board.
+	if err = board.CheckBoardPositionValidity(moveList[len(moveList)-1]); err != nil {
+		return err
+	}
+	// Ensure that there is no pawn at the end position.
+	endPawn := board.Board[moveList[len(moveList)-1][0]][moveList[len(moveList)-1][1]]
+	if endPawn != 0 {
+		return fmt.Errorf("there already is a pawn on %s", moveList[len(moveList)-1].String())
+	}
+
+	// Move the start pawn to the end position.
+	board.Board[moveList[len(moveList)-1][0]][moveList[len(moveList)-1][1]] = startPawn
+	// Remove the start pawn from its previous position.
+	board.Board[moveList[0][0]][moveList[0][1]] = 0
+
+	return nil
 }
 
 // Initialize a default board state.
