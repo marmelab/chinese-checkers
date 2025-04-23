@@ -81,3 +81,21 @@ func InitBoard(filePath *string) (*BoardState, error) {
 		return &DefaultBoard, nil
 	}
 }
+
+// Print the game board to the console.
+func PrintBoard(board *BoardState) {
+	println("+-----+-----+-----+-----+-----+")
+	for _, row := range board.Board {
+		for _, cell := range row {
+			print("|")
+			if cell != 0 {
+				print(" ", cell, " ")
+			} else {
+				print("   ")
+			}
+			print("|")
+		}
+		println()
+		println("+-----+-----+-----+-----+-----+")
+	}
+}
