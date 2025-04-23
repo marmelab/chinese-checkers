@@ -49,7 +49,7 @@ func RunCli() error {
 	chineseCheckersCommand.PersistentFlags().StringVarP(&gameStateFilePath, "state-file", "", "", "Game state file to read the board from.")
 	// Add a required move flag without shorthand.
 	chineseCheckersCommand.PersistentFlags().StringVarP(&serializedMoveList, "move", "m", "", "Move a pawn from a start position to an end position.")
-	chineseCheckersCommand.MarkFlagRequired("move")
+	chineseCheckersCommand.MarkPersistentFlagRequired("move")
 
 	// Execute the command and return the error.
 	return chineseCheckersCommand.Execute()
