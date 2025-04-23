@@ -25,6 +25,10 @@ func TestMoveListParser(t *testing.T) {
 	output, err := ParseMoveList("a1,b2,c3")
 	assert.Nil(t, err)
 	assert.Equal(t, []CellIdentifier{{0, 0}, {1, 1}, {2, 2}}, output)
+
+	output, err = ParseMoveList("b4, b3, b2, a2")
+	assert.Nil(t, err)
+	assert.Equal(t, []CellIdentifier{{1, 3}, {1, 2}, {1, 1}, {0, 1}}, output)
 }
 
 func TestMoveListSizeError(t *testing.T) {
