@@ -1,6 +1,8 @@
 package main
 
 import (
+	"os"
+
 	"github.com/spf13/cobra"
 
 	"github.com/marmelab/chinese-checkers/internal/game"
@@ -28,7 +30,7 @@ func RunCli() error {
 			if err != nil {
 				return err
 			}
-			game.PrintBoard(board)
+			game.PrintBoard(os.Stdout, board)
 			return nil
 		},
 	}

@@ -1,6 +1,7 @@
 package game
 
 import (
+	"bytes"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -56,4 +57,50 @@ func TestInitBoardWithFilePath(t *testing.T) {
 
 	assert.Nil(t, err)
 	assert.Equal(t, expected, board, "should be an ongoing game board")
+}
+
+func TestBoardPrinting(t *testing.T) {
+	expected := `    1    2    3    4    5  
+. +----+----+----+----+----+
+a | 🟢 | 🟢 | 🟢 |    |    |
+. +----+----+----+----+----+
+b | 🟢 | 🟢 |    |    |    |
+. +----+----+----+----+----+
+c | 🟢 |    |    |    | 🔴 |
+. +----+----+----+----+----+
+d |    |    |    | 🔴 | 🔴 |
+. +----+----+----+----+----+
+e |    |    | 🔴 | 🔴 | 🔴 |
+. +----+----+----+----+----+
+`
+
+	var output bytes.Buffer
+	PrintBoard(&output, &DefaultBoard)
+
+	assert.Equal(t, expected, output.String(), "should have printed a default board")
+}
+
+func TestOngoingGameBoardPrinting(t *testing.T) {
+	expected := `    1    2    3    4    5  
+. +----+----+----+----+----+
+a |    | 🟢 | 🟢 |    |    |
+. +----+----+----+----+----+
+b |    | 🟢 |    |    |    |
+. +----+----+----+----+----+
+c | 🟢 | 🟢 |    | 🔴 |    |
+. +----+----+----+----+----+
+d | 🟢 |    | 🔴 | 🔴 | 🔴 |
+. +----+----+----+----+----+
+e |    |    |    | 🔴 | 🔴 |
+. +----+----+----+----+----+
+`
+
+	path := ongoingGameStateTestPath
+	board, err := InitBoard(&path)
+
+	var output bytes.Buffer
+	PrintBoard(&output, board)
+
+	assert.Nil(t, err)
+	assert.Equal(t, expected, output.String(), "should have printed an ongoing game board")
 }

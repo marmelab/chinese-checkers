@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"io"
 	"os"
 )
 
@@ -84,25 +85,25 @@ func InitBoard(filePath *string) (*BoardState, error) {
 }
 
 // Print the game board to the console.
-func PrintBoard(board *BoardState) {
-	println("    1    2    3    4    5  ")
-	println(". +----+----+----+----+----+")
+func PrintBoard(writer io.Writer, board *BoardState) {
+	fmt.Fprintln(writer, "    1    2    3    4    5  ")
+	fmt.Fprintln(writer, ". +----+----+----+----+----+")
 	for rowIndex, row := range board.Board {
-		fmt.Printf("%c ", rune(int('a')+rowIndex))
-		print("|")
+		fmt.Fprintf(writer, "%c ", rune(int('a')+rowIndex))
+		fmt.Fprint(writer, "|")
 		for _, cell := range row {
 			if cell != 0 {
 				playerColor := "🟢"
 				if cell == 2 {
 					playerColor = "🔴"
 				}
-				print(" ", playerColor, " ")
+				fmt.Fprint(writer, " ", playerColor, " ")
 			} else {
-				print("    ")
+				fmt.Fprint(writer, "    ")
 			}
-			print("|")
+			fmt.Fprint(writer, "|")
 		}
-		println()
-		println(". +----+----+----+----+----+")
+		fmt.Fprintln(writer)
+		fmt.Fprintln(writer, ". +----+----+----+----+----+")
 	}
 }
