@@ -111,6 +111,5 @@ func (board *BoardState) Clone() *BoardState {
 
 // Initialize a default board state.
 func NewDefaultBoard() *BoardState {
-	defaultBoard := DefaultBoard
-	return &defaultBoard
+	return DefaultBoard.Clone()
 }
