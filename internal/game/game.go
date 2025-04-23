@@ -95,12 +95,10 @@ func PrintBoard(writer io.Writer, board *BoardState) {
 		fmt.Fprintf(writer, "%c ", rune(int('a')+rowIndex))
 		fmt.Fprint(writer, "|")
 		for _, cell := range row {
-			if cell != 0 {
-				playerColor := "🟢"
-				if cell == 2 {
-					playerColor = "🔴"
-				}
-				fmt.Fprint(writer, " ", playerColor, " ")
+			if cell == 1 {
+				fmt.Fprint(writer, " 🟢 ")
+			} else if cell == 2 {
+				fmt.Fprint(writer, " 🔴 ")
 			} else {
 				fmt.Fprint(writer, "    ")
 			}
