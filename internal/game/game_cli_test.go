@@ -43,7 +43,7 @@ func TestOngoingGameBoardPrinting(t *testing.T) {
  . +----+----+----+----+----+
 `
 
-	board, err := LoadBoard(ongoingGameStateTestPath)
+	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
 
 	var output bytes.Buffer
 	board.Print(&output)
