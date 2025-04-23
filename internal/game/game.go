@@ -12,7 +12,6 @@ const BoardSize = 5
 // Number of pawns of a player.
 const PlayerPawnsNumber = 6
 
-type Cell int8
 type PlayerId int8
 
 // The main board state.
