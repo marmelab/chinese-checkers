@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"math"
+	"math/rand"
 	"os"
 )
 
@@ -215,7 +216,10 @@ func (board *BoardState) MovePawnAndSave(serializedMoveList string) error {
 
 // Initialize a default board state.
 func NewDefaultBoard() *BoardState {
-	return DefaultBoard.Clone()
+	board := DefaultBoard.Clone()
+	// Chose a random player to start.
+	board.CurrentPlayer = PlayerId(rand.Intn(2) + 1)
+	return board
 }
 
 // Save the board state in memory.
