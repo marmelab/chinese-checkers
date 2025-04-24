@@ -124,19 +124,19 @@ func (board *BoardState) CheckMoveLegality(from CellIdentifier, to CellIdentifie
 	// Compute the row diff of the move.
 	rowDiff := math.Abs(float64(from.Row - to.Row))
 
-	if columnDiff+rowDiff != 1 {
-		// The move is illegal (more than 1 difference, or no difference).
-		if rowDiff == 1 && columnDiff == 1 {
-			// Detected a diagonal move, return a specific error.
-			return errors.New("a pawn cannot move in diagonal")
-		} else {
-			// General error.
-			return fmt.Errorf("'%s' cannot be reached from '%s'", to.String(), from.String())
-		}
-	} else {
-		// The move is legal.
+	if columnDiff+rowDiff == 1 {
+		// Only 1 difference, the move is legal.
 		return nil
 	}
+
+	// The move is illegal (more than 1 difference, or no difference).
+
+	if rowDiff == 1 && columnDiff == 1 {
+		// Detected a diagonal move, return a specific error.
+		return errors.New("a pawn cannot move in diagonal")
+	}
+
+	return fmt.Errorf("'%s' cannot be reached from '%s'", to.String(), from.String())
 }
 
 // Check legality of all successive moves.
