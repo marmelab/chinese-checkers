@@ -3,6 +3,7 @@ package game
 import (
 	"encoding/json"
 	"errors"
+	"fmt"
 	"os"
 )
 
@@ -12,13 +13,13 @@ const BoardSize = 5
 // Number of pawns of a player.
 const PlayerPawnsNumber = 6
 
-type Cell int8
 type PlayerId int8
 
 // The main board state.
 type BoardState struct {
 	Board         [][]Cell `json:"board"`
 	CurrentPlayer PlayerId `json:"currentPlayer"`
+	stateFile     *string
 }
 
 // The default board.
@@ -31,6 +32,7 @@ var DefaultBoard = BoardState{
 		{0, 0, 2, 2, 2},
 	},
 	CurrentPlayer: 1,
+	stateFile:     nil,
 }
 
 // Initialize a board from a state file.
@@ -54,6 +56,9 @@ func NewBoardFromStateFile(filePath string) (*BoardState, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// Store the used file path in the board state.
+	board.stateFile = &filePath
 
 	return &board, nil
 }
@@ -97,6 +102,7 @@ func (board *BoardState) Clone() *BoardState {
 	clonedBoard := &BoardState{
 		Board:         make([][]Cell, len(board.Board)),
 		CurrentPlayer: board.CurrentPlayer,
+		stateFile:     board.stateFile,
 	}
 
 	// Clone all rows of the board.
@@ -109,7 +115,61 @@ func (board *BoardState) Clone() *BoardState {
 	return clonedBoard
 }
 
+// Move a pawn of the board.
+func (board *BoardState) MovePawn(serializedMoveList string) error {
+	// Parse the move list.
+	moveList, err := board.ParseMoveList(serializedMoveList)
+	if err != nil {
+		return err
+	}
+
+	// Ensure that there is a pawn at start position.
+	startPawn := board.Board[moveList[0].Row][moveList[0].Column]
+	if startPawn == 0 {
+		return fmt.Errorf("there is no pawn on %s", moveList[0].String())
+	}
+
+	// Ensure that there is no pawn at the end position.
+	endPawn := board.Board[moveList[len(moveList)-1].Row][moveList[len(moveList)-1].Column]
+	if endPawn != 0 {
+		return fmt.Errorf("there already is a pawn on %s", moveList[len(moveList)-1].String())
+	}
+
+	// Move the start pawn to the end position.
+	board.Board[moveList[len(moveList)-1].Row][moveList[len(moveList)-1].Column] = startPawn
+	// Remove the start pawn from its previous position.
+	board.Board[moveList[0].Row][moveList[0].Column] = 0
+
+	return nil
+}
+
+// Move a pawn of the board and save the new board state to the stored state file.
+func (board *BoardState) MovePawnAndSave(serializedMoveList string) error {
+	// Try to move a pawn using the provided move list.
+	if err := board.MovePawn(serializedMoveList); err != nil {
+		return err
+	}
+	if board.stateFile != nil {
+		// There is a state file, save the new board state to it.
+		if err := board.SaveState(*board.stateFile); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // Initialize a default board state.
 func NewDefaultBoard() *BoardState {
 	return DefaultBoard.Clone()
+}
+
+// Save the board state in memory.
+func (board *BoardState) SaveState(filePath string) error {
+	// Convert the board to JSON.
+	boardJson, err := json.Marshal(board)
+	if err != nil {
+		return err
+	}
+	// Write the new state file.
+	return os.WriteFile(filePath, boardJson, 0644)
 }

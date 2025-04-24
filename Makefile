@@ -22,10 +22,7 @@ build: deps ## Build the Go binary (inside Docker).
 	docker compose run --rm $(DOCKER_SERVICE) go build -o bin/$(APP_NAME) ./cmd/$(APP_NAME)
 
 run: ## run the application.
-	docker compose run --rm $(DOCKER_SERVICE) go run github.com/marmelab/chinese-checkers/cmd/$(APP_NAME) 
-
-run-state: ## run the application with a state file.
-	docker compose run --rm $(DOCKER_SERVICE) go run github.com/marmelab/chinese-checkers/cmd/$(APP_NAME) --state-file $(STATE_FILE)
+	docker compose run --rm $(DOCKER_SERVICE) go run github.com/marmelab/chinese-checkers/cmd/$(APP_NAME) $(APP_ARGS)
 
 deps: ## Tidy `go.mod` and `go.sum` files (inside Docker).
 	docker compose run --rm $(DOCKER_SERVICE) go mod tidy

@@ -36,23 +36,20 @@ Clone the repository, then:
     This runs the project inside the container.
 
     ```bash
-    make run
+		# Show help.
+		APP_ARGS="--help" make run
+		# Run with arguments.
+		APP_ARGS="--state-file tests/states/ongoing-game.json --move c1,d1" make run
     ```
 
-3.  **Run the CLI with a state file:**
-    This runs the project inside the container with a state file argument.
-		```bash
-		STATE_FILE="tests/states/ongoing-game.json" make run-state
-		```
-
-4.  **Test:**
+3.  **Test:**
     Runs all Go tests inside the container.
 
     ```bash
     make test
     ```
 
-5.  **Using Make Commands:**
+4.  **Using Make Commands:**
     With the container running, use standard `make` commands directly from your terminal. They automatically execute _inside_ the Docker container:
 
     ```bash
@@ -63,7 +60,6 @@ Clone the repository, then:
     make docker-exec                    Run a command inside the docker container - Example: make docker-exec CMD="ls -l"
     make install                        Build the Docker development image.
     make lint                           Run `staticcheck` linter (inside Docker).
-		make run-state                      run the application with a state file.
     make run                            run the application.
     make test                           Run Go tests (inside Docker).
     make vet                            Run `go vet` (inside Docker).
@@ -71,7 +67,7 @@ Clone the repository, then:
 
     _(See Makefile Targets below or run `make help` for all commands)_
 
-6.  **Accessing the Container Shell (Optional):**
+5.  **Accessing the Container Shell (Optional):**
     If you need direct shell access inside the container:
 
     ```bash
