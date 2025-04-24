@@ -283,9 +283,9 @@ func TestPlayersTurns(t *testing.T) {
 	board.CurrentPlayer = 1 // Set current player to ensure validity.
 
 	assert.Nil(t, board.MovePawn("a3,a4"), "the move is allowed")
-	assert.Equal(t, PlayerId(2), board.CurrentPlayer, "red player should now be the one to play")
+	assert.Equal(t, Red, board.CurrentPlayer, "red player should now be the one to play")
 	assert.Equal(t, "you cannot move a green pawn", board.MovePawn("a4,a5").Error(), "red player shouldn't be allowed to move a green pawn")
 	assert.Nil(t, board.MovePawn("e3,e2"), "the move is allowed")
-	assert.Equal(t, PlayerId(1), board.CurrentPlayer, "green player should now be the one to play")
+	assert.Equal(t, Green, board.CurrentPlayer, "green player should now be the one to play")
 	assert.Equal(t, "you cannot move a red pawn", board.MovePawn("e2,d2").Error(), "green player shouldn't be allowed to move a red pawn")
 }
