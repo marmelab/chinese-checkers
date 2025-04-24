@@ -110,9 +110,9 @@ func TestMovePawnInOngoingGameBoard(t *testing.T) {
 		Board: [][]Cell{
 			{0, 1, 1, 0, 0},
 			{0, 1, 0, 0, 0},
-			{1, 0, 0, 2, 0},
-			{1, 1, 2, 2, 2},
-			{0, 0, 0, 2, 2},
+			{1, 1, 0, 2, 0},
+			{1, 0, 2, 2, 2},
+			{0, 0, 2, 0, 2},
 		},
 		CurrentPlayer: 1,
 		stateFile:     &stateFilePath,
@@ -120,7 +120,7 @@ func TestMovePawnInOngoingGameBoard(t *testing.T) {
 
 	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
 	assert.Nil(t, err)
-	err = board.MovePawn("c2,d2")
+	err = board.MovePawn("e4,e3")
 	assert.Nil(t, err)
 	assert.Equal(t, expected, board)
 }
@@ -265,14 +265,27 @@ func TestMovesLegalityCheck(t *testing.T) {
 
 func TestIllegalMoves(t *testing.T) {
 	board := NewDefaultBoard()
-	board.CurrentPlayer = 1 // Set current player to ensure equality and validity.
+	board.CurrentPlayer = 1 // Set current player to ensure validity.
 
 	assert.Equal(t, "'a5' cannot be reached from 'a3'", board.MovePawn("a3,a4,a5").Error(), "should return an illegal move error")
 	assert.Nil(t, board.MovePawn("a3,a4"), "the move is legal")
+	board.CurrentPlayer = 1 // Reset current player to ensure validity.
 	assert.Equal(t, "a pawn cannot move in diagonal", board.MovePawn("a4,b3").Error(), "should return an illegal move error")
 	assert.Equal(t, "'e1' cannot be reached from 'a4'", board.MovePawn("a4,e1").Error(), "should return an illegal move error")
 	assert.Equal(t, "'c3' cannot be reached from 'c1'", board.MovePawn("c1,c3").Error(), "should return an illegal move error")
 	assert.Equal(t, "'c4' cannot be reached from 'a3'", board.MovePawn("a4,a3,c4,b4").Error(), "should return an illegal move error")
 	assert.Equal(t, "a pawn cannot move in diagonal", board.MovePawn("a4,a3,b3").Error(), "should return an illegal move error")
 	assert.Equal(t, "'c3' cannot be reached from 'a4'", board.MovePawn("a4,a3,b3,c3").Error(), "should return an illegal move error")
+}
+
+func TestPlayersTurns(t *testing.T) {
+	board := NewDefaultBoard()
+	board.CurrentPlayer = 1 // Set current player to ensure validity.
+
+	assert.Nil(t, board.MovePawn("a3,a4"), "the move is allowed")
+	assert.Equal(t, PlayerId(2), board.CurrentPlayer, "red player should now be the one to play")
+	assert.Equal(t, "you cannot move a green pawn", board.MovePawn("a4,a5").Error(), "red player shouldn't be allowed to move a green pawn")
+	assert.Nil(t, board.MovePawn("e3,e2"), "the move is allowed")
+	assert.Equal(t, PlayerId(1), board.CurrentPlayer, "green player should now be the one to play")
+	assert.Equal(t, "you cannot move a red pawn", board.MovePawn("e2,d2").Error(), "green player shouldn't be allowed to move a red pawn")
 }

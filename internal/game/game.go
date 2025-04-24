@@ -186,6 +186,10 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 	if startPawn == 0 {
 		return fmt.Errorf("there is no pawn on %s", moveList[0].String())
 	}
+	// Ensure that the current player can move this pawn.
+	if startPawn != Cell(board.CurrentPlayer) {
+		return fmt.Errorf("you cannot move a %s pawn", PlayerId(startPawn).Color())
+	}
 
 	// Ensure that there is no pawn at the end position.
 	endPawn := board.Board[moveList[len(moveList)-1].Row][moveList[len(moveList)-1].Column]
