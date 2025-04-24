@@ -30,7 +30,7 @@ var DefaultBoard = BoardState{
 		{0, 0, 0, 2, 2},
 		{0, 0, 2, 2, 2},
 	},
-	CurrentPlayer: 1,
+	CurrentPlayer: Green,
 	stateFile:     nil,
 }
 
