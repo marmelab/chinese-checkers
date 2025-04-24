@@ -113,9 +113,9 @@ func (board *BoardState) Clone() *BoardState {
 func (board *BoardState) CheckBoardPositionValidity(position CellIdentifier) error {
 	if
 	// Check that the row index is valid.
-	(position[0] >= int8(len(board.Board)) || position[0] < 0) ||
+	(position.Row >= int8(len(board.Board)) || position.Row < 0) ||
 		// Check that the column index is valid.
-		(position[1] >= int8(len(board.Board[position[0]])) || position[1] < 0) {
+		(position.Column >= int8(len(board.Board[position.Row])) || position.Column < 0) {
 		return fmt.Errorf("%s is not a valid cell", position.String())
 	}
 	return nil
@@ -134,7 +134,7 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 		return err
 	}
 	// Ensure that there is a pawn at start position.
-	startPawn := board.Board[moveList[0][0]][moveList[0][1]]
+	startPawn := board.Board[moveList[0].Row][moveList[0].Column]
 	if startPawn == 0 {
 		return fmt.Errorf("there is no pawn on %s", moveList[0].String())
 	}
@@ -144,15 +144,15 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 		return err
 	}
 	// Ensure that there is no pawn at the end position.
-	endPawn := board.Board[moveList[len(moveList)-1][0]][moveList[len(moveList)-1][1]]
+	endPawn := board.Board[moveList[len(moveList)-1].Row][moveList[len(moveList)-1].Column]
 	if endPawn != 0 {
 		return fmt.Errorf("there already is a pawn on %s", moveList[len(moveList)-1].String())
 	}
 
 	// Move the start pawn to the end position.
-	board.Board[moveList[len(moveList)-1][0]][moveList[len(moveList)-1][1]] = startPawn
+	board.Board[moveList[len(moveList)-1].Row][moveList[len(moveList)-1].Column] = startPawn
 	// Remove the start pawn from its previous position.
-	board.Board[moveList[0][0]][moveList[0][1]] = 0
+	board.Board[moveList[0].Row][moveList[0].Column] = 0
 
 	return nil
 }

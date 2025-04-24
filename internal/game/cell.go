@@ -8,11 +8,14 @@ import (
 
 type Cell int8
 
-type CellIdentifier [2]int8
+type CellIdentifier struct {
+	Row    int8
+	Column int8
+}
 
 // Convert a cell identifier to its string format.
 func (cellIdentifier CellIdentifier) String() string {
-	return fmt.Sprintf("%c%c", cellIdentifier[0]+'a', cellIdentifier[1]+'1')
+	return fmt.Sprintf("%c%c", cellIdentifier.Row+'a', cellIdentifier.Column+'1')
 }
 
 // Parse a cell identifier from the serialized cell identifier string.
