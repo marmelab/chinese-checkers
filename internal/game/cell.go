@@ -19,25 +19,33 @@ func (cellIdentifier CellIdentifier) String() string {
 }
 
 // Parse a cell identifier from the serialized cell identifier string.
-func ParseCellIdentifier(serializedCellIdentifier string) (*CellIdentifier, error) {
+func (board BoardState) ParseCellIdentifier(serializedCellIdentifier string) (*CellIdentifier, error) {
 	// Ensure the string is lowercased and trim whitespaces.
 	serializedCellIdentifier = strings.ToLower(strings.Trim(serializedCellIdentifier, " \t\n"))
 
 	if len(serializedCellIdentifier) == 2 {
 		// Get the shift from 'a' character.
-		row := serializedCellIdentifier[0] - 'a'
+		row := int8(serializedCellIdentifier[0] - 'a')
 		// Get the shift from '1' character.
-		column := serializedCellIdentifier[1] - '1'
+		column := int8(serializedCellIdentifier[1] - '1')
+
+		// Check cell validity in the board.
+		if row < 0 || row >= int8(len(board.Board)) {
+			return nil, fmt.Errorf("%s is not a valid cell", serializedCellIdentifier)
+		}
+		if column < 0 || column >= int8(len(board.Board[row])) {
+			return nil, fmt.Errorf("%s is not a valid cell", serializedCellIdentifier)
+		}
 
 		// Return the built cell identifier.
-		return &CellIdentifier{int8(row), int8(column)}, nil
+		return &CellIdentifier{row, column}, nil
 	} else {
 		return nil, fmt.Errorf("invalid cell format '%s'", serializedCellIdentifier)
 	}
 }
 
 // Parse a move list (a list of cell identifiers) from the serialized move list string.
-func ParseMoveList(serializedMoveList string) ([]CellIdentifier, error) {
+func (board BoardState) ParseMoveList(serializedMoveList string) ([]CellIdentifier, error) {
 	// Extract all the parts of the move list.
 	serializedCells := strings.Split(serializedMoveList, ",")
 	if len(serializedCells) < 2 {
@@ -47,7 +55,7 @@ func ParseMoveList(serializedMoveList string) ([]CellIdentifier, error) {
 	// Parse all identifiers of the list.
 	moveList := make([]CellIdentifier, len(serializedCells))
 	for moveIndex, serializedCellIdentifier := range serializedCells {
-		cellIdentifier, err := ParseCellIdentifier(serializedCellIdentifier)
+		cellIdentifier, err := board.ParseCellIdentifier(serializedCellIdentifier)
 		if err != nil {
 			return nil, err
 		}

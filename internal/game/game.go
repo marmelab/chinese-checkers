@@ -109,32 +109,12 @@ func (board *BoardState) Clone() *BoardState {
 	return clonedBoard
 }
 
-// Check that the board position is valid.
-func (board *BoardState) CheckBoardPositionValidity(position CellIdentifier) error {
-	if
-	// Check that the row index is valid.
-	(position.Row >= int8(len(board.Board)) || position.Row < 0) ||
-		// Check that the column index is valid.
-		(position.Column >= int8(len(board.Board[position.Row])) || position.Column < 0) {
-		return fmt.Errorf("%s is not a valid cell", position.String())
-	}
-	return nil
-}
-
 // Move a pawn of the board.
 func (board *BoardState) MovePawn(serializedMoveList string) error {
 	// Parse the move list.
-	moveList, err := ParseMoveList(serializedMoveList)
+	moveList, err := board.ParseMoveList(serializedMoveList)
 	if err != nil {
 		return err
-	}
-
-	// Check validity of all provided positions in the move list.
-	for _, move := range moveList {
-		// Ensure that the current move position is valid for the current board.
-		if err = board.CheckBoardPositionValidity(move); err != nil {
-			return err
-		}
 	}
 
 	// Ensure that there is a pawn at start position.
