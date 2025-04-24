@@ -174,8 +174,12 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 		return fmt.Errorf("there already is a pawn on %s", moveList[len(moveList)-1].String())
 	}
 
-	// Check move legality before doing it.
+	// Check all successive moves legality.
 	if err = board.CheckMovesLegality(moveList); err != nil {
+		return err
+	}
+	// Check entire move legality before doing it.
+	if err = board.CheckMoveLegality(moveList[0], moveList[len(moveList)-1]); err != nil {
 		return err
 	}
 
