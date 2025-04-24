@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math"
 	"os"
 )
 
@@ -115,6 +116,24 @@ func (board *BoardState) Clone() *BoardState {
 	return clonedBoard
 }
 
+// Check that the provided move is legal.
+// A move is illegal when the pawn only moves to an adjacent cell and not further.
+func (board *BoardState) CheckMoveLegality(from CellIdentifier, to CellIdentifier) error {
+	if math.Abs(float64(from.Column-to.Column))+math.Abs(float64(from.Row-to.Row)) != 1 {
+		// We already know the move is illegal.
+		if math.Abs(float64(from.Column-to.Column)) == 1 && math.Abs(float64(from.Row-to.Row)) == 1 {
+			// Detected a diagonal move, return a specific error.
+			return errors.New("a pawn cannot move in diagonal")
+		} else {
+			// General error.
+			return fmt.Errorf("'%s' cannot be reached from '%s'", to.String(), from.String())
+		}
+	} else {
+		// The move is legal.
+		return nil
+	}
+}
+
 // Move a pawn of the board.
 func (board *BoardState) MovePawn(serializedMoveList string) error {
 	// Parse the move list.
@@ -133,6 +152,11 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 	endPawn := board.Board[moveList[len(moveList)-1].Row][moveList[len(moveList)-1].Column]
 	if endPawn != 0 {
 		return fmt.Errorf("there already is a pawn on %s", moveList[len(moveList)-1].String())
+	}
+
+	// Check move legality before doing it.
+	if err = board.CheckMoveLegality(moveList[0], moveList[len(moveList)-1]); err != nil {
+		return err
 	}
 
 	// Move the start pawn to the end position.
