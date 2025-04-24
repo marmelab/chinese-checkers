@@ -62,6 +62,7 @@ func RunCli() error {
 	return chineseCheckersCommand.Execute()
 }
 
+// Run the CLI infinite loop to interact with the game.
 func runGameLoop(board *game.BoardState) {
 	errMsg := ""
 
