@@ -72,8 +72,8 @@ func TestMovePawnInDefaultBoard(t *testing.T) {
 	expected := &BoardState{
 		Board: [][]Cell{
 			{1, 1, 1, 0, 0},
-			{0, 1, 0, 0, 0},
-			{1, 0, 1, 0, 2},
+			{1, 1, 0, 0, 0},
+			{0, 1, 0, 0, 2},
 			{0, 0, 0, 2, 2},
 			{0, 0, 2, 2, 2},
 		},
@@ -81,7 +81,7 @@ func TestMovePawnInDefaultBoard(t *testing.T) {
 	}
 
 	board := NewDefaultBoard()
-	err := board.MovePawn("b1,c1,c2,c3")
+	err := board.MovePawn("c1,c2,c3,c2")
 	assert.Nil(t, err)
 	assert.Equal(t, expected, board)
 }
@@ -186,4 +186,60 @@ func TestMovePawnAndSave(t *testing.T) {
 	}
 
 	os.Remove(testFilePath)
+}
+
+func TestMoveLegalityCheck(t *testing.T) {
+	board := NewDefaultBoard()
+
+	a3, _ := board.ParseCellIdentifier("a3")
+	a4, _ := board.ParseCellIdentifier("a4")
+	assert.Nil(t, board.CheckMoveLegality(*a3, *a4), "the move is legal")
+
+	a5, _ := board.ParseCellIdentifier("a5")
+	assert.Equal(t, "'a5' cannot be reached from 'a3'", board.CheckMoveLegality(*a3, *a5).Error(), "should return an illegal move error")
+
+	e1, _ := board.ParseCellIdentifier("e1")
+	assert.Equal(t, "'e1' cannot be reached from 'a3'", board.CheckMoveLegality(*a3, *e1).Error(), "should return an illegal move error")
+
+	b4, _ := board.ParseCellIdentifier("b4")
+	assert.Equal(t, "a pawn cannot move in diagonal", board.CheckMoveLegality(*a3, *b4).Error(), "should return an illegal move error")
+}
+
+func TestMovesLegalityCheck(t *testing.T) {
+	board := NewDefaultBoard()
+
+	{ // Legal move from a3 to a4.
+		moveList, err := board.ParseMoveList("a3,a4")
+		assert.Nil(t, err)
+		assert.Nil(t, board.CheckMovesLegality(moveList))
+	}
+	{ // Legal moves from a3 to a4, then from a4 to a5.
+		moveList, err := board.ParseMoveList("a3,a4,a5")
+		assert.Nil(t, err)
+		assert.Nil(t, board.CheckMovesLegality(moveList))
+	}
+
+	{ // Legal moves from a3 to a4, from a4 to b4, but illegal move from b4 to a5.
+		moveList, err := board.ParseMoveList("a3,a4,b4,a5")
+		assert.Nil(t, err)
+		assert.Equal(t, "a pawn cannot move in diagonal", board.CheckMovesLegality(moveList).Error(), "should return an illegal move error")
+	}
+	{ // Legal move from a3 to a4, but illegal move from a4 to c4.
+		moveList, err := board.ParseMoveList("a3,a4,c4,a4")
+		assert.Nil(t, err)
+		assert.Equal(t, "'c4' cannot be reached from 'a4'", board.CheckMovesLegality(moveList).Error(), "should return an illegal move error")
+	}
+}
+
+func TestIllegalMoves(t *testing.T) {
+	board := NewDefaultBoard()
+
+	assert.Equal(t, "'a5' cannot be reached from 'a3'", board.MovePawn("a3,a4,a5").Error(), "should return an illegal move error")
+	assert.Nil(t, board.MovePawn("a3,a4"), "the move is legal")
+	assert.Equal(t, "a pawn cannot move in diagonal", board.MovePawn("a4,b3").Error(), "should return an illegal move error")
+	assert.Equal(t, "'e1' cannot be reached from 'a4'", board.MovePawn("a4,e1").Error(), "should return an illegal move error")
+	assert.Equal(t, "'c3' cannot be reached from 'c1'", board.MovePawn("c1,c3").Error(), "should return an illegal move error")
+	assert.Equal(t, "'c4' cannot be reached from 'a3'", board.MovePawn("a4,a3,c4,b4").Error(), "should return an illegal move error")
+	assert.Equal(t, "a pawn cannot move in diagonal", board.MovePawn("a4,a3,b3").Error(), "should return an illegal move error")
+	assert.Equal(t, "'c3' cannot be reached from 'a4'", board.MovePawn("a4,a3,b3,c3").Error(), "should return an illegal move error")
 }

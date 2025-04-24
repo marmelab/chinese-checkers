@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"math"
 	"os"
 )
 
@@ -115,6 +116,44 @@ func (board *BoardState) Clone() *BoardState {
 	return clonedBoard
 }
 
+// Check that the provided move is legal.
+// A move is illegal when the pawn only moves to an adjacent cell and not further.
+func (board *BoardState) CheckMoveLegality(from CellIdentifier, to CellIdentifier) error {
+	// Compute the column diff of the move.
+	columnDiff := math.Abs(float64(from.Column - to.Column))
+	// Compute the row diff of the move.
+	rowDiff := math.Abs(float64(from.Row - to.Row))
+
+	if columnDiff+rowDiff == 1 {
+		// Only 1 difference, the move is legal.
+		return nil
+	}
+
+	// The move is illegal (more than 1 difference, or no difference).
+
+	if rowDiff == 1 && columnDiff == 1 {
+		// Detected a diagonal move, return a specific error.
+		return errors.New("a pawn cannot move in diagonal")
+	}
+
+	return fmt.Errorf("'%s' cannot be reached from '%s'", to.String(), from.String())
+}
+
+// Check legality of all successive moves.
+func (board *BoardState) CheckMovesLegality(moveList []CellIdentifier) error {
+	if len(moveList) == 2 {
+		// Only 2 positions in the list = only one move, just check its legality.
+		return board.CheckMoveLegality(moveList[0], moveList[1])
+	} else {
+		// More than 2 positions in the list, check the first move and the other moves recursively.
+		if err := board.CheckMoveLegality(moveList[0], moveList[1]); err != nil {
+			return err
+		}
+		// The first move is legal, check the others.
+		return board.CheckMovesLegality(moveList[1:])
+	}
+}
+
 // Move a pawn of the board.
 func (board *BoardState) MovePawn(serializedMoveList string) error {
 	// Parse the move list.
@@ -133,6 +172,15 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 	endPawn := board.Board[moveList[len(moveList)-1].Row][moveList[len(moveList)-1].Column]
 	if endPawn != 0 {
 		return fmt.Errorf("there already is a pawn on %s", moveList[len(moveList)-1].String())
+	}
+
+	// Check all successive moves legality.
+	if err = board.CheckMovesLegality(moveList); err != nil {
+		return err
+	}
+	// Check entire move legality before doing it.
+	if err = board.CheckMoveLegality(moveList[0], moveList[len(moveList)-1]); err != nil {
+		return err
 	}
 
 	// Move the start pawn to the end position.
