@@ -151,7 +151,7 @@ func TestMovePawnWithInvalidPosition(t *testing.T) {
 }
 
 func TestSaveBoardState(t *testing.T) {
-	expectedBoard := DefaultBoard.Clone()
+	expectedBoard := NewDefaultBoard()
 	testFilePath := "testFile.json"
 	expectedBoard.stateFile = &testFilePath
 
@@ -160,6 +160,30 @@ func TestSaveBoardState(t *testing.T) {
 	loadedBoard, err := NewBoardFromStateFile(testFilePath)
 	assert.Nil(t, err)
 	assert.Equal(t, expectedBoard, loadedBoard, "saved board must be the default board")
+
+	os.Remove(testFilePath)
+}
+
+func TestMovePawnAndSave(t *testing.T) {
+	expectedBoard := NewDefaultBoard()
+	expectedBoard.MovePawn("c1,d1")
+	testFilePath := "testFile.json"
+	expectedBoard.stateFile = &testFilePath
+
+	// Prepare the state file.
+	assert.Nil(t, NewDefaultBoard().SaveState(testFilePath))
+
+	{ // Load a board from a state file, then move a pawn and save.
+		board, err := NewBoardFromStateFile(testFilePath)
+		assert.Nil(t, err)
+		board.MovePawnAndSave("c1,d1")
+	}
+
+	{ // The file should now have been updated with the expected board state.
+		board, err := NewBoardFromStateFile(testFilePath)
+		assert.Nil(t, err)
+		assert.Equal(t, expectedBoard, board, "saved board must be the default board with one moved pawn")
+	}
 
 	os.Remove(testFilePath)
 }

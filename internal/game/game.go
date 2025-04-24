@@ -143,6 +143,21 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 	return nil
 }
 
+// Move a pawn of the board and save the new board state to the stored state file.
+func (board *BoardState) MovePawnAndSave(serializedMoveList string) error {
+	// Try to move a pawn using the provided move list.
+	if err := board.MovePawn(serializedMoveList); err != nil {
+		return err
+	}
+	if board.stateFile != nil {
+		// There is a state file, save the new board state to it.
+		if err := board.SaveState(*board.stateFile); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // Initialize a default board state.
 func NewDefaultBoard() *BoardState {
 	return DefaultBoard.Clone()
