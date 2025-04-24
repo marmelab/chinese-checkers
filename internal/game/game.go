@@ -139,6 +139,21 @@ func (board *BoardState) CheckMoveLegality(from CellIdentifier, to CellIdentifie
 	}
 }
 
+// Check legality of all successive moves.
+func (board *BoardState) CheckMovesLegality(moveList []CellIdentifier) error {
+	if len(moveList) == 2 {
+		// Only 2 positions in the list = only one move, just check its legality.
+		return board.CheckMoveLegality(moveList[0], moveList[1])
+	} else {
+		// More than 2 positions in the list, check the first move and the other moves recursively.
+		if err := board.CheckMoveLegality(moveList[0], moveList[1]); err != nil {
+			return err
+		}
+		// The first move is legal, check the others.
+		return board.CheckMovesLegality(moveList[1:])
+	}
+}
+
 // Move a pawn of the board.
 func (board *BoardState) MovePawn(serializedMoveList string) error {
 	// Parse the move list.
@@ -160,7 +175,7 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 	}
 
 	// Check move legality before doing it.
-	if err = board.CheckMoveLegality(moveList[0], moveList[len(moveList)-1]); err != nil {
+	if err = board.CheckMovesLegality(moveList); err != nil {
 		return err
 	}
 
