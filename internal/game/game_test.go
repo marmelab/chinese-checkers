@@ -77,7 +77,7 @@ func TestMovePawnInDefaultBoard(t *testing.T) {
 			{0, 0, 0, 2, 2},
 			{0, 0, 2, 2, 2},
 		},
-		CurrentPlayer: 1,
+		CurrentPlayer: 2,
 	}
 
 	board := NewDefaultBoard()
@@ -96,7 +96,7 @@ func TestMovePawnInOngoingGameBoard(t *testing.T) {
 			{1, 1, 2, 2, 2},
 			{0, 0, 0, 2, 2},
 		},
-		CurrentPlayer: 2,
+		CurrentPlayer: 1,
 		stateFile:     &stateFilePath,
 	}
 

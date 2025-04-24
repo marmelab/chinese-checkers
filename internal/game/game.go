@@ -184,6 +184,13 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 	// Remove the start pawn from its previous position.
 	board.Board[moveList[0].Row][moveList[0].Column] = 0
 
+	// After moving a pawn, switch player turn.
+	if board.CurrentPlayer == 1 {
+		board.CurrentPlayer = 2
+	} else {
+		board.CurrentPlayer = 1
+	}
+
 	return nil
 }
 
