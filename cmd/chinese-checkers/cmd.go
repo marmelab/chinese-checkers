@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/spf13/cobra"
@@ -34,15 +35,21 @@ func RunCli() error {
 				return err
 			}
 
-			// Move a pawn on the board and save if a state file has been provided.
-			if err = board.MovePawnAndSave(serializedMoveList); err != nil {
-				return err
+			if len(serializedMoveList) > 0 {
+				// Move a pawn on the board and save if a state file has been provided.
+				if err = board.MovePawnAndSave(serializedMoveList); err != nil {
+					return err
+				}
+
+				// Print the board with the moved pawn.
+				board.Print(os.Stdout)
+
+				return nil
+			} else {
+				// Run the game loop.
+				runGameLoop(board)
+				return nil
 			}
-
-			// Print the board with the moved pawn.
-			board.Print(os.Stdout)
-
-			return nil
 		},
 	}
 
@@ -50,8 +57,40 @@ func RunCli() error {
 	chineseCheckersCommand.PersistentFlags().StringVarP(&gameStateFilePath, "state-file", "", "", "Game state file to read the board from.")
 	// Add a required move flag without shorthand.
 	chineseCheckersCommand.PersistentFlags().StringVarP(&serializedMoveList, "move", "m", "", "Move a pawn from a start position to an end position.")
-	chineseCheckersCommand.MarkPersistentFlagRequired("move")
 
 	// Execute the command and return the error.
 	return chineseCheckersCommand.Execute()
+}
+
+// Run the CLI infinite loop to interact with the game.
+func runGameLoop(board *game.BoardState) {
+	errMsg := ""
+
+	for {
+		// Print the current board.
+		board.Print(os.Stdout)
+
+		// Print the previous error if there is one.
+		if len(errMsg) > 0 {
+			println(errMsg)
+			errMsg = ""
+		}
+
+		// Prompt the user for a new move list.
+		print("Move a pawn (e.g. a2,a4): ")
+		var input string
+		fmt.Scanln(&input)
+		println()
+
+		// The provided move is empty, exit the game.
+		if len(input) == 0 {
+			println("Bye bye!")
+			break
+		}
+
+		// Try to move the pawn and store the error if there is one.
+		if err := board.MovePawnAndSave(input); err != nil {
+			errMsg = err.Error()
+		}
+	}
 }
