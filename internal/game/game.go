@@ -81,6 +81,11 @@ func (board *BoardState) CheckBoardValidity() error {
 		return errors.New("invalid game state, please provide a valid game state")
 	}
 
+	if board.CurrentPlayer < 0 || board.CurrentPlayer > 2 {
+		// Invalid player ID, return an error.
+		return fmt.Errorf("%d is not a valid player ID", board.CurrentPlayer)
+	}
+
 	// Count of pawns for each player (index 0 = player 1, index 1 = player 2)
 	playerPawnsCounts := []int{0, 0}
 	// Check that every row has the right count of columns.
@@ -91,6 +96,11 @@ func (board *BoardState) CheckBoardValidity() error {
 		// Count the pawns of each player in the current row.
 		for _, cell := range row {
 			if cell > 0 {
+				if cell > 2 {
+					// Invalid player ID, return an error.
+					return fmt.Errorf("%d is not a valid player ID", cell)
+				}
+
 				// There is a player on the current cell, increment its count.
 				playerPawnsCounts[cell-1] += 1
 			}

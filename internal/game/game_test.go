@@ -10,6 +10,8 @@ import (
 const ongoingGameStateTestPath = "../../tests/states/ongoing-game.json"
 const invalidGameStateTestPath = "../../tests/states/invalid-board.json"
 const invalidPawnsCountTestPath = "../../tests/states/invalid-pawns-count.json"
+const invalidCurrentPlayerTestPath = "../../tests/states/invalid-current-player.json"
+const invalidPlayerInBoardTestPath = "../../tests/states/invalid-player-in-board.json"
 
 func TestLoadBoard(t *testing.T) {
 	stateFilePath := ongoingGameStateTestPath
@@ -42,6 +44,20 @@ func TestLoadBoardWithInvalidPawnsCount(t *testing.T) {
 
 	assert.Nil(t, board)
 	assert.Equal(t, "invalid game state, please provide a valid game state", err.Error(), "should return an invalid game state error")
+}
+
+func TestLoadBoardWithInvalidCurrentPlayer(t *testing.T) {
+	board, err := NewBoardFromStateFile(invalidCurrentPlayerTestPath)
+
+	assert.Nil(t, board)
+	assert.Equal(t, "4 is not a valid player ID", err.Error(), "should return an invalid player error")
+}
+
+func TestLoadBoardWithInvalidPlayerInBoard(t *testing.T) {
+	board, err := NewBoardFromStateFile(invalidPlayerInBoardTestPath)
+
+	assert.Nil(t, board)
+	assert.Equal(t, "3 is not a valid player ID", err.Error(), "should return an invalid player error")
 }
 
 func TestNewDefaultBoard(t *testing.T) {
