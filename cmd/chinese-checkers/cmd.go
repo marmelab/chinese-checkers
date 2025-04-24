@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/spf13/cobra"
 
@@ -76,15 +77,8 @@ func runGameLoop(board *game.BoardState) {
 			errMsg = ""
 		}
 
-		// Show the player.
-		if board.CurrentPlayer == 1 {
-			print("Green")
-		} else {
-			print("Red")
-		}
-		print(" to play, ")
-		// Prompt the user for a new move list.
-		print("move a pawn (e.g. a2,a4): ")
+		// Prompt the current player for a new move list.
+		fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", strings.ToTitle(board.CurrentPlayer.Color()))
 		var input string
 		fmt.Scanln(&input)
 		println()

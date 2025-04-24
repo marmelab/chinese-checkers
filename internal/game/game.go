@@ -17,6 +17,14 @@ const PlayerPawnsNumber = 6
 
 type PlayerId int8
 
+// Get color name of the current player ID.
+func (player PlayerId) Color() string {
+	if player == 1 {
+		return "green"
+	}
+	return "red"
+}
+
 // The main board state.
 type BoardState struct {
 	Board         [][]Cell `json:"board"`
