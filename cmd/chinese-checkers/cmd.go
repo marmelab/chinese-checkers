@@ -78,7 +78,7 @@ func runGameLoop(board *game.BoardState) {
 		}
 
 		// Prompt the current player for a new move list.
-		fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", strings.ToTitle(board.CurrentPlayer.Color()))
+		fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", strings.ToUpper(board.CurrentPlayer.Color()[:1])+board.CurrentPlayer.Color()[1:])
 		var input string
 		fmt.Scanln(&input)
 		println()
