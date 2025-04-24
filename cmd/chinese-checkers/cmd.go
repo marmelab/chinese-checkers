@@ -34,20 +34,15 @@ func RunCli() error {
 				return err
 			}
 
-			// Move a pawn on the board.
-			if err = board.MovePawn(serializedMoveList); err != nil {
+			// Move a pawn on the board and save if a state file has been provided.
+			if err = board.MovePawnAndSave(serializedMoveList); err != nil {
 				return err
 			}
 
 			// Print the board with the moved pawn.
 			board.Print(os.Stdout)
 
-			// A game state file path has been provided, write the new state to the game state file.
-			if len(gameStateFilePath) > 0 {
-				return board.SaveState(gameStateFilePath)
-			} else {
-				return nil
-			}
+			return nil
 		},
 	}
 
