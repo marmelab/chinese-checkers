@@ -154,6 +154,10 @@ func TestMovePawnWithInvalidPosition(t *testing.T) {
 	assert.Equal(t, "f1 is not a valid cell", err.Error(), "should be an invalid cell error")
 	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
 
+	err = board.MovePawn("c1,d1,e1,f1,f2,e2")
+	assert.Equal(t, "f1 is not a valid cell", err.Error(), "should be an invalid cell error")
+	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
+
 	err = board.MovePawn("91,d1,e1")
 	assert.Equal(t, "91 is not a valid cell", err.Error(), "should be an invalid cell error")
 	assert.Equal(t, &DefaultBoard, board, "should be unchanged")

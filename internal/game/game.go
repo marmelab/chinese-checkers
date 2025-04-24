@@ -129,20 +129,20 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 		return err
 	}
 
-	// Ensure that the position is valid for the current board.
-	if err = board.CheckBoardPositionValidity(moveList[0]); err != nil {
-		return err
+	// Check validity of all provided positions in the move list.
+	for _, move := range moveList {
+		// Ensure that the current move position is valid for the current board.
+		if err = board.CheckBoardPositionValidity(move); err != nil {
+			return err
+		}
 	}
+
 	// Ensure that there is a pawn at start position.
 	startPawn := board.Board[moveList[0].Row][moveList[0].Column]
 	if startPawn == 0 {
 		return fmt.Errorf("there is no pawn on %s", moveList[0].String())
 	}
 
-	// Ensure that the position is valid for the current board.
-	if err = board.CheckBoardPositionValidity(moveList[len(moveList)-1]); err != nil {
-		return err
-	}
 	// Ensure that there is no pawn at the end position.
 	endPawn := board.Board[moveList[len(moveList)-1].Row][moveList[len(moveList)-1].Column]
 	if endPawn != 0 {
