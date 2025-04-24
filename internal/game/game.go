@@ -119,9 +119,14 @@ func (board *BoardState) Clone() *BoardState {
 // Check that the provided move is legal.
 // A move is illegal when the pawn only moves to an adjacent cell and not further.
 func (board *BoardState) CheckMoveLegality(from CellIdentifier, to CellIdentifier) error {
-	if math.Abs(float64(from.Column-to.Column))+math.Abs(float64(from.Row-to.Row)) != 1 {
-		// We already know the move is illegal.
-		if math.Abs(float64(from.Column-to.Column)) == 1 && math.Abs(float64(from.Row-to.Row)) == 1 {
+	// Compute the column diff of the move.
+	columnDiff := math.Abs(float64(from.Column - to.Column))
+	// Compute the row diff of the move.
+	rowDiff := math.Abs(float64(from.Row - to.Row))
+
+	if columnDiff+rowDiff != 1 {
+		// The move is illegal (more than 1 difference, or no difference).
+		if rowDiff == 1 && columnDiff == 1 {
 			// Detected a diagonal move, return a specific error.
 			return errors.New("a pawn cannot move in diagonal")
 		} else {
