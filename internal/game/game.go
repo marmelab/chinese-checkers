@@ -19,6 +19,7 @@ type PlayerId int8
 type BoardState struct {
 	Board         [][]Cell `json:"board"`
 	CurrentPlayer PlayerId `json:"currentPlayer"`
+	stateFile     *string
 }
 
 // The default board.
@@ -31,6 +32,7 @@ var DefaultBoard = BoardState{
 		{0, 0, 2, 2, 2},
 	},
 	CurrentPlayer: 1,
+	stateFile:     nil,
 }
 
 // Initialize a board from a state file.
@@ -54,6 +56,9 @@ func NewBoardFromStateFile(filePath string) (*BoardState, error) {
 	if err != nil {
 		return nil, err
 	}
+
+	// Store the used file path in the board state.
+	board.stateFile = &filePath
 
 	return &board, nil
 }
@@ -97,6 +102,7 @@ func (board *BoardState) Clone() *BoardState {
 	clonedBoard := &BoardState{
 		Board:         make([][]Cell, len(board.Board)),
 		CurrentPlayer: board.CurrentPlayer,
+		stateFile:     board.stateFile,
 	}
 
 	// Clone all rows of the board.

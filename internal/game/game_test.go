@@ -12,6 +12,7 @@ const invalidGameStateTestPath = "../../tests/states/invalid-board.json"
 const invalidPawnsCountTestPath = "../../tests/states/invalid-pawns-count.json"
 
 func TestLoadBoard(t *testing.T) {
+	stateFilePath := ongoingGameStateTestPath
 	expected := &BoardState{
 		Board: [][]Cell{
 			{0, 1, 1, 0, 0},
@@ -21,6 +22,7 @@ func TestLoadBoard(t *testing.T) {
 			{0, 0, 0, 2, 2},
 		},
 		CurrentPlayer: 2,
+		stateFile:     &stateFilePath,
 	}
 	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
 
@@ -46,23 +48,6 @@ func TestNewDefaultBoard(t *testing.T) {
 	expected := &DefaultBoard
 	board := NewDefaultBoard()
 	assert.Equal(t, expected, board, "should be the default board")
-}
-
-func TestInitBoardWithFilePath(t *testing.T) {
-	expected := &BoardState{
-		Board: [][]Cell{
-			{0, 1, 1, 0, 0},
-			{0, 1, 0, 0, 0},
-			{1, 1, 0, 2, 0},
-			{1, 0, 2, 2, 2},
-			{0, 0, 0, 2, 2},
-		},
-		CurrentPlayer: 2,
-	}
-	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
-
-	assert.Nil(t, err)
-	assert.Equal(t, expected, board, "should be an ongoing game board")
 }
 
 func TestBoardCloning(t *testing.T) {
@@ -102,6 +87,7 @@ func TestMovePawnInDefaultBoard(t *testing.T) {
 }
 
 func TestMovePawnInOngoingGameBoard(t *testing.T) {
+	stateFilePath := ongoingGameStateTestPath
 	expected := &BoardState{
 		Board: [][]Cell{
 			{0, 1, 1, 0, 0},
@@ -111,6 +97,7 @@ func TestMovePawnInOngoingGameBoard(t *testing.T) {
 			{0, 0, 0, 2, 2},
 		},
 		CurrentPlayer: 2,
+		stateFile:     &stateFilePath,
 	}
 
 	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
@@ -164,13 +151,15 @@ func TestMovePawnWithInvalidPosition(t *testing.T) {
 }
 
 func TestSaveBoardState(t *testing.T) {
+	expectedBoard := DefaultBoard.Clone()
 	testFilePath := "testFile.json"
+	expectedBoard.stateFile = &testFilePath
 
 	board := NewDefaultBoard()
 	assert.Nil(t, board.SaveState(testFilePath))
 	loadedBoard, err := NewBoardFromStateFile(testFilePath)
 	assert.Nil(t, err)
-	assert.Equal(t, &DefaultBoard, loadedBoard, "saved board must be the default board")
+	assert.Equal(t, expectedBoard, loadedBoard, "saved board must be the default board")
 
 	os.Remove(testFilePath)
 }
