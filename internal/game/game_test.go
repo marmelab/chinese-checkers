@@ -63,7 +63,7 @@ func TestLoadBoardWithInvalidPlayerInBoard(t *testing.T) {
 func TestNewDefaultBoard(t *testing.T) {
 	expected := &DefaultBoard
 	board := NewDefaultBoard()
-	board.CurrentPlayer = 1 // Set current player to ensure equality.
+	board.CurrentPlayer = Green // Set current player to ensure equality.
 	assert.Equal(t, expected, board, "should be the default board")
 }
 
