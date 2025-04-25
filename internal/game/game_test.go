@@ -305,7 +305,14 @@ func TestJumpMoves(t *testing.T) {
 
 	// Valid jumps.
 	assert.Nil(t, board.MovePawn("a2,a4"), "the move should be allowed")
-	assert.Nil(t, board.MovePawn("e4,c4"), "the move should be allowed")
+	assert.Nil(t, board.MovePawn("d5,d3"), "the move should be allowed")
+	board.CurrentPlayer = Red
+	assert.Nil(t, board.MovePawn("e3,c3"), "the move should be allowed")
+	board.CurrentPlayer = Red
+	assert.Nil(t, board.MovePawn("d3,e3"), "the move should be allowed")
+	board.CurrentPlayer = Red
+	assert.Equal(t, "'d2' cannot be reached from 'd4'", board.MovePawn("d4,d2").Error(), "should return an illegal move error")
+	board.CurrentPlayer = Green
 
 	// Chained jumps (valid but currently disallowed).
 	assert.Equal(t, "'c2' cannot be reached from 'a4'", board.MovePawn("a4,a2,c2").Error(), "should return an illegal move error")
