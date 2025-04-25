@@ -282,10 +282,41 @@ func TestPlayersTurns(t *testing.T) {
 	board := NewDefaultBoard()
 	board.CurrentPlayer = Green // Set current player to ensure validity.
 
-	assert.Nil(t, board.MovePawn("a3,a4"), "the move is allowed")
+	assert.Nil(t, board.MovePawn("a3,a4"), "the move should be allowed")
 	assert.Equal(t, Red, board.CurrentPlayer, "red player should now be the one to play")
 	assert.Equal(t, "you cannot move a green pawn", board.MovePawn("a4,a5").Error(), "red player shouldn't be allowed to move a green pawn")
-	assert.Nil(t, board.MovePawn("e3,e2"), "the move is allowed")
+	assert.Nil(t, board.MovePawn("e3,e2"), "the move should be allowed")
 	assert.Equal(t, Green, board.CurrentPlayer, "green player should now be the one to play")
 	assert.Equal(t, "you cannot move a red pawn", board.MovePawn("e2,d2").Error(), "green player shouldn't be allowed to move a red pawn")
+}
+
+func TestJumpMoves(t *testing.T) {
+	board := NewDefaultBoard()
+	board.CurrentPlayer = Green // Set current player to ensure validity.
+
+	// Disallowed jumps of more than one pawn.
+	assert.Equal(t, "a pawn cannot jump over more than one pawn", board.MovePawn("a1,d1").Error(), "should return an illegal move error")
+	assert.Equal(t, "a pawn cannot jump over more than one pawn", board.MovePawn("a1,e1").Error(), "should return an illegal move error")
+	assert.Equal(t, "a pawn cannot jump over more than one pawn", board.MovePawn("a1,a4").Error(), "should return an illegal move error")
+	assert.Equal(t, "a pawn cannot jump over more than one pawn", board.MovePawn("a1,a5").Error(), "should return an illegal move error")
+
+	// Jump on another pawn.
+	assert.Equal(t, "there already is a pawn on a3", board.MovePawn("a1,a3").Error(), "should return that the cell is not empty")
+
+	// Valid jumps.
+	assert.Nil(t, board.MovePawn("a2,a4"), "the move should be allowed")
+	assert.Nil(t, board.MovePawn("e4,c4"), "the move should be allowed")
+
+	// Chained jumps (valid but currently disallowed).
+	assert.Equal(t, "'c2' cannot be reached from 'a4'", board.MovePawn("a4,a2,c2").Error(), "should return an illegal move error")
+
+	// Simple move.
+	assert.Nil(t, board.MovePawn("b2,b3"), "the move should be allowed")
+	board.CurrentPlayer = Green
+
+	// Error in chained jumps.
+	assert.Equal(t, "'c2' cannot be reached from 'a2'", board.MovePawn("a4,a2,c2").Error(), "should return an illegal move error")
+
+	// Diagonal jump.
+	assert.Equal(t, "'c2' cannot be reached from 'a4'", board.MovePawn("a4,c2").Error(), "should return an illegal move error")
 }
