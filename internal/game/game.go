@@ -138,6 +138,31 @@ func (board *BoardState) CheckMoveLegality(from CellIdentifier, to CellIdentifie
 		return nil
 	}
 
+	// Check jumps over a pawn.
+
+	if columnDiff >= 2 && rowDiff == 0 {
+		// Moving straightly in a row, check that there is ONE pawn in the middle.
+		if columnDiff > 2 {
+			return errors.New("a pawn cannot jump over more than one pawn")
+		}
+		// Check that there is a pawn in the middle of the jump.
+		middleColumn := from.Column + ((to.Column - from.Column) / 2)
+		if board.Board[middleColumn][from.Row] != EmptyCell {
+			return nil
+		}
+	}
+	if rowDiff >= 2 && columnDiff == 0 {
+		// Moving straightly in a column, check that there is ONE pawn in the middle.
+		if rowDiff > 2 {
+			return errors.New("a pawn cannot jump over more than one pawn")
+		}
+		// Check that there is a pawn in the middle of the jump.
+		middleRow := from.Row + ((to.Row - from.Row) / 2)
+		if board.Board[from.Column][middleRow] != EmptyCell {
+			return nil
+		}
+	}
+
 	// The move is illegal (more than 1 difference, or no difference).
 
 	if rowDiff == 1 && columnDiff == 1 {
