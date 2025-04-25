@@ -294,7 +294,7 @@ func (board BoardState) CountPawnsInTargetArea(player Player, targetArea [][]Cel
 	// Evaluate all cells of the board to determine if there is a pawn in the target area.
 	for rowIndex, row := range board.Board {
 		for columnIndex, cell := range row {
-			// Initialize a cell position identifier.
+			// Initialize a cell position.
 			cellPos := CellIdentifier{int8(rowIndex), int8(columnIndex)}
 			// Check if the cell has a pawn of the player, and is in the player target area mask.
 			if cell == Cell(player) && cellPos.InMask(targetArea) {
