@@ -43,8 +43,9 @@ func RunCli() error {
 					return err
 				}
 
-				// Print the board with the moved pawn.
+				// Print the board with the moved pawn and the current score.
 				board.Print(os.Stdout)
+				board.PrintScore(os.Stdout)
 
 				return nil
 			} else {
@@ -77,6 +78,9 @@ func runGameLoop(board *game.BoardState) {
 			println(errMsg)
 			errMsg = ""
 		}
+
+		// Show the current score.
+		board.PrintScore(os.Stdout)
 
 		// Prompt the current player for a new move list.
 		fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", cases.Title(language.English).String(board.CurrentPlayer.Color()))

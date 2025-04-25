@@ -41,3 +41,12 @@ func (board *BoardState) Print(writer io.Writer) {
 		fmt.Fprintln(writer, " . +----+----+----+----+----+")
 	}
 }
+
+// Print the current game score.
+func (board *BoardState) PrintScore(writer io.Writer) {
+	fmt.Fprintf(writer,
+		coloring.For("Green").Bold().Green().String()+": %d/%d, "+coloring.For("Red").Bold().Red().String()+": %d/%d\n",
+		board.CountGreenPawnsInTargetArea(), PlayerPawnsNumber,
+		board.CountRedPawnsInTargetArea(), PlayerPawnsNumber,
+	)
+}

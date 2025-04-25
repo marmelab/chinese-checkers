@@ -82,3 +82,34 @@ func TestBoardPrintingWithPawnsInTargetArea(t *testing.T) {
 
 	assert.Equal(t, expected, output.String(), "should have printed a default board")
 }
+
+func TestBoardScorePrinting(t *testing.T) {
+	{
+		expected := coloring.For("Green").Bold().Green().String() + ": 0/6, " + coloring.For("Red").Bold().Red().String() + ": 0/6\n"
+
+		board := NewDefaultBoard()
+
+		var output bytes.Buffer
+		board.PrintScore(&output)
+
+		assert.Equal(t, expected, output.String(), "should have printed an accurate scoreboard")
+	}
+
+	{
+		expected := coloring.For("Green").Bold().Green().String() + ": 3/6, " + coloring.For("Red").Bold().Red().String() + ": 3/6\n"
+
+		board := NewDefaultBoard()
+		board.Board = [][]Cell{
+			{1, 1, 2, 0, 0},
+			{1, 2, 0, 0, 0},
+			{2, 0, 0, 0, 1},
+			{0, 0, 0, 1, 2},
+			{0, 0, 1, 2, 2},
+		}
+
+		var output bytes.Buffer
+		board.PrintScore(&output)
+
+		assert.Equal(t, expected, output.String(), "should have printed an accurate scoreboard")
+	}
+}
