@@ -126,16 +126,24 @@ func (board *BoardState) Clone() *BoardState {
 }
 
 // Check that the provided move is legal.
-// A move is illegal when the pawn only moves to an adjacent cell and not further.
-func (board *BoardState) CheckMoveLegality(from CellIdentifier, to CellIdentifier) error {
+// A move is legal:
+// - when the pawn moves to an adjacent cell (simple move)
+// - when the pawn jumps over another one (jump move)
+// The returned boolean indicates if the provided move is a simple move.
+func (board *BoardState) CheckMoveLegality(from CellIdentifier, to CellIdentifier) (bool, error) {
 	// Compute the column diff of the move.
 	columnDiff := math.Abs(float64(from.Column - to.Column))
 	// Compute the row diff of the move.
 	rowDiff := math.Abs(float64(from.Row - to.Row))
 
+	// Check that the target cell is free.
+	if board.Board[to.Row][to.Column] != EmptyCell {
+		return false, fmt.Errorf("there is already a pawn on %s", to.String())
+	}
+
 	if columnDiff+rowDiff == 1 {
 		// Only 1 difference, the move is legal.
-		return nil
+		return true, nil
 	}
 
 	// Check jumps over a pawn.
@@ -143,23 +151,23 @@ func (board *BoardState) CheckMoveLegality(from CellIdentifier, to CellIdentifie
 	if columnDiff >= 2 && rowDiff == 0 {
 		// Moving straightly in a row, check that there is ONE pawn in the middle.
 		if columnDiff > 2 {
-			return errors.New("a pawn cannot jump over more than one pawn")
+			return false, errors.New("a pawn cannot jump over more than one pawn")
 		}
 		// Check that there is a pawn in the middle of the jump.
 		middleColumn := from.Column + ((to.Column - from.Column) / 2)
 		if board.Board[from.Row][middleColumn] != EmptyCell {
-			return nil
+			return false, nil
 		}
 	}
 	if rowDiff >= 2 && columnDiff == 0 {
 		// Moving straightly in a column, check that there is ONE pawn in the middle.
 		if rowDiff > 2 {
-			return errors.New("a pawn cannot jump over more than one pawn")
+			return false, errors.New("a pawn cannot jump over more than one pawn")
 		}
 		// Check that there is a pawn in the middle of the jump.
 		middleRow := from.Row + ((to.Row - from.Row) / 2)
 		if board.Board[middleRow][from.Column] != EmptyCell {
-			return nil
+			return false, nil
 		}
 	}
 
@@ -167,24 +175,44 @@ func (board *BoardState) CheckMoveLegality(from CellIdentifier, to CellIdentifie
 
 	if rowDiff == 1 && columnDiff == 1 {
 		// Detected a diagonal move, return a specific error.
-		return errors.New("a pawn cannot move in diagonal")
+		return false, errors.New("a pawn cannot move in diagonal")
 	}
 
-	return fmt.Errorf("'%s' cannot be reached from '%s'", to.String(), from.String())
+	return false, fmt.Errorf("'%s' cannot be reached from '%s'", to.String(), from.String())
 }
 
 // Check legality of all successive moves.
-func (board *BoardState) CheckMovesLegality(moveList []CellIdentifier) error {
+// Simple move = move to an adjacent cell.
+func (board *BoardState) CheckMovesLegality(moveList []CellIdentifier, disallowSimpleMoves bool) error {
+	// Check move list size.
+	if len(moveList) < 2 {
+		return errors.New("you must provide at least two cells in a move")
+	}
+
+	// Check the first move of the list.
+	isSimpleMove, err := board.CheckMoveLegality(moveList[0], moveList[1])
+	if err != nil {
+		return err
+	}
+
+	// If simple moves are disallowed, check that the current move does not target an adjacent cell.
+	if disallowSimpleMoves && isSimpleMove {
+		return errors.New("cannot move to an adjacent cell after a jump")
+	}
+
 	if len(moveList) == 2 {
-		// Only 2 positions in the list = only one move, just check its legality.
-		return board.CheckMoveLegality(moveList[0], moveList[1])
+		// Only 2 positions in the list = only one move, and it's legal.
+		return nil
 	} else {
-		// More than 2 positions in the list, check the first move and the other moves recursively.
-		if err := board.CheckMoveLegality(moveList[0], moveList[1]); err != nil {
-			return err
+		// More than 2 positions in the list, check other moves recursively.
+
+		// If the current move is a simple move, no more moves are allowed, the move list should have ended.
+		if isSimpleMove {
+			return errors.New("cannot continue moving after moving to an adjacent cell")
 		}
-		// The first move is legal, check the others.
-		return board.CheckMovesLegality(moveList[1:])
+
+		// The current move is a legal jump, check the other moves with simple moves disallowed.
+		return board.CheckMovesLegality(moveList[1:], true)
 	}
 }
 
@@ -206,18 +234,8 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 		return fmt.Errorf("you cannot move a %s pawn", Player(startPawn).Color())
 	}
 
-	// Ensure that there is no pawn at the end position.
-	endPawn := board.Board[moveList[len(moveList)-1].Row][moveList[len(moveList)-1].Column]
-	if endPawn != EmptyCell {
-		return fmt.Errorf("there already is a pawn on %s", moveList[len(moveList)-1].String())
-	}
-
-	// Check all successive moves legality.
-	if err = board.CheckMovesLegality(moveList); err != nil {
-		return err
-	}
-	// Check entire move legality before doing it.
-	if err = board.CheckMoveLegality(moveList[0], moveList[len(moveList)-1]); err != nil {
+	// Check all successive moves legality, allowing only one simple move.
+	if err = board.CheckMovesLegality(moveList, false); err != nil {
 		return err
 	}
 
