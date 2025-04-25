@@ -99,7 +99,7 @@ func TestMovePawnInDefaultBoard(t *testing.T) {
 
 	board := NewDefaultBoard()
 	board.CurrentPlayer = Green // Set current player to ensure equality.
-	err := board.MovePawn("c1,c2,c3,c2")
+	err := board.MovePawn("c1,c2")
 	assert.Nil(t, err)
 	assert.Equal(t, expected, board)
 }
@@ -224,16 +224,20 @@ func TestMoveLegalityCheck(t *testing.T) {
 
 	a3, _ := board.ParseCellIdentifier("a3")
 	a4, _ := board.ParseCellIdentifier("a4")
-	assert.Nil(t, board.CheckMoveLegality(*a3, *a4), "the move is legal")
+	_, err := board.CheckMoveLegality(*a3, *a4)
+	assert.Nil(t, err, "the move is legal")
 
 	a5, _ := board.ParseCellIdentifier("a5")
-	assert.Equal(t, "'a5' cannot be reached from 'a3'", board.CheckMoveLegality(*a3, *a5).Error(), "should return an illegal move error")
+	_, err = board.CheckMoveLegality(*a3, *a5)
+	assert.Equal(t, "'a5' cannot be reached from 'a3'", err.Error(), "should return an illegal move error")
 
 	e1, _ := board.ParseCellIdentifier("e1")
-	assert.Equal(t, "'e1' cannot be reached from 'a3'", board.CheckMoveLegality(*a3, *e1).Error(), "should return an illegal move error")
+	_, err = board.CheckMoveLegality(*a3, *e1)
+	assert.Equal(t, "'e1' cannot be reached from 'a3'", err.Error(), "should return an illegal move error")
 
 	b4, _ := board.ParseCellIdentifier("b4")
-	assert.Equal(t, "a pawn cannot move in diagonal", board.CheckMoveLegality(*a3, *b4).Error(), "should return an illegal move error")
+	_, err = board.CheckMoveLegality(*a3, *b4)
+	assert.Equal(t, "a pawn cannot move in diagonal", err.Error(), "should return an illegal move error")
 }
 
 func TestMovesLegalityCheck(t *testing.T) {
@@ -243,23 +247,35 @@ func TestMovesLegalityCheck(t *testing.T) {
 	{ // Legal move from a3 to a4.
 		moveList, err := board.ParseMoveList("a3,a4")
 		assert.Nil(t, err)
-		assert.Nil(t, board.CheckMovesLegality(moveList))
+		assert.Nil(t, board.CheckMovesLegality(moveList, false))
 	}
-	{ // Legal moves from a3 to a4, then from a4 to a5.
+	{ // Legal moves from a3 to a4, then from a4 to a5, but only one move is allowed.
 		moveList, err := board.ParseMoveList("a3,a4,a5")
 		assert.Nil(t, err)
-		assert.Nil(t, board.CheckMovesLegality(moveList))
+		assert.Equal(t, "cannot continue moving after moving to an adjacent cell", board.CheckMovesLegality(moveList, false).Error(), "should disallow multiple simple moves")
 	}
 
 	{ // Legal moves from a3 to a4, from a4 to b4, but illegal move from b4 to a5.
-		moveList, err := board.ParseMoveList("a3,a4,b4,a5")
+		assert.Nil(t, board.MovePawn("a3,a4"))
+		board.CurrentPlayer = Green
+		assert.Nil(t, board.MovePawn("a4,b4"))
+		board.CurrentPlayer = Green
+		moveList, err := board.ParseMoveList("b4,a5")
 		assert.Nil(t, err)
-		assert.Equal(t, "a pawn cannot move in diagonal", board.CheckMovesLegality(moveList).Error(), "should return an illegal move error")
+		assert.Equal(t, "a pawn cannot move in diagonal", board.CheckMovesLegality(moveList, false).Error(), "should return an illegal move error")
+
+		// Move back to a3
+		assert.Nil(t, board.MovePawn("b4,a4"))
+		board.CurrentPlayer = Green
+		assert.Nil(t, board.MovePawn("a4,a3"))
+		board.CurrentPlayer = Green
 	}
 	{ // Legal move from a3 to a4, but illegal move from a4 to c4.
-		moveList, err := board.ParseMoveList("a3,a4,c4,a4")
+		assert.Nil(t, board.MovePawn("a3,a4"))
+		board.CurrentPlayer = Green
+		moveList, err := board.ParseMoveList("a4,c4,a4")
 		assert.Nil(t, err)
-		assert.Equal(t, "'c4' cannot be reached from 'a4'", board.CheckMovesLegality(moveList).Error(), "should return an illegal move error")
+		assert.Equal(t, "'c4' cannot be reached from 'a4'", board.CheckMovesLegality(moveList, false).Error(), "should return an illegal move error")
 	}
 }
 
@@ -267,15 +283,15 @@ func TestIllegalMoves(t *testing.T) {
 	board := NewDefaultBoard()
 	board.CurrentPlayer = Green // Set current player to ensure validity.
 
-	assert.Equal(t, "'a5' cannot be reached from 'a3'", board.MovePawn("a3,a4,a5").Error(), "should return an illegal move error")
+	assert.Equal(t, "'a5' cannot be reached from 'a3'", board.MovePawn("a3,a5").Error(), "should return an illegal move error")
 	assert.Nil(t, board.MovePawn("a3,a4"), "the move is legal")
 	board.CurrentPlayer = Green // Reset current player to ensure validity.
 	assert.Equal(t, "a pawn cannot move in diagonal", board.MovePawn("a4,b3").Error(), "should return an illegal move error")
 	assert.Equal(t, "'e1' cannot be reached from 'a4'", board.MovePawn("a4,e1").Error(), "should return an illegal move error")
 	assert.Equal(t, "'c3' cannot be reached from 'c1'", board.MovePawn("c1,c3").Error(), "should return an illegal move error")
-	assert.Equal(t, "'c4' cannot be reached from 'a3'", board.MovePawn("a4,a3,c4,b4").Error(), "should return an illegal move error")
-	assert.Equal(t, "a pawn cannot move in diagonal", board.MovePawn("a4,a3,b3").Error(), "should return an illegal move error")
-	assert.Equal(t, "'c3' cannot be reached from 'a4'", board.MovePawn("a4,a3,b3,c3").Error(), "should return an illegal move error")
+	assert.Equal(t, "a pawn cannot move in diagonal", board.MovePawn("a4,b3").Error(), "should return an illegal move error")
+	assert.Equal(t, "'c2' cannot be reached from 'a4'", board.MovePawn("a4,c2").Error(), "should return an illegal move error")
+	assert.Equal(t, "'c3' cannot be reached from 'a4'", board.MovePawn("a4,c3").Error(), "should return an illegal move error")
 }
 
 func TestPlayersTurns(t *testing.T) {
@@ -303,7 +319,7 @@ func TestJumpMoves(t *testing.T) {
 	// Jump on another pawn.
 	assert.Equal(t, "there already is a pawn on a3", board.MovePawn("a1,a3").Error(), "should return that the cell is not empty")
 
-	// Valid jumps.
+	// Valid simple jumps.
 	assert.Nil(t, board.MovePawn("a2,a4"), "the move should be allowed")
 	assert.Nil(t, board.MovePawn("d5,d3"), "the move should be allowed")
 	board.CurrentPlayer = Red
@@ -314,16 +330,19 @@ func TestJumpMoves(t *testing.T) {
 	assert.Equal(t, "'d2' cannot be reached from 'd4'", board.MovePawn("d4,d2").Error(), "should return an illegal move error")
 	board.CurrentPlayer = Green
 
-	// Chained jumps (valid but currently disallowed).
-	assert.Equal(t, "'c2' cannot be reached from 'a4'", board.MovePawn("a4,a2,c2").Error(), "should return an illegal move error")
+	// Chained jumps.
+	assert.Nil(t, board.MovePawn("a4,a2,c2"), "the chained jumps should be allowed")
+	board.CurrentPlayer = Green
+	assert.Nil(t, board.MovePawn("c2,a2,a4"), "the chained jumps should be allowed")
+	board.CurrentPlayer = Green
 
 	// Simple move.
 	assert.Nil(t, board.MovePawn("b2,b3"), "the move should be allowed")
 	board.CurrentPlayer = Green
 
-	// Error in chained jumps.
+	// Error in chained jumps, as b2 has been moved to b3.
 	assert.Equal(t, "'c2' cannot be reached from 'a2'", board.MovePawn("a4,a2,c2").Error(), "should return an illegal move error")
 
-	// Diagonal jump.
+	// Diagonal jump is disallowed.
 	assert.Equal(t, "'c2' cannot be reached from 'a4'", board.MovePawn("a4,c2").Error(), "should return an illegal move error")
 }
