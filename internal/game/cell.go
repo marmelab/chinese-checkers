@@ -8,6 +8,12 @@ import (
 
 type Cell int8
 
+const (
+	EmptyCell Cell = 0
+	GreenCell Cell = Cell(Green)
+	RedCell   Cell = Cell(Red)
+)
+
 type CellIdentifier struct {
 	Row    int8
 	Column int8

@@ -14,12 +14,10 @@ const BoardSize = 5
 // Number of pawns of a player.
 const PlayerPawnsNumber = 6
 
-type PlayerId int8
-
 // The main board state.
 type BoardState struct {
 	Board         [][]Cell `json:"board"`
-	CurrentPlayer PlayerId `json:"currentPlayer"`
+	CurrentPlayer Player   `json:"currentPlayer"`
 	stateFile     *string
 }
 
@@ -32,7 +30,7 @@ var DefaultBoard = BoardState{
 		{0, 0, 0, 2, 2},
 		{0, 0, 2, 2, 2},
 	},
-	CurrentPlayer: 1,
+	CurrentPlayer: Green,
 	stateFile:     nil,
 }
 
@@ -72,6 +70,11 @@ func (board *BoardState) CheckBoardValidity() error {
 		return errors.New("invalid game state, please provide a valid game state")
 	}
 
+	if board.CurrentPlayer < Green || board.CurrentPlayer > Red {
+		// Invalid player ID, return an error.
+		return fmt.Errorf("%d is not a valid player ID", board.CurrentPlayer)
+	}
+
 	// Count of pawns for each player (index 0 = player 1, index 1 = player 2)
 	playerPawnsCounts := []int{0, 0}
 	// Check that every row has the right count of columns.
@@ -81,8 +84,14 @@ func (board *BoardState) CheckBoardValidity() error {
 		}
 		// Count the pawns of each player in the current row.
 		for _, cell := range row {
-			if cell > 0 {
-				// There is a player on the current cell, increment its count.
+			if cell > EmptyCell {
+				// There is a player on the current cell.
+				if cell > RedCell {
+					// Invalid player ID, return an error.
+					return fmt.Errorf("%d is not a valid player ID", cell)
+				}
+
+				// Increment player pawns count.
 				playerPawnsCounts[cell-1] += 1
 			}
 		}
@@ -164,13 +173,17 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 
 	// Ensure that there is a pawn at start position.
 	startPawn := board.Board[moveList[0].Row][moveList[0].Column]
-	if startPawn == 0 {
+	if startPawn == EmptyCell {
 		return fmt.Errorf("there is no pawn on %s", moveList[0].String())
+	}
+	// Ensure that the current player can move this pawn.
+	if startPawn != Cell(board.CurrentPlayer) {
+		return fmt.Errorf("you cannot move a %s pawn", Player(startPawn).Color())
 	}
 
 	// Ensure that there is no pawn at the end position.
 	endPawn := board.Board[moveList[len(moveList)-1].Row][moveList[len(moveList)-1].Column]
-	if endPawn != 0 {
+	if endPawn != EmptyCell {
 		return fmt.Errorf("there already is a pawn on %s", moveList[len(moveList)-1].String())
 	}
 
@@ -187,6 +200,13 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 	board.Board[moveList[len(moveList)-1].Row][moveList[len(moveList)-1].Column] = startPawn
 	// Remove the start pawn from its previous position.
 	board.Board[moveList[0].Row][moveList[0].Column] = 0
+
+	// After moving a pawn, switch player turn.
+	if board.CurrentPlayer == Green {
+		board.CurrentPlayer = Red
+	} else {
+		board.CurrentPlayer = Green
+	}
 
 	return nil
 }
@@ -208,7 +228,10 @@ func (board *BoardState) MovePawnAndSave(serializedMoveList string) error {
 
 // Initialize a default board state.
 func NewDefaultBoard() *BoardState {
-	return DefaultBoard.Clone()
+	board := DefaultBoard.Clone()
+	// Chose a random player to start.
+	board.CurrentPlayer = RandomPlayer()
+	return board
 }
 
 // Save the board state in memory.

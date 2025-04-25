@@ -10,6 +10,8 @@ import (
 const ongoingGameStateTestPath = "../../tests/states/ongoing-game.json"
 const invalidGameStateTestPath = "../../tests/states/invalid-board.json"
 const invalidPawnsCountTestPath = "../../tests/states/invalid-pawns-count.json"
+const invalidCurrentPlayerTestPath = "../../tests/states/invalid-current-player.json"
+const invalidPlayerInBoardTestPath = "../../tests/states/invalid-player-in-board.json"
 
 func TestLoadBoard(t *testing.T) {
 	stateFilePath := ongoingGameStateTestPath
@@ -21,7 +23,7 @@ func TestLoadBoard(t *testing.T) {
 			{1, 0, 2, 2, 2},
 			{0, 0, 0, 2, 2},
 		},
-		CurrentPlayer: 2,
+		CurrentPlayer: Red,
 		stateFile:     &stateFilePath,
 	}
 	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
@@ -44,9 +46,24 @@ func TestLoadBoardWithInvalidPawnsCount(t *testing.T) {
 	assert.Equal(t, "invalid game state, please provide a valid game state", err.Error(), "should return an invalid game state error")
 }
 
+func TestLoadBoardWithInvalidCurrentPlayer(t *testing.T) {
+	board, err := NewBoardFromStateFile(invalidCurrentPlayerTestPath)
+
+	assert.Nil(t, board)
+	assert.Equal(t, "4 is not a valid player ID", err.Error(), "should return an invalid player error")
+}
+
+func TestLoadBoardWithInvalidPlayerInBoard(t *testing.T) {
+	board, err := NewBoardFromStateFile(invalidPlayerInBoardTestPath)
+
+	assert.Nil(t, board)
+	assert.Equal(t, "3 is not a valid player ID", err.Error(), "should return an invalid player error")
+}
+
 func TestNewDefaultBoard(t *testing.T) {
 	expected := &DefaultBoard
 	board := NewDefaultBoard()
+	board.CurrentPlayer = Green // Set current player to ensure equality.
 	assert.Equal(t, expected, board, "should be the default board")
 }
 
@@ -77,10 +94,11 @@ func TestMovePawnInDefaultBoard(t *testing.T) {
 			{0, 0, 0, 2, 2},
 			{0, 0, 2, 2, 2},
 		},
-		CurrentPlayer: 1,
+		CurrentPlayer: Red,
 	}
 
 	board := NewDefaultBoard()
+	board.CurrentPlayer = Green // Set current player to ensure equality.
 	err := board.MovePawn("c1,c2,c3,c2")
 	assert.Nil(t, err)
 	assert.Equal(t, expected, board)
@@ -92,23 +110,24 @@ func TestMovePawnInOngoingGameBoard(t *testing.T) {
 		Board: [][]Cell{
 			{0, 1, 1, 0, 0},
 			{0, 1, 0, 0, 0},
-			{1, 0, 0, 2, 0},
-			{1, 1, 2, 2, 2},
-			{0, 0, 0, 2, 2},
+			{1, 1, 0, 2, 0},
+			{1, 0, 2, 2, 2},
+			{0, 0, 2, 0, 2},
 		},
-		CurrentPlayer: 2,
+		CurrentPlayer: Green,
 		stateFile:     &stateFilePath,
 	}
 
 	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
 	assert.Nil(t, err)
-	err = board.MovePawn("c2,d2")
+	err = board.MovePawn("e4,e3")
 	assert.Nil(t, err)
 	assert.Equal(t, expected, board)
 }
 
 func TestMovePawnWithNoPawnOnStartPosition(t *testing.T) {
 	board := NewDefaultBoard()
+	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 	err := board.MovePawn("e1,c1,c2,c3")
 	assert.Equal(t, "there is no pawn on e1", err.Error(), "should return an error with no pawn on start position")
 	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
@@ -116,6 +135,7 @@ func TestMovePawnWithNoPawnOnStartPosition(t *testing.T) {
 
 func TestMovePawnWithAPawnOnEndPosition(t *testing.T) {
 	board := NewDefaultBoard()
+	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 	err := board.MovePawn("a1,b1")
 	assert.Equal(t, "there already is a pawn on b1", err.Error(), "should return an error with a pawn on end position")
 	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
@@ -123,6 +143,7 @@ func TestMovePawnWithAPawnOnEndPosition(t *testing.T) {
 
 func TestMovePawnErrorWithOnlyOneCell(t *testing.T) {
 	board := NewDefaultBoard()
+	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 	err := board.MovePawn("a1")
 	assert.Equal(t, "you must provide at least two cells in a move", err.Error(), "should be a too small move list error")
 	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
@@ -130,6 +151,7 @@ func TestMovePawnErrorWithOnlyOneCell(t *testing.T) {
 
 func TestMovePawnErrorWithInvalidFormat(t *testing.T) {
 	board := NewDefaultBoard()
+	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 	err := board.MovePawn("a,b2")
 	assert.Equal(t, "invalid cell format 'a'", err.Error(), "should be an invalid format error")
 	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
@@ -137,6 +159,8 @@ func TestMovePawnErrorWithInvalidFormat(t *testing.T) {
 
 func TestMovePawnWithInvalidPosition(t *testing.T) {
 	board := NewDefaultBoard()
+	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
+
 	err := board.MovePawn("c1,d1,e1,f1")
 	assert.Equal(t, "f1 is not a valid cell", err.Error(), "should be an invalid cell error")
 	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
@@ -152,10 +176,12 @@ func TestMovePawnWithInvalidPosition(t *testing.T) {
 
 func TestSaveBoardState(t *testing.T) {
 	expectedBoard := NewDefaultBoard()
+	expectedBoard.CurrentPlayer = Green // Set current player to ensure equality and validity.
 	testFilePath := "testFile.json"
 	expectedBoard.stateFile = &testFilePath
 
 	board := NewDefaultBoard()
+	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 	assert.Nil(t, board.SaveState(testFilePath))
 	loadedBoard, err := NewBoardFromStateFile(testFilePath)
 	assert.Nil(t, err)
@@ -166,12 +192,16 @@ func TestSaveBoardState(t *testing.T) {
 
 func TestMovePawnAndSave(t *testing.T) {
 	expectedBoard := NewDefaultBoard()
+	expectedBoard.CurrentPlayer = Green // Ensure the player to start is Green.
 	expectedBoard.MovePawn("c1,d1")
 	testFilePath := "testFile.json"
 	expectedBoard.stateFile = &testFilePath
 
-	// Prepare the state file.
-	assert.Nil(t, NewDefaultBoard().SaveState(testFilePath))
+	{ // Prepare the state file.
+		board := NewDefaultBoard()
+		board.CurrentPlayer = Green // Ensure the player to start is Green.
+		assert.Nil(t, board.SaveState(testFilePath))
+	}
 
 	{ // Load a board from a state file, then move a pawn and save.
 		board, err := NewBoardFromStateFile(testFilePath)
@@ -190,6 +220,7 @@ func TestMovePawnAndSave(t *testing.T) {
 
 func TestMoveLegalityCheck(t *testing.T) {
 	board := NewDefaultBoard()
+	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 
 	a3, _ := board.ParseCellIdentifier("a3")
 	a4, _ := board.ParseCellIdentifier("a4")
@@ -207,6 +238,7 @@ func TestMoveLegalityCheck(t *testing.T) {
 
 func TestMovesLegalityCheck(t *testing.T) {
 	board := NewDefaultBoard()
+	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 
 	{ // Legal move from a3 to a4.
 		moveList, err := board.ParseMoveList("a3,a4")
@@ -233,13 +265,27 @@ func TestMovesLegalityCheck(t *testing.T) {
 
 func TestIllegalMoves(t *testing.T) {
 	board := NewDefaultBoard()
+	board.CurrentPlayer = Green // Set current player to ensure validity.
 
 	assert.Equal(t, "'a5' cannot be reached from 'a3'", board.MovePawn("a3,a4,a5").Error(), "should return an illegal move error")
 	assert.Nil(t, board.MovePawn("a3,a4"), "the move is legal")
+	board.CurrentPlayer = Green // Reset current player to ensure validity.
 	assert.Equal(t, "a pawn cannot move in diagonal", board.MovePawn("a4,b3").Error(), "should return an illegal move error")
 	assert.Equal(t, "'e1' cannot be reached from 'a4'", board.MovePawn("a4,e1").Error(), "should return an illegal move error")
 	assert.Equal(t, "'c3' cannot be reached from 'c1'", board.MovePawn("c1,c3").Error(), "should return an illegal move error")
 	assert.Equal(t, "'c4' cannot be reached from 'a3'", board.MovePawn("a4,a3,c4,b4").Error(), "should return an illegal move error")
 	assert.Equal(t, "a pawn cannot move in diagonal", board.MovePawn("a4,a3,b3").Error(), "should return an illegal move error")
 	assert.Equal(t, "'c3' cannot be reached from 'a4'", board.MovePawn("a4,a3,b3,c3").Error(), "should return an illegal move error")
+}
+
+func TestPlayersTurns(t *testing.T) {
+	board := NewDefaultBoard()
+	board.CurrentPlayer = Green // Set current player to ensure validity.
+
+	assert.Nil(t, board.MovePawn("a3,a4"), "the move is allowed")
+	assert.Equal(t, Red, board.CurrentPlayer, "red player should now be the one to play")
+	assert.Equal(t, "you cannot move a green pawn", board.MovePawn("a4,a5").Error(), "red player shouldn't be allowed to move a green pawn")
+	assert.Nil(t, board.MovePawn("e3,e2"), "the move is allowed")
+	assert.Equal(t, Green, board.CurrentPlayer, "green player should now be the one to play")
+	assert.Equal(t, "you cannot move a red pawn", board.MovePawn("e2,d2").Error(), "green player shouldn't be allowed to move a red pawn")
 }

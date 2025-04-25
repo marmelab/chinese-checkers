@@ -5,6 +5,8 @@ import (
 	"os"
 
 	"github.com/spf13/cobra"
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 
 	"github.com/marmelab/chinese-checkers/internal/game"
 )
@@ -76,8 +78,8 @@ func runGameLoop(board *game.BoardState) {
 			errMsg = ""
 		}
 
-		// Prompt the user for a new move list.
-		print("Move a pawn (e.g. a2,a4): ")
+		// Prompt the current player for a new move list.
+		fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", cases.Title(language.English).String(board.CurrentPlayer.Color()))
 		var input string
 		fmt.Scanln(&input)
 		println()
