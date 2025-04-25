@@ -6,8 +6,6 @@ import (
 
 	"github.com/go-color-term/go-color-term/coloring"
 	"github.com/spf13/cobra"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 
 	"github.com/marmelab/chinese-checkers/internal/game"
 )
@@ -98,7 +96,7 @@ func runGameLoop(board *game.BoardState) {
 		println()
 
 		// Prompt the current player for a new move list.
-		fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", cases.Title(language.English).String(board.CurrentPlayer.Color()))
+		fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", board.CurrentPlayer.ColoredName())
 		input = ""
 		fmt.Scanln(&input)
 		println()
