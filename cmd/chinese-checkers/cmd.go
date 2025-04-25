@@ -74,11 +74,18 @@ func runGameLoop(board *game.BoardState) {
 	for {
 		fmt.Print("\033[H\033[2J")
 
+		println()
+
 		// Print the current board.
 		board.Print(os.Stdout)
 
+		// Show the current score.
+		board.PrintScore(os.Stdout)
+
 		// Print the previous error if there is one.
 		if len(errMsg) > 0 {
+			println()
+
 			// Print the previous input if there is one.
 			if len(input) > 0 {
 				println(coloring.Cyan("Tried to play \"" + input + "\""))
@@ -88,8 +95,7 @@ func runGameLoop(board *game.BoardState) {
 			errMsg = ""
 		}
 
-		// Show the current score.
-		board.PrintScore(os.Stdout)
+		println()
 
 		// Prompt the current player for a new move list.
 		fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", cases.Title(language.English).String(board.CurrentPlayer.Color()))
