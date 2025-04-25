@@ -70,6 +70,8 @@ func runGameLoop(board *game.BoardState) {
 	errMsg := ""
 
 	for {
+		fmt.Print("\033[H\033[2J")
+
 		// Print the current board.
 		board.Print(os.Stdout)
 
