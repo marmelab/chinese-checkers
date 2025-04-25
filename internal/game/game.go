@@ -136,6 +136,11 @@ func (board *BoardState) CheckMoveLegality(from CellIdentifier, to CellIdentifie
 	// Compute the row diff of the move.
 	rowDiff := math.Abs(float64(from.Row - to.Row))
 
+	// Check that the target cell is free.
+	if board.Board[to.Row][to.Column] != EmptyCell {
+		return false, fmt.Errorf("there is already a pawn on %s", to.String())
+	}
+
 	if columnDiff+rowDiff == 1 {
 		// Only 1 difference, the move is legal.
 		return true, nil
@@ -227,12 +232,6 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 	// Ensure that the current player can move this pawn.
 	if startPawn != Cell(board.CurrentPlayer) {
 		return fmt.Errorf("you cannot move a %s pawn", Player(startPawn).Color())
-	}
-
-	// Ensure that there is no pawn at the end position.
-	endPawn := board.Board[moveList[len(moveList)-1].Row][moveList[len(moveList)-1].Column]
-	if endPawn != EmptyCell {
-		return fmt.Errorf("there already is a pawn on %s", moveList[len(moveList)-1].String())
 	}
 
 	// Check all successive moves legality, allowing only one simple move.

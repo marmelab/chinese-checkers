@@ -137,7 +137,7 @@ func TestMovePawnWithAPawnOnEndPosition(t *testing.T) {
 	board := NewDefaultBoard()
 	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 	err := board.MovePawn("a1,b1")
-	assert.Equal(t, "there already is a pawn on b1", err.Error(), "should return an error with a pawn on end position")
+	assert.Equal(t, "there is already a pawn on b1", err.Error(), "should return an error with a pawn on end position")
 	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
 }
 
@@ -317,7 +317,8 @@ func TestJumpMoves(t *testing.T) {
 	assert.Equal(t, "a pawn cannot jump over more than one pawn", board.MovePawn("a1,a5").Error(), "should return an illegal move error")
 
 	// Jump on another pawn.
-	assert.Equal(t, "there already is a pawn on a3", board.MovePawn("a1,a3").Error(), "should return that the cell is not empty")
+	assert.Equal(t, "there is already a pawn on a3", board.MovePawn("a1,a3").Error(), "should return that the cell is not empty")
+	assert.Equal(t, "there is already a pawn on a3", board.MovePawn("a1,a3,a5").Error(), "should return that an intermediate cell is not empty")
 
 	// Valid simple jumps.
 	assert.Nil(t, board.MovePawn("a2,a4"), "the move should be allowed")
@@ -336,10 +337,18 @@ func TestJumpMoves(t *testing.T) {
 	assert.Nil(t, board.MovePawn("c2,a2,a4"), "the chained jumps should be allowed")
 	board.CurrentPlayer = Green
 
+	// Block a2 position with a1.
+	assert.Nil(t, board.MovePawn("a1,a2"), "the move should be allowed")
+	board.CurrentPlayer = Green
+	// Error in chained jumps, as a2 is not empty.
+	assert.Equal(t, "there is already a pawn on a2", board.MovePawn("a4,a2,c2").Error(), "should return that an intermediate cell is not empty")
+	// Free a2 position again.
+	assert.Nil(t, board.MovePawn("a2,a1"), "the move should be allowed")
+	board.CurrentPlayer = Green
+
 	// Simple move.
 	assert.Nil(t, board.MovePawn("b2,b3"), "the move should be allowed")
 	board.CurrentPlayer = Green
-
 	// Error in chained jumps, as b2 has been moved to b3.
 	assert.Equal(t, "'c2' cannot be reached from 'a2'", board.MovePawn("a4,a2,c2").Error(), "should return an illegal move error")
 
