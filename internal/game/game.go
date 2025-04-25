@@ -287,3 +287,30 @@ func (board *BoardState) MovePawnAndSave(serializedMoveList string) error {
 	}
 	return nil
 }
+
+// Count pawns of the provided player that are in the provided target area.
+func (board BoardState) CountPawnsInTargetArea(player Player, targetArea [][]Cell) int8 {
+	pawns := int8(0)
+	// Evaluate all cells of the board to determine if there is a pawn in the target area.
+	for rowIndex, row := range board.Board {
+		for columnIndex, cell := range row {
+			// Initialize a cell position identifier.
+			cellPos := CellIdentifier{int8(rowIndex), int8(columnIndex)}
+			// Check if the cell has a pawn of the player, and is in the player target area mask.
+			if cell == Cell(player) && cellPos.InMask(targetArea) {
+				pawns++
+			}
+		}
+	}
+	return pawns
+}
+
+// Count green pawns in the green target area.
+func (board BoardState) CountGreenPawnsInTargetArea() int8 {
+	return board.CountPawnsInTargetArea(Green, GreenTargetAreaMask)
+}
+
+// Count red pawns in the red target area.
+func (board BoardState) CountRedPawnsInTargetArea() int8 {
+	return board.CountPawnsInTargetArea(Red, RedTargetAreaMask)
+}
