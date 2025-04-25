@@ -147,7 +147,7 @@ func (board *BoardState) CheckMoveLegality(from CellIdentifier, to CellIdentifie
 		}
 		// Check that there is a pawn in the middle of the jump.
 		middleColumn := from.Column + ((to.Column - from.Column) / 2)
-		if board.Board[middleColumn][from.Row] != EmptyCell {
+		if board.Board[from.Row][middleColumn] != EmptyCell {
 			return nil
 		}
 	}
@@ -158,7 +158,7 @@ func (board *BoardState) CheckMoveLegality(from CellIdentifier, to CellIdentifie
 		}
 		// Check that there is a pawn in the middle of the jump.
 		middleRow := from.Row + ((to.Row - from.Row) / 2)
-		if board.Board[from.Column][middleRow] != EmptyCell {
+		if board.Board[middleRow][from.Column] != EmptyCell {
 			return nil
 		}
 	}
