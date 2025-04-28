@@ -70,6 +70,7 @@ func runGameLoop(board *game.BoardState) {
 	input := ""
 
 	for {
+		// Clear the screen.
 		fmt.Print("\033[H\033[2J")
 
 		println()
