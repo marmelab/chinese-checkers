@@ -12,6 +12,8 @@ const invalidGameStateTestPath = "../../tests/states/invalid-board.json"
 const invalidPawnsCountTestPath = "../../tests/states/invalid-pawns-count.json"
 const invalidCurrentPlayerTestPath = "../../tests/states/invalid-current-player.json"
 const invalidPlayerInBoardTestPath = "../../tests/states/invalid-player-in-board.json"
+const ongoing7x7GameStateTestPath = "../../tests/states/7x7-ongoing-game.json"
+const invalidPawnsCount7x7TestPath = "../../tests/states/7x7-invalid-pawns-count.json"
 
 func TestLoadBoard(t *testing.T) {
 	stateFilePath := ongoingGameStateTestPath
@@ -75,6 +77,7 @@ func TestBoardCloning(t *testing.T) {
 	assert.NotSame(t, &DefaultBoard5, clonedBoard, "shouldn't be the same pointer")
 	assert.NotSame(t, &DefaultBoard5.Board, &clonedBoard.Board, "shouldn't be the same pointer")
 	assert.NotSame(t, &DefaultBoard5.Board[0], &clonedBoard.Board[0], "shouldn't be the same pointer")
+	assert.NotSame(t, DefaultBoard5.gameDefinition, clonedBoard.gameDefinition, "shouldn't be the same pointer")
 
 	// Test to clone a loaded dashboard.
 	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
@@ -84,6 +87,7 @@ func TestBoardCloning(t *testing.T) {
 	assert.NotSame(t, &DefaultBoard5, clonedBoard, "shouldn't be the same pointer")
 	assert.NotSame(t, &DefaultBoard5.Board, &clonedBoard.Board, "shouldn't be the same pointer")
 	assert.NotSame(t, &DefaultBoard5.Board[0], &clonedBoard.Board[0], "shouldn't be the same pointer")
+	assert.NotSame(t, DefaultBoard5.gameDefinition, clonedBoard.gameDefinition, "shouldn't be the same pointer")
 }
 
 func TestMovePawnInDefaultBoard(t *testing.T) {
@@ -459,5 +463,120 @@ func TestWinner(t *testing.T) {
 		// Cannot move a pawn.
 		board.CurrentPlayer = Green
 		assert.Equal(t, "cannot move a pawn: Red has won", board.MovePawn("b4,b5").Error(), "shouldn't be able to move a pawn")
+	}
+}
+
+func Test7x7(t *testing.T) {
+	{ // Test new default 7x7 board.
+		board := NewDefaultBoard7()
+
+		assert.Equal(t, [][]Cell{
+			{1, 1, 1, 1, 0, 0, 0},
+			{1, 1, 1, 0, 0, 0, 0},
+			{1, 1, 0, 0, 0, 0, 0},
+			{1, 0, 0, 0, 0, 0, 2},
+			{0, 0, 0, 0, 0, 2, 2},
+			{0, 0, 0, 0, 2, 2, 2},
+			{0, 0, 0, 2, 2, 2, 2},
+		}, board.Board, "should be the default board")
+		assert.Equal(t, gameDefinitions[1], *board.gameDefinition, "should be a 7x7 board")
+	}
+
+	{ // Test loading a 7x7 board from a file.
+		board, err := NewBoardFromStateFile(ongoing7x7GameStateTestPath)
+		assert.Nil(t, err, "should have loaded the state file without error")
+
+		assert.Equal(t, [][]Cell{
+			{0, 1, 1, 0, 0, 0, 0},
+			{1, 1, 1, 1, 0, 0, 0},
+			{1, 1, 0, 0, 0, 0, 0},
+			{1, 0, 1, 0, 0, 0, 2},
+			{0, 0, 0, 0, 0, 2, 2},
+			{0, 0, 2, 2, 2, 2, 0},
+			{0, 0, 0, 2, 0, 2, 2},
+		}, board.Board, "should be the default board")
+		assert.Equal(t, gameDefinitions[1], *board.gameDefinition, "should be a 7x7 board")
+		assert.Equal(t, Red, board.CurrentPlayer, "red should be the next to play")
+	}
+
+	{ // Test loading a 7x7 board with an invalid pawns count.
+		_, err := NewBoardFromStateFile(invalidPawnsCount7x7TestPath)
+		assert.Equal(t, "invalid game state, please provide a valid game state", err.Error(), "shouldn't load the board successfully")
+	}
+
+	{ // Test moving in a 7x7 board.
+		board := NewDefaultBoard7()
+		board.Board = [][]Cell{
+			{1, 1, 1, 0, 0, 0, 1},
+			{1, 1, 0, 0, 0, 1, 2},
+			{1, 1, 2, 0, 0, 0, 0},
+			{0, 0, 0, 2, 0, 1, 0},
+			{0, 0, 0, 0, 2, 0, 2},
+			{0, 0, 0, 0, 0, 2, 2},
+			{0, 0, 0, 0, 2, 2, 2},
+		}
+
+		// Try a lot of jumps.
+		board.CurrentPlayer = Green
+		assert.Nil(t, board.MovePawn("c2,c4,e4,e6,c6,a6"), "should be able to move a pawn")
+
+		assert.Equal(t, [][]Cell{
+			{1, 1, 1, 0, 0, 1, 1},
+			{1, 1, 0, 0, 0, 1, 2},
+			{1, 0, 2, 0, 0, 0, 0},
+			{0, 0, 0, 2, 0, 1, 0},
+			{0, 0, 0, 0, 2, 0, 2},
+			{0, 0, 0, 0, 0, 2, 2},
+			{0, 0, 0, 0, 2, 2, 2},
+		}, board.Board, "the pawn has moved from c2 to c6")
+		assert.Equal(t, Red, board.CurrentPlayer, "the new current player is red")
+
+		assert.Nil(t, board.MovePawn("g5,g4"), "should be able to move a pawn")
+		assert.Equal(t, [][]Cell{
+			{1, 1, 1, 0, 0, 1, 1},
+			{1, 1, 0, 0, 0, 1, 2},
+			{1, 0, 2, 0, 0, 0, 0},
+			{0, 0, 0, 2, 0, 1, 0},
+			{0, 0, 0, 0, 2, 0, 2},
+			{0, 0, 0, 0, 0, 2, 2},
+			{0, 0, 0, 2, 0, 2, 2},
+		}, board.Board, "the pawn has moved from g5 to g4")
+		assert.Equal(t, Green, board.CurrentPlayer, "the new current player is green")
+	}
+
+	{ // Test no winner in 7x7 board.
+		board := NewDefaultBoard7()
+		board.Board = [][]Cell{
+			{2, 2, 2, 2, 2, 0, 0},
+			{2, 2, 2, 0, 0, 0, 0},
+			{2, 2, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 1},
+			{0, 0, 0, 1, 0, 1, 1},
+			{0, 0, 0, 0, 1, 1, 1},
+			{0, 0, 0, 0, 1, 1, 1},
+		}
+		assert.Equal(t, None, board.GetWinner(), "should have no winner")
+
+		// Can move a pawn.
+		board.CurrentPlayer = Green
+		assert.Nil(t, board.MovePawn("e4,f4"), "should be able to move a pawn")
+	}
+
+	{ // Test winner in 7x7 board.
+		board := NewDefaultBoard7()
+		board.Board = [][]Cell{
+			{2, 2, 2, 2, 2, 0, 0},
+			{2, 2, 2, 0, 0, 0, 0},
+			{2, 2, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 1},
+			{0, 0, 0, 0, 0, 1, 1},
+			{0, 0, 0, 0, 1, 1, 1},
+			{0, 0, 0, 1, 1, 1, 1},
+		}
+		assert.Equal(t, Green, board.GetWinner(), "should have green as a winner")
+
+		// Cannot move a pawn.
+		board.CurrentPlayer = Red
+		assert.Equal(t, "cannot move a pawn: Green has won", board.MovePawn("a5,b5").Error(), "shouldn't be able to move a pawn")
 	}
 }
