@@ -11,6 +11,7 @@ import (
 type Player int8
 
 const (
+	None  Player = 0
 	Green Player = 1
 	Red   Player = 2
 )

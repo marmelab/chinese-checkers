@@ -308,3 +308,22 @@ func (board BoardState) CountPawnsInTargetAreas() (int8, int8) {
 	}
 	return greenPawns, redPawns
 }
+
+// Get the winner.
+// Return None if there is no winner.
+func (board BoardState) GetWinner() Player {
+	// Get green and red pawns in the target area of each player.
+	greenPawns, redPawns := board.CountPawnsInTargetAreas()
+
+	// Check if the green player has won.
+	if greenPawns == PlayerPawnsNumber {
+		return Green
+	}
+
+	// Check if the red player has won.
+	if redPawns == PlayerPawnsNumber {
+		return Red
+	}
+
+	return None
+}

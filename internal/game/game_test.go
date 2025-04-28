@@ -392,3 +392,53 @@ func TestPawnsInTargetArea(t *testing.T) {
 		assert.Equal(t, int8(1), redPawns, "should have 1 red pawn in target area")
 	}
 }
+
+func TestWinner(t *testing.T) {
+	{
+		board := NewDefaultBoard()
+		board.Board = [][]Cell{
+			{2, 0, 0, 0, 2},
+			{0, 0, 0, 2, 0},
+			{0, 0, 2, 1, 1},
+			{0, 2, 1, 0, 1},
+			{2, 0, 1, 0, 1},
+		}
+		assert.Equal(t, None, board.GetWinner(), "should have no winner")
+	}
+
+	{
+		board := NewDefaultBoard()
+		board.Board = [][]Cell{
+			{2, 2, 2, 0, 2},
+			{2, 2, 0, 1, 0},
+			{0, 0, 0, 0, 0},
+			{0, 0, 0, 1, 1},
+			{0, 0, 1, 1, 1},
+		}
+		assert.Equal(t, None, board.GetWinner(), "should have no winner")
+	}
+
+	{
+		board := NewDefaultBoard()
+		board.Board = [][]Cell{
+			{2, 0, 2, 0, 2},
+			{0, 2, 0, 0, 0},
+			{0, 0, 0, 0, 1},
+			{0, 2, 0, 1, 1},
+			{2, 0, 1, 1, 1},
+		}
+		assert.Equal(t, Green, board.GetWinner(), "should have green as a winner")
+	}
+
+	{
+		board := NewDefaultBoard()
+		board.Board = [][]Cell{
+			{2, 2, 2, 0, 0},
+			{2, 2, 0, 1, 0},
+			{2, 0, 0, 0, 0},
+			{0, 0, 0, 1, 1},
+			{0, 0, 1, 1, 1},
+		}
+		assert.Equal(t, Red, board.GetWinner(), "should have red as a winner")
+	}
+}
