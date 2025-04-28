@@ -237,6 +237,12 @@ func (board *BoardState) CheckMovesLegality(moveList []CellIdentifier, disallowS
 
 // Move a pawn of the board.
 func (board *BoardState) MovePawn(serializedMoveList string) error {
+	// If there is a winner, moving a pawn is disallowed.
+	winner := board.GetWinner()
+	if winner != None {
+		return fmt.Errorf("cannot move a pawn: %s has won", winner.Name())
+	}
+
 	// Parse the move list.
 	moveList, err := board.ParseMoveList(serializedMoveList)
 	if err != nil {
