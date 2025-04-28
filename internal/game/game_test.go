@@ -359,8 +359,9 @@ func TestJumpMoves(t *testing.T) {
 func TestPawnsInTargetArea(t *testing.T) {
 	{
 		board := NewDefaultBoard()
-		assert.Equal(t, int8(0), board.CountGreenPawnsInTargetArea(), "should have no green pawn in target area")
-		assert.Equal(t, int8(0), board.CountRedPawnsInTargetArea(), "should have no red pawn in target area")
+		greenPawns, redPawns := board.CountPawnsInTargetAreas()
+		assert.Equal(t, int8(0), greenPawns, "should have no green pawn in target area")
+		assert.Equal(t, int8(0), redPawns, "should have no red pawn in target area")
 	}
 
 	{
@@ -372,8 +373,9 @@ func TestPawnsInTargetArea(t *testing.T) {
 			{0, 0, 0, 1, 1},
 			{0, 0, 1, 1, 1},
 		}
-		assert.Equal(t, int8(6), board.CountGreenPawnsInTargetArea(), "should have 6 green pawns in target area")
-		assert.Equal(t, int8(6), board.CountRedPawnsInTargetArea(), "should have 6 red pawns in target area")
+		greenPawns, redPawns := board.CountPawnsInTargetAreas()
+		assert.Equal(t, int8(6), greenPawns, "should have 6 green pawns in target area")
+		assert.Equal(t, int8(6), redPawns, "should have 6 red pawns in target area")
 	}
 
 	{
@@ -385,7 +387,8 @@ func TestPawnsInTargetArea(t *testing.T) {
 			{0, 2, 1, 0, 1},
 			{2, 0, 1, 0, 1},
 		}
-		assert.Equal(t, int8(4), board.CountGreenPawnsInTargetArea(), "should have 4 green pawns in target area")
-		assert.Equal(t, int8(1), board.CountRedPawnsInTargetArea(), "should have 1 red pawn in target area")
+		greenPawns, redPawns := board.CountPawnsInTargetAreas()
+		assert.Equal(t, int8(4), greenPawns, "should have 4 green pawns in target area")
+		assert.Equal(t, int8(1), redPawns, "should have 1 red pawn in target area")
 	}
 }
