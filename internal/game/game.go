@@ -237,6 +237,12 @@ func (board *BoardState) CheckMovesLegality(moveList []CellIdentifier, disallowS
 
 // Move a pawn of the board.
 func (board *BoardState) MovePawn(serializedMoveList string) error {
+	// If there is a winner, moving a pawn is disallowed.
+	winner := board.GetWinner()
+	if winner != None {
+		return fmt.Errorf("cannot move a pawn: %s has won", winner.Name())
+	}
+
 	// Parse the move list.
 	moveList, err := board.ParseMoveList(serializedMoveList)
 	if err != nil {
@@ -305,4 +311,23 @@ func (board BoardState) CountPawnsInTargetAreas() (greenPawns int8, redPawns int
 		}
 	}
 	return greenPawns, redPawns
+}
+
+// Get the winner.
+// Return None if there is no winner.
+func (board BoardState) GetWinner() Player {
+	// Get green and red pawns in the target area of each player.
+	greenPawns, redPawns := board.CountPawnsInTargetAreas()
+
+	// Check if the green player has won.
+	if greenPawns == PlayerPawnsNumber {
+		return Green
+	}
+
+	// Check if the red player has won.
+	if redPawns == PlayerPawnsNumber {
+		return Red
+	}
+
+	return None
 }
