@@ -8,21 +8,70 @@ import (
 	"os"
 )
 
-// Size of the board (in rows and columns).
-const BoardSize = 5
+// Game definition structure.
+type GameDefinition struct {
+	BoardSize           int8
+	PlayerPawnsNumber   int8
+	GreenTargetAreaMask [][]Cell
+	RedTargetAreaMask   [][]Cell
+}
 
-// Number of pawns of a player.
-const PlayerPawnsNumber = 6
+// Allowed game definitions.
+var gameDefinitions = [...]GameDefinition{
+	{
+		BoardSize:         5,
+		PlayerPawnsNumber: 6,
+
+		GreenTargetAreaMask: [][]Cell{
+			{0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 1},
+			{0, 0, 0, 1, 1},
+			{0, 0, 1, 1, 1},
+		},
+		RedTargetAreaMask: [][]Cell{
+			{1, 1, 1, 0, 0},
+			{1, 1, 0, 0, 0},
+			{1, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0},
+		},
+	},
+	{
+		BoardSize:         7,
+		PlayerPawnsNumber: 10,
+
+		GreenTargetAreaMask: [][]Cell{
+			{0, 0, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 1},
+			{0, 0, 0, 0, 0, 1, 1},
+			{0, 0, 0, 0, 1, 1, 1},
+			{0, 0, 0, 1, 1, 1, 1},
+		},
+		RedTargetAreaMask: [][]Cell{
+			{1, 1, 1, 1, 0, 0, 0},
+			{1, 1, 1, 0, 0, 0, 0},
+			{1, 1, 0, 0, 0, 0, 0},
+			{1, 0, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 0},
+		},
+	},
+}
 
 // The main board state.
 type BoardState struct {
-	Board         [][]Cell `json:"board"`
-	CurrentPlayer Player   `json:"currentPlayer"`
-	stateFile     *string
+	Board          [][]Cell `json:"board"`
+	CurrentPlayer  Player   `json:"currentPlayer"`
+	stateFile      *string
+	gameDefinition *GameDefinition
 }
 
-// The default board.
-var DefaultBoard = BoardState{
+// The default board for a 5x5 game.
+var DefaultBoard5 = BoardState{
 	Board: [][]Cell{
 		{1, 1, 1, 0, 0},
 		{1, 1, 0, 0, 0},
@@ -30,13 +79,38 @@ var DefaultBoard = BoardState{
 		{0, 0, 0, 2, 2},
 		{0, 0, 2, 2, 2},
 	},
-	CurrentPlayer: Green,
-	stateFile:     nil,
+	CurrentPlayer:  Green,
+	stateFile:      nil,
+	gameDefinition: &gameDefinitions[0],
 }
 
-// Initialize a default board state.
-func NewDefaultBoard() *BoardState {
-	board := DefaultBoard.Clone()
+// The default board for a 7x7 game.
+var DefaultBoard7 = BoardState{
+	Board: [][]Cell{
+		{1, 1, 1, 1, 0, 0, 0},
+		{1, 1, 1, 0, 0, 0, 0},
+		{1, 1, 0, 0, 0, 0, 0},
+		{1, 0, 0, 0, 0, 0, 2},
+		{0, 0, 0, 0, 0, 2, 2},
+		{0, 0, 0, 0, 2, 2, 2},
+		{0, 0, 0, 2, 2, 2, 2},
+	},
+	CurrentPlayer:  Green,
+	stateFile:      nil,
+	gameDefinition: &gameDefinitions[1],
+}
+
+// Initialize a default board state for a 5x5 game.
+func NewDefaultBoard5() *BoardState {
+	board := DefaultBoard5.Clone()
+	// Chose a random player to start.
+	board.CurrentPlayer = RandomPlayer()
+	return board
+}
+
+// Initialize a default board state for a 7x7 game.
+func NewDefaultBoard7() *BoardState {
+	board := DefaultBoard7.Clone()
 	// Chose a random player to start.
 	board.CurrentPlayer = RandomPlayer()
 	return board
@@ -57,6 +131,17 @@ func NewBoardFromStateFile(filePath string) (*BoardState, error) {
 		return nil, err
 	}
 
+	// Try to detect a corresponding game definition.
+	for _, gameDefinition := range gameDefinitions {
+		// Check if there is the right count of rows in the board.
+		if len(board.Board) == int(gameDefinition.BoardSize) {
+			// The game definition board size matches the current board size.
+			boardGameDefinition := gameDefinition
+			board.gameDefinition = &boardGameDefinition
+			break
+		}
+	}
+
 	// Check board validity.
 	err = board.CheckBoardValidity()
 
@@ -73,8 +158,13 @@ func NewBoardFromStateFile(filePath string) (*BoardState, error) {
 // CheckBoardValidity that the board is valid.
 // Automatically called after loading a board from a state file.
 func (board *BoardState) CheckBoardValidity() error {
+	// Could not detect a game definition, the loaded game state is invalid.
+	if board.gameDefinition == nil {
+		return errors.New("invalid game state, please provide a valid game state")
+	}
+
 	// Check that there are the right count of rows in the board.
-	if len(board.Board) != BoardSize {
+	if len(board.Board) != int(board.gameDefinition.BoardSize) {
 		return errors.New("invalid game state, please provide a valid game state")
 	}
 
@@ -106,7 +196,7 @@ func (board *BoardState) CheckBoardValidity() error {
 	}
 
 	// Check that there are enough pawns for a player in the board.
-	if playerPawnsCounts[0] != PlayerPawnsNumber || playerPawnsCounts[1] != PlayerPawnsNumber {
+	if playerPawnsCounts[0] != int(board.gameDefinition.PlayerPawnsNumber) || playerPawnsCounts[1] != int(board.gameDefinition.PlayerPawnsNumber) {
 		return errors.New("invalid game state, please provide a valid game state")
 	}
 
@@ -122,6 +212,10 @@ func (board *BoardState) Clone() *BoardState {
 		CurrentPlayer: board.CurrentPlayer,
 		stateFile:     board.stateFile,
 	}
+
+	// Clone the game definition pointer.
+	clonedGameDefinition := *board.gameDefinition
+	clonedBoard.gameDefinition = &clonedGameDefinition
 
 	// Clone all rows of the board.
 	for rowIndex, row := range board.Board {
@@ -303,9 +397,9 @@ func (board BoardState) CountPawnsInTargetAreas() (greenPawns int8, redPawns int
 			cellPos := CellIdentifier{int8(rowIndex), int8(columnIndex)}
 
 			// Increment the pawns counter of the player if it is in the target area mask.
-			if cell == GreenCell && cellPos.InMask(GreenTargetAreaMask) {
+			if cell == GreenCell && cellPos.InMask(board.gameDefinition.GreenTargetAreaMask) {
 				greenPawns++
-			} else if cell == RedCell && cellPos.InMask(RedTargetAreaMask) {
+			} else if cell == RedCell && cellPos.InMask(board.gameDefinition.RedTargetAreaMask) {
 				redPawns++
 			}
 		}
@@ -320,12 +414,12 @@ func (board BoardState) GetWinner() Player {
 	greenPawns, redPawns := board.CountPawnsInTargetAreas()
 
 	// Check if the green player has won.
-	if greenPawns == PlayerPawnsNumber {
+	if greenPawns == int8(board.gameDefinition.PlayerPawnsNumber) {
 		return Green
 	}
 
 	// Check if the red player has won.
-	if redPawns == PlayerPawnsNumber {
+	if redPawns == int8(board.gameDefinition.PlayerPawnsNumber) {
 		return Red
 	}
 

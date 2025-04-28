@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"os"
 	"os/exec"
@@ -13,14 +14,34 @@ import (
 
 var gameStateFilePath string
 var serializedMoveList string
+var boardSizeIdentifier string
 
 // Initialize a game state by using the provided state file path if there is one.
 func InitGameState() (*game.BoardState, error) {
 	if len(gameStateFilePath) > 0 {
 		return game.NewBoardFromStateFile(gameStateFilePath)
 	} else {
-		return game.NewDefaultBoard(), nil
+		if len(boardSizeIdentifier) > 0 {
+			// A board size identifier has been provided, create a board of the provided size.
+			switch boardSizeIdentifier {
+			case "5x5":
+				return game.NewDefaultBoard5(), nil
+			case "7x7":
+				return game.NewDefaultBoard7(), nil
+			default:
+				return nil, errors.New("invalid board size. please choose a valid board size (--board-size 5x5 (default) or --board-size 7x7)")
+			}
+		} else {
+			// By default, use 5x5.
+			return game.NewDefaultBoard5(), nil
+		}
 	}
+}
+
+// Show the error message.
+func ShowError(errMsg string) {
+	println(coloring.Red("Error: " + errMsg))
+	println()
 }
 
 // Run the chinese checkers command line interface.
@@ -34,12 +55,14 @@ func RunCli() error {
 			// Initialize the game state, from the state file if there is one.
 			board, err := InitGameState()
 			if err != nil {
+				ShowError(err.Error())
 				return err
 			}
 
 			if len(serializedMoveList) > 0 {
 				// Move a pawn on the board and save if a state file has been provided.
 				if err = board.MovePawnAndSave(serializedMoveList); err != nil {
+					ShowError(err.Error())
 					return err
 				}
 
@@ -51,15 +74,19 @@ func RunCli() error {
 			} else {
 				// Run the game loop.
 				runGameLoop(board)
+
 				return nil
 			}
 		},
+		SilenceErrors: true,
 	}
 
 	// Add game state file flag without shorthand.
 	chineseCheckersCommand.PersistentFlags().StringVarP(&gameStateFilePath, "state-file", "", "", "Game state file to read the board from.")
-	// Add a required move flag without shorthand.
+	// Add a move flag.
 	chineseCheckersCommand.PersistentFlags().StringVarP(&serializedMoveList, "move", "m", "", "Move a pawn from a start position to an end position.")
+	// Add a board size flag.
+	chineseCheckersCommand.PersistentFlags().StringVarP(&boardSizeIdentifier, "board-size", "", "", "Set the board size to start with.")
 
 	// Execute the command and return the error.
 	return chineseCheckersCommand.Execute()

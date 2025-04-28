@@ -23,8 +23,9 @@ func TestLoadBoard(t *testing.T) {
 			{1, 0, 2, 2, 2},
 			{0, 0, 0, 2, 2},
 		},
-		CurrentPlayer: Red,
-		stateFile:     &stateFilePath,
+		CurrentPlayer:  Red,
+		stateFile:      &stateFilePath,
+		gameDefinition: &gameDefinitions[0],
 	}
 	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
 
@@ -61,28 +62,28 @@ func TestLoadBoardWithInvalidPlayerInBoard(t *testing.T) {
 }
 
 func TestNewDefaultBoard(t *testing.T) {
-	expected := &DefaultBoard
-	board := NewDefaultBoard()
+	expected := &DefaultBoard5
+	board := NewDefaultBoard5()
 	board.CurrentPlayer = Green // Set current player to ensure equality.
 	assert.Equal(t, expected, board, "should be the default board")
 }
 
 func TestBoardCloning(t *testing.T) {
 	// Test to clone the default dashboard.
-	clonedBoard := DefaultBoard.Clone()
-	assert.Equal(t, &DefaultBoard, clonedBoard, "should be the same board")
-	assert.NotSame(t, &DefaultBoard, clonedBoard, "shouldn't be the same pointer")
-	assert.NotSame(t, &DefaultBoard.Board, &clonedBoard.Board, "shouldn't be the same pointer")
-	assert.NotSame(t, &DefaultBoard.Board[0], &clonedBoard.Board[0], "shouldn't be the same pointer")
+	clonedBoard := DefaultBoard5.Clone()
+	assert.Equal(t, &DefaultBoard5, clonedBoard, "should be the same board")
+	assert.NotSame(t, &DefaultBoard5, clonedBoard, "shouldn't be the same pointer")
+	assert.NotSame(t, &DefaultBoard5.Board, &clonedBoard.Board, "shouldn't be the same pointer")
+	assert.NotSame(t, &DefaultBoard5.Board[0], &clonedBoard.Board[0], "shouldn't be the same pointer")
 
 	// Test to clone a loaded dashboard.
 	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
 	assert.Nil(t, err)
 	clonedBoard = board.Clone()
 	assert.Equal(t, board, clonedBoard, "should be the same board")
-	assert.NotSame(t, &DefaultBoard, clonedBoard, "shouldn't be the same pointer")
-	assert.NotSame(t, &DefaultBoard.Board, &clonedBoard.Board, "shouldn't be the same pointer")
-	assert.NotSame(t, &DefaultBoard.Board[0], &clonedBoard.Board[0], "shouldn't be the same pointer")
+	assert.NotSame(t, &DefaultBoard5, clonedBoard, "shouldn't be the same pointer")
+	assert.NotSame(t, &DefaultBoard5.Board, &clonedBoard.Board, "shouldn't be the same pointer")
+	assert.NotSame(t, &DefaultBoard5.Board[0], &clonedBoard.Board[0], "shouldn't be the same pointer")
 }
 
 func TestMovePawnInDefaultBoard(t *testing.T) {
@@ -94,10 +95,11 @@ func TestMovePawnInDefaultBoard(t *testing.T) {
 			{0, 0, 0, 2, 2},
 			{0, 0, 2, 2, 2},
 		},
-		CurrentPlayer: Red,
+		CurrentPlayer:  Red,
+		gameDefinition: &gameDefinitions[0],
 	}
 
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.CurrentPlayer = Green // Set current player to ensure equality.
 	err := board.MovePawn("c1,c2")
 	assert.Nil(t, err)
@@ -114,8 +116,9 @@ func TestMovePawnInOngoingGameBoard(t *testing.T) {
 			{1, 0, 2, 2, 2},
 			{0, 0, 2, 0, 2},
 		},
-		CurrentPlayer: Green,
-		stateFile:     &stateFilePath,
+		CurrentPlayer:  Green,
+		stateFile:      &stateFilePath,
+		gameDefinition: &gameDefinitions[0],
 	}
 
 	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
@@ -126,61 +129,61 @@ func TestMovePawnInOngoingGameBoard(t *testing.T) {
 }
 
 func TestMovePawnWithNoPawnOnStartPosition(t *testing.T) {
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 	err := board.MovePawn("e1,c1,c2,c3")
 	assert.Equal(t, "there is no pawn on e1", err.Error(), "should return an error with no pawn on start position")
-	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
+	assert.Equal(t, &DefaultBoard5, board, "should be unchanged")
 }
 
 func TestMovePawnWithAPawnOnEndPosition(t *testing.T) {
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 	err := board.MovePawn("a1,b1")
 	assert.Equal(t, "there is already a pawn on b1", err.Error(), "should return an error with a pawn on end position")
-	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
+	assert.Equal(t, &DefaultBoard5, board, "should be unchanged")
 }
 
 func TestMovePawnErrorWithOnlyOneCell(t *testing.T) {
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 	err := board.MovePawn("a1")
 	assert.Equal(t, "you must provide at least two cells in a move", err.Error(), "should be a too small move list error")
-	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
+	assert.Equal(t, &DefaultBoard5, board, "should be unchanged")
 }
 
 func TestMovePawnErrorWithInvalidFormat(t *testing.T) {
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 	err := board.MovePawn("a,b2")
 	assert.Equal(t, "invalid cell format 'a'", err.Error(), "should be an invalid format error")
-	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
+	assert.Equal(t, &DefaultBoard5, board, "should be unchanged")
 }
 
 func TestMovePawnWithInvalidPosition(t *testing.T) {
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 
 	err := board.MovePawn("c1,d1,e1,f1")
 	assert.Equal(t, "f1 is not a valid cell", err.Error(), "should be an invalid cell error")
-	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
+	assert.Equal(t, &DefaultBoard5, board, "should be unchanged")
 
 	err = board.MovePawn("c1,d1,e1,f1,f2,e2")
 	assert.Equal(t, "f1 is not a valid cell", err.Error(), "should be an invalid cell error")
-	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
+	assert.Equal(t, &DefaultBoard5, board, "should be unchanged")
 
 	err = board.MovePawn("91,d1,e1")
 	assert.Equal(t, "91 is not a valid cell", err.Error(), "should be an invalid cell error")
-	assert.Equal(t, &DefaultBoard, board, "should be unchanged")
+	assert.Equal(t, &DefaultBoard5, board, "should be unchanged")
 }
 
 func TestSaveBoardState(t *testing.T) {
-	expectedBoard := NewDefaultBoard()
+	expectedBoard := NewDefaultBoard5()
 	expectedBoard.CurrentPlayer = Green // Set current player to ensure equality and validity.
 	testFilePath := "testFile.json"
 	expectedBoard.stateFile = &testFilePath
 
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 	assert.Nil(t, board.SaveState(testFilePath))
 	loadedBoard, err := NewBoardFromStateFile(testFilePath)
@@ -191,14 +194,14 @@ func TestSaveBoardState(t *testing.T) {
 }
 
 func TestMovePawnAndSave(t *testing.T) {
-	expectedBoard := NewDefaultBoard()
+	expectedBoard := NewDefaultBoard5()
 	expectedBoard.CurrentPlayer = Green // Ensure the player to start is Green.
 	expectedBoard.MovePawn("c1,d1")
 	testFilePath := "testFile.json"
 	expectedBoard.stateFile = &testFilePath
 
 	{ // Prepare the state file.
-		board := NewDefaultBoard()
+		board := NewDefaultBoard5()
 		board.CurrentPlayer = Green // Ensure the player to start is Green.
 		assert.Nil(t, board.SaveState(testFilePath))
 	}
@@ -219,7 +222,7 @@ func TestMovePawnAndSave(t *testing.T) {
 }
 
 func TestMoveLegalityCheck(t *testing.T) {
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 
 	a3, _ := board.ParseCellIdentifier("a3")
@@ -241,7 +244,7 @@ func TestMoveLegalityCheck(t *testing.T) {
 }
 
 func TestMovesLegalityCheck(t *testing.T) {
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.CurrentPlayer = Green // Set current player to ensure equality and validity.
 
 	{ // Legal move from a3 to a4.
@@ -280,7 +283,7 @@ func TestMovesLegalityCheck(t *testing.T) {
 }
 
 func TestIllegalMoves(t *testing.T) {
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.CurrentPlayer = Green // Set current player to ensure validity.
 
 	assert.Equal(t, "'a5' cannot be reached from 'a3'", board.MovePawn("a3,a5").Error(), "should return an illegal move error")
@@ -295,7 +298,7 @@ func TestIllegalMoves(t *testing.T) {
 }
 
 func TestPlayersTurns(t *testing.T) {
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.CurrentPlayer = Green // Set current player to ensure validity.
 
 	assert.Nil(t, board.MovePawn("a3,a4"), "the move should be allowed")
@@ -307,7 +310,7 @@ func TestPlayersTurns(t *testing.T) {
 }
 
 func TestJumpMoves(t *testing.T) {
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.CurrentPlayer = Green // Set current player to ensure validity.
 
 	// Disallowed jumps of more than one pawn.
@@ -358,14 +361,14 @@ func TestJumpMoves(t *testing.T) {
 
 func TestPawnsInTargetArea(t *testing.T) {
 	{
-		board := NewDefaultBoard()
+		board := NewDefaultBoard5()
 		greenPawns, redPawns := board.CountPawnsInTargetAreas()
 		assert.Equal(t, int8(0), greenPawns, "should have no green pawn in target area")
 		assert.Equal(t, int8(0), redPawns, "should have no red pawn in target area")
 	}
 
 	{
-		board := NewDefaultBoard()
+		board := NewDefaultBoard5()
 		board.Board = [][]Cell{
 			{2, 2, 2, 0, 0},
 			{2, 2, 0, 0, 0},
@@ -379,7 +382,7 @@ func TestPawnsInTargetArea(t *testing.T) {
 	}
 
 	{
-		board := NewDefaultBoard()
+		board := NewDefaultBoard5()
 		board.Board = [][]Cell{
 			{2, 0, 0, 0, 2},
 			{0, 0, 0, 2, 0},
@@ -395,7 +398,7 @@ func TestPawnsInTargetArea(t *testing.T) {
 
 func TestWinner(t *testing.T) {
 	{
-		board := NewDefaultBoard()
+		board := NewDefaultBoard5()
 		board.Board = [][]Cell{
 			{2, 0, 0, 0, 2},
 			{0, 0, 0, 2, 0},
@@ -411,7 +414,7 @@ func TestWinner(t *testing.T) {
 	}
 
 	{
-		board := NewDefaultBoard()
+		board := NewDefaultBoard5()
 		board.Board = [][]Cell{
 			{2, 2, 2, 0, 2},
 			{2, 2, 0, 1, 0},
@@ -427,7 +430,7 @@ func TestWinner(t *testing.T) {
 	}
 
 	{
-		board := NewDefaultBoard()
+		board := NewDefaultBoard5()
 		board.Board = [][]Cell{
 			{2, 0, 2, 0, 2},
 			{0, 2, 0, 0, 0},
@@ -443,7 +446,7 @@ func TestWinner(t *testing.T) {
 	}
 
 	{
-		board := NewDefaultBoard()
+		board := NewDefaultBoard5()
 		board.Board = [][]Cell{
 			{2, 2, 2, 0, 0},
 			{2, 2, 0, 1, 0},

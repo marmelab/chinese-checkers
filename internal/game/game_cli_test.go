@@ -9,7 +9,7 @@ import (
 )
 
 func TestBoardPrinting(t *testing.T) {
-	expected := `     1    2    3    4    5  
+	expected := `     1    2    3    4    5   
  . +----+----+----+----+----+
  a | 🟢 | 🟢 | 🟢 |    |    |
  . +----+----+----+----+----+
@@ -24,13 +24,13 @@ func TestBoardPrinting(t *testing.T) {
 `
 
 	var output bytes.Buffer
-	DefaultBoard.Print(&output)
+	DefaultBoard5.Print(&output)
 
 	assert.Equal(t, expected, output.String(), "should have printed a default board")
 }
 
 func TestOngoingGameBoardPrinting(t *testing.T) {
-	expected := `     1    2    3    4    5  
+	expected := `     1    2    3    4    5   
  . +----+----+----+----+----+
  a |    | 🟢 | 🟢 |    |    |
  . +----+----+----+----+----+
@@ -54,7 +54,7 @@ func TestOngoingGameBoardPrinting(t *testing.T) {
 }
 
 func TestBoardPrintingWithPawnsInTargetArea(t *testing.T) {
-	expected := `     1    2    3    4    5  
+	expected := `     1    2    3    4    5   
  . +----+----+----+----+----+
  a | 🟢 | 🟢 |` + coloring.For(" 🔴 ").Background().Rgb(84, 0, 0).String() + `|    |    |
  . +----+----+----+----+----+
@@ -68,7 +68,7 @@ func TestBoardPrintingWithPawnsInTargetArea(t *testing.T) {
  . +----+----+----+----+----+
 `
 
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.Board = [][]Cell{
 		{1, 1, 2, 0, 0},
 		{1, 2, 0, 0, 0},
@@ -87,7 +87,7 @@ func TestBoardScorePrinting(t *testing.T) {
 	{
 		expected := "     " + coloring.For("Green").Bold().Green().String() + ": 0/6, " + coloring.For("Red").Bold().Red().String() + ": 0/6\n"
 
-		board := NewDefaultBoard()
+		board := NewDefaultBoard5()
 
 		var output bytes.Buffer
 		board.PrintScore(&output)
@@ -98,7 +98,7 @@ func TestBoardScorePrinting(t *testing.T) {
 	{
 		expected := "     " + coloring.For("Green").Bold().Green().String() + ": 3/6, " + coloring.For("Red").Bold().Red().String() + ": 3/6\n"
 
-		board := NewDefaultBoard()
+		board := NewDefaultBoard5()
 		board.Board = [][]Cell{
 			{1, 1, 2, 0, 0},
 			{1, 2, 0, 0, 0},
