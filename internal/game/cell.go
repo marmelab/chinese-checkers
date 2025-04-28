@@ -71,3 +71,13 @@ func (board BoardState) ParseMoveList(serializedMoveList string) ([]CellIdentifi
 	// Return the move list.
 	return moveList, nil
 }
+
+// Determine if the cell is in the provided mask.
+func (cell CellIdentifier) InMask(cellsMask [][]Cell) bool {
+	// Detect overflows in the provided mask.
+	if cell.Row >= int8(len(cellsMask)) || cell.Column >= int8(len(cellsMask[cell.Row])) {
+		return false
+	}
+
+	return cellsMask[cell.Row][cell.Column] > 0
+}

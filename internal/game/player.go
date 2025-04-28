@@ -21,3 +21,21 @@ func (player Player) Color() string {
 	}
 	return "red"
 }
+
+// Green player target area mask.
+var GreenTargetAreaMask = [][]Cell{
+	{0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 1},
+	{0, 0, 0, 1, 1},
+	{0, 0, 1, 1, 1},
+}
+
+// Green player target area mask.
+var RedTargetAreaMask = [][]Cell{
+	{1, 1, 1, 0, 0},
+	{1, 1, 0, 0, 0},
+	{1, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0},
+	{0, 0, 0, 0, 0},
+}

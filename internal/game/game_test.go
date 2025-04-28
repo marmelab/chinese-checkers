@@ -355,3 +355,40 @@ func TestJumpMoves(t *testing.T) {
 	// Diagonal jump is disallowed.
 	assert.Equal(t, "'c2' cannot be reached from 'a4'", board.MovePawn("a4,c2").Error(), "should return an illegal move error")
 }
+
+func TestPawnsInTargetArea(t *testing.T) {
+	{
+		board := NewDefaultBoard()
+		greenPawns, redPawns := board.CountPawnsInTargetAreas()
+		assert.Equal(t, int8(0), greenPawns, "should have no green pawn in target area")
+		assert.Equal(t, int8(0), redPawns, "should have no red pawn in target area")
+	}
+
+	{
+		board := NewDefaultBoard()
+		board.Board = [][]Cell{
+			{2, 2, 2, 0, 0},
+			{2, 2, 0, 0, 0},
+			{2, 0, 0, 0, 1},
+			{0, 0, 0, 1, 1},
+			{0, 0, 1, 1, 1},
+		}
+		greenPawns, redPawns := board.CountPawnsInTargetAreas()
+		assert.Equal(t, int8(6), greenPawns, "should have 6 green pawns in target area")
+		assert.Equal(t, int8(6), redPawns, "should have 6 red pawns in target area")
+	}
+
+	{
+		board := NewDefaultBoard()
+		board.Board = [][]Cell{
+			{2, 0, 0, 0, 2},
+			{0, 0, 0, 2, 0},
+			{0, 0, 2, 1, 1},
+			{0, 2, 1, 0, 1},
+			{2, 0, 1, 0, 1},
+		}
+		greenPawns, redPawns := board.CountPawnsInTargetAreas()
+		assert.Equal(t, int8(4), greenPawns, "should have 4 green pawns in target area")
+		assert.Equal(t, int8(1), redPawns, "should have 1 red pawn in target area")
+	}
+}

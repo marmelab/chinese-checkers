@@ -34,6 +34,14 @@ var DefaultBoard = BoardState{
 	stateFile:     nil,
 }
 
+// Initialize a default board state.
+func NewDefaultBoard() *BoardState {
+	board := DefaultBoard.Clone()
+	// Chose a random player to start.
+	board.CurrentPlayer = RandomPlayer()
+	return board
+}
+
 // Initialize a board from a state file.
 func NewBoardFromStateFile(filePath string) (*BoardState, error) {
 	// Fully read the provided file.
@@ -123,6 +131,17 @@ func (board *BoardState) Clone() *BoardState {
 	}
 
 	return clonedBoard
+}
+
+// Save the board state in memory.
+func (board *BoardState) SaveState(filePath string) error {
+	// Convert the board to JSON.
+	boardJson, err := json.Marshal(board)
+	if err != nil {
+		return err
+	}
+	// Write the new state file.
+	return os.WriteFile(filePath, boardJson, 0644)
 }
 
 // Check that the provided move is legal.
@@ -269,21 +288,21 @@ func (board *BoardState) MovePawnAndSave(serializedMoveList string) error {
 	return nil
 }
 
-// Initialize a default board state.
-func NewDefaultBoard() *BoardState {
-	board := DefaultBoard.Clone()
-	// Chose a random player to start.
-	board.CurrentPlayer = RandomPlayer()
-	return board
-}
+// Count pawns of each player that are in the player target area.
+func (board BoardState) CountPawnsInTargetAreas() (greenPawns int8, redPawns int8) {
+	// Evaluate all cells of the board to determine if there is a pawn in the target area.
+	for rowIndex, row := range board.Board {
+		for columnIndex, cell := range row {
+			// Initialize a cell position.
+			cellPos := CellIdentifier{int8(rowIndex), int8(columnIndex)}
 
-// Save the board state in memory.
-func (board *BoardState) SaveState(filePath string) error {
-	// Convert the board to JSON.
-	boardJson, err := json.Marshal(board)
-	if err != nil {
-		return err
+			// Increment the pawns counter of the player if it is in the target area mask.
+			if cell == GreenCell && cellPos.InMask(GreenTargetAreaMask) {
+				greenPawns++
+			} else if cell == RedCell && cellPos.InMask(RedTargetAreaMask) {
+				redPawns++
+			}
+		}
 	}
-	// Write the new state file.
-	return os.WriteFile(filePath, boardJson, 0644)
+	return greenPawns, redPawns
 }

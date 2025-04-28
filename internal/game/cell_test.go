@@ -43,3 +43,46 @@ func TestMoveListFormatError(t *testing.T) {
 	_, err := DefaultBoard.ParseMoveList("a1,b,c3")
 	assert.Equal(t, "invalid cell format 'b'", err.Error(), "should be an invalid format error")
 }
+
+func TestCellInMask(t *testing.T) {
+	cell, err := DefaultBoard.ParseCellIdentifier("a1")
+	assert.Nil(t, err)
+	assert.True(t, cell.InMask([][]Cell{
+		{1, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0},
+	}))
+	assert.False(t, cell.InMask([][]Cell{
+		{0, 1, 1, 1, 1},
+		{1, 1, 1, 1, 1},
+		{1, 1, 1, 1, 1},
+		{1, 1, 1, 1, 1},
+		{1, 1, 1, 1, 1},
+	}))
+	assert.False(t, cell.InMask([][]Cell{}))
+}
+
+func TestCellInTargetAreas(t *testing.T) {
+	{
+		cell, err := DefaultBoard.ParseCellIdentifier("c1")
+		assert.Nil(t, err)
+		assert.False(t, cell.InMask(GreenTargetAreaMask))
+		assert.True(t, cell.InMask(RedTargetAreaMask))
+	}
+
+	{
+		cell, err := DefaultBoard.ParseCellIdentifier("d4")
+		assert.Nil(t, err)
+		assert.True(t, cell.InMask(GreenTargetAreaMask))
+		assert.False(t, cell.InMask(RedTargetAreaMask))
+	}
+
+	{
+		cell, err := DefaultBoard.ParseCellIdentifier("e2")
+		assert.Nil(t, err)
+		assert.False(t, cell.InMask(GreenTargetAreaMask))
+		assert.False(t, cell.InMask(RedTargetAreaMask))
+	}
+}
