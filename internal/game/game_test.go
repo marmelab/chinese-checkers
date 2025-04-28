@@ -105,6 +105,7 @@ func TestMovePawnInDefaultBoard(t *testing.T) {
 		},
 		CurrentPlayer:  Red,
 		gameDefinition: &gameDefinitions[0],
+		LastMove:       []CellIdentifier{{2, 0}, {2, 1}},
 	}
 
 	board := NewDefaultBoard5()
@@ -127,6 +128,7 @@ func TestMovePawnInOngoingGameBoard(t *testing.T) {
 		CurrentPlayer:  Green,
 		stateFile:      &stateFilePath,
 		gameDefinition: &gameDefinitions[0],
+		LastMove:       []CellIdentifier{{4, 3}, {4, 2}},
 	}
 
 	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
@@ -223,7 +225,7 @@ func TestMovePawnAndSave(t *testing.T) {
 	{ // The file should now have been updated with the expected board state.
 		board, err := NewBoardFromStateFile(testFilePath)
 		assert.Nil(t, err)
-		assert.Equal(t, expectedBoard, board, "saved board must be the default board with one moved pawn")
+		assert.Equal(t, expectedBoard, board, "saved board must be the default board with one moved pawn, and a saved last move")
 	}
 
 	os.Remove(testFilePath)
