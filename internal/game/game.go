@@ -208,21 +208,16 @@ func (board *BoardState) CheckBoardValidity() error {
 func (board *BoardState) Clone() *BoardState {
 	// Initialize a new board.
 	clonedBoard := &BoardState{
-		Board:         make([][]Cell, len(board.Board)),
-		CurrentPlayer: board.CurrentPlayer,
-		stateFile:     board.stateFile,
+		Board:          copyCellsArray(board.Board),
+		CurrentPlayer:  board.CurrentPlayer,
+		stateFile:      board.stateFile,
+		gameDefinition: new(GameDefinition), // Initialize a game definition pointer.
 	}
 
 	// Clone the game definition pointer.
-	clonedGameDefinition := *board.gameDefinition
-	clonedBoard.gameDefinition = &clonedGameDefinition
-
-	// Clone all rows of the board.
-	for rowIndex, row := range board.Board {
-		// Clone the current row.
-		clonedBoard.Board[rowIndex] = make([]Cell, len(row))
-		copy(clonedBoard.Board[rowIndex], row)
-	}
+	*clonedBoard.gameDefinition = *board.gameDefinition
+	clonedBoard.gameDefinition.GreenTargetAreaMask = copyCellsArray(board.gameDefinition.GreenTargetAreaMask)
+	clonedBoard.gameDefinition.RedTargetAreaMask = copyCellsArray(board.gameDefinition.RedTargetAreaMask)
 
 	return clonedBoard
 }

@@ -78,6 +78,8 @@ func TestBoardCloning(t *testing.T) {
 	assert.NotSame(t, &DefaultBoard5.Board, &clonedBoard.Board, "shouldn't be the same pointer")
 	assert.NotSame(t, &DefaultBoard5.Board[0], &clonedBoard.Board[0], "shouldn't be the same pointer")
 	assert.NotSame(t, DefaultBoard5.gameDefinition, clonedBoard.gameDefinition, "shouldn't be the same pointer")
+	assert.NotSame(t, &DefaultBoard5.gameDefinition.GreenTargetAreaMask[0], &clonedBoard.gameDefinition.GreenTargetAreaMask[0], "shouldn't be the same pointer")
+	assert.NotSame(t, &DefaultBoard5.gameDefinition.RedTargetAreaMask[0], &clonedBoard.gameDefinition.RedTargetAreaMask[0], "shouldn't be the same pointer")
 
 	// Test to clone a loaded dashboard.
 	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
@@ -88,6 +90,8 @@ func TestBoardCloning(t *testing.T) {
 	assert.NotSame(t, &DefaultBoard5.Board, &clonedBoard.Board, "shouldn't be the same pointer")
 	assert.NotSame(t, &DefaultBoard5.Board[0], &clonedBoard.Board[0], "shouldn't be the same pointer")
 	assert.NotSame(t, DefaultBoard5.gameDefinition, clonedBoard.gameDefinition, "shouldn't be the same pointer")
+	assert.NotSame(t, &DefaultBoard5.gameDefinition.GreenTargetAreaMask[0], &clonedBoard.gameDefinition.GreenTargetAreaMask[0], "shouldn't be the same pointer")
+	assert.NotSame(t, &DefaultBoard5.gameDefinition.RedTargetAreaMask[0], &clonedBoard.gameDefinition.RedTargetAreaMask[0], "shouldn't be the same pointer")
 }
 
 func TestMovePawnInDefaultBoard(t *testing.T) {
