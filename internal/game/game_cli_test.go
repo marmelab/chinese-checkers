@@ -9,7 +9,7 @@ import (
 )
 
 func TestBoardPrinting(t *testing.T) {
-	expected := `     1    2    3    4    5  
+	expected := `     1    2    3    4    5   
  . +----+----+----+----+----+
  a | 🟢 | 🟢 | 🟢 |    |    |
  . +----+----+----+----+----+
@@ -24,13 +24,13 @@ func TestBoardPrinting(t *testing.T) {
 `
 
 	var output bytes.Buffer
-	DefaultBoard.Print(&output)
+	DefaultBoard5.Print(&output)
 
 	assert.Equal(t, expected, output.String(), "should have printed a default board")
 }
 
 func TestOngoingGameBoardPrinting(t *testing.T) {
-	expected := `     1    2    3    4    5  
+	expected := `     1    2    3    4    5   
  . +----+----+----+----+----+
  a |    | 🟢 | 🟢 |    |    |
  . +----+----+----+----+----+
@@ -53,8 +53,36 @@ func TestOngoingGameBoardPrinting(t *testing.T) {
 	assert.Equal(t, expected, output.String(), "should have printed an ongoing game board")
 }
 
+func TestOngoing7x7GameBoardPrinting(t *testing.T) {
+	expected := `     1    2    3    4    5    6    7   
+ . +----+----+----+----+----+----+----+
+ a |    | 🟢 | 🟢 |    |    |    |    |
+ . +----+----+----+----+----+----+----+
+ b | 🟢 | 🟢 | 🟢 | 🟢 |    |    |    |
+ . +----+----+----+----+----+----+----+
+ c | 🟢 | 🟢 |    |    |    |    |    |
+ . +----+----+----+----+----+----+----+
+ d | 🟢 |    | 🟢 |    |    |    | 🔴 |
+ . +----+----+----+----+----+----+----+
+ e |    |    |    |    |    | 🔴 | 🔴 |
+ . +----+----+----+----+----+----+----+
+ f |    |    | 🔴 | 🔴 | 🔴 | 🔴 |    |
+ . +----+----+----+----+----+----+----+
+ g |    |    |    | 🔴 |    | 🔴 | 🔴 |
+ . +----+----+----+----+----+----+----+
+`
+
+	board, err := NewBoardFromStateFile(ongoing7x7GameStateTestPath)
+
+	var output bytes.Buffer
+	board.Print(&output)
+
+	assert.Nil(t, err)
+	assert.Equal(t, expected, output.String(), "should have printed an ongoing game board")
+}
+
 func TestBoardPrintingWithPawnsInTargetArea(t *testing.T) {
-	expected := `     1    2    3    4    5  
+	expected := `     1    2    3    4    5   
  . +----+----+----+----+----+
  a | 🟢 | 🟢 |` + coloring.For(" 🔴 ").Background().Rgb(84, 0, 0).String() + `|    |    |
  . +----+----+----+----+----+
@@ -68,7 +96,7 @@ func TestBoardPrintingWithPawnsInTargetArea(t *testing.T) {
  . +----+----+----+----+----+
 `
 
-	board := NewDefaultBoard()
+	board := NewDefaultBoard5()
 	board.Board = [][]Cell{
 		{1, 1, 2, 0, 0},
 		{1, 2, 0, 0, 0},
@@ -87,7 +115,7 @@ func TestBoardScorePrinting(t *testing.T) {
 	{
 		expected := "     " + coloring.For("Green").Bold().Green().String() + ": 0/6, " + coloring.For("Red").Bold().Red().String() + ": 0/6\n"
 
-		board := NewDefaultBoard()
+		board := NewDefaultBoard5()
 
 		var output bytes.Buffer
 		board.PrintScore(&output)
@@ -98,13 +126,33 @@ func TestBoardScorePrinting(t *testing.T) {
 	{
 		expected := "     " + coloring.For("Green").Bold().Green().String() + ": 3/6, " + coloring.For("Red").Bold().Red().String() + ": 3/6\n"
 
-		board := NewDefaultBoard()
+		board := NewDefaultBoard5()
 		board.Board = [][]Cell{
 			{1, 1, 2, 0, 0},
 			{1, 2, 0, 0, 0},
 			{2, 0, 0, 0, 1},
 			{0, 0, 0, 1, 2},
 			{0, 0, 1, 2, 2},
+		}
+
+		var output bytes.Buffer
+		board.PrintScore(&output)
+
+		assert.Equal(t, expected, output.String(), "should have printed an accurate scoreboard")
+	}
+
+	{
+		expected := "     " + coloring.For("Green").Bold().Green().String() + ": 3/10, " + coloring.For("Red").Bold().Red().String() + ": 3/10\n"
+
+		board := NewDefaultBoard7()
+		board.Board = [][]Cell{
+			{1, 1, 2, 0, 0, 0, 1},
+			{1, 2, 0, 0, 0, 0, 0},
+			{2, 0, 0, 0, 1, 2, 2},
+			{0, 0, 0, 1, 2, 0, 0},
+			{0, 0, 1, 2, 2, 0, 0},
+			{0, 0, 0, 0, 2, 0, 1},
+			{0, 0, 0, 0, 2, 1, 1},
 		}
 
 		var output bytes.Buffer
