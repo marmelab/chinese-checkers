@@ -44,9 +44,10 @@ func (board *BoardState) Print(writer io.Writer) {
 
 // Print the current game score.
 func (board *BoardState) PrintScore(writer io.Writer) {
+	greenPawns, redPawns := board.CountPawnsInTargetAreas()
 	fmt.Fprintf(writer,
 		"     "+Green.ColoredName()+": %d/%d, "+Red.ColoredName()+": %d/%d\n",
-		board.CountGreenPawnsInTargetArea(), PlayerPawnsNumber,
-		board.CountRedPawnsInTargetArea(), PlayerPawnsNumber,
+		greenPawns, PlayerPawnsNumber,
+		redPawns, PlayerPawnsNumber,
 	)
 }
