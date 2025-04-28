@@ -85,7 +85,7 @@ func TestBoardPrintingWithPawnsInTargetArea(t *testing.T) {
 
 func TestBoardScorePrinting(t *testing.T) {
 	{
-		expected := coloring.For("Green").Bold().Green().String() + ": 0/6, " + coloring.For("Red").Bold().Red().String() + ": 0/6\n"
+		expected := "     " + coloring.For("Green").Bold().Green().String() + ": 0/6, " + coloring.For("Red").Bold().Red().String() + ": 0/6\n"
 
 		board := NewDefaultBoard()
 
@@ -96,7 +96,7 @@ func TestBoardScorePrinting(t *testing.T) {
 	}
 
 	{
-		expected := coloring.For("Green").Bold().Green().String() + ": 3/6, " + coloring.For("Red").Bold().Red().String() + ": 3/6\n"
+		expected := "     " + coloring.For("Green").Bold().Green().String() + ": 3/6, " + coloring.For("Red").Bold().Red().String() + ": 3/6\n"
 
 		board := NewDefaultBoard()
 		board.Board = [][]Cell{

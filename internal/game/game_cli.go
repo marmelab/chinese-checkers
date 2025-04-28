@@ -46,7 +46,7 @@ func (board *BoardState) Print(writer io.Writer) {
 func (board *BoardState) PrintScore(writer io.Writer) {
 	greenPawns, redPawns := board.CountPawnsInTargetAreas()
 	fmt.Fprintf(writer,
-		coloring.For("Green").Bold().Green().String()+": %d/%d, "+coloring.For("Red").Bold().Red().String()+": %d/%d\n",
+		"     "+Green.ColoredName()+": %d/%d, "+Red.ColoredName()+": %d/%d\n",
 		greenPawns, PlayerPawnsNumber,
 		redPawns, PlayerPawnsNumber,
 	)

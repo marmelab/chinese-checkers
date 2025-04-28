@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/go-color-term/go-color-term/coloring"
 	"github.com/spf13/cobra"
-	"golang.org/x/text/cases"
-	"golang.org/x/text/language"
 
 	"github.com/marmelab/chinese-checkers/internal/game"
 )
@@ -68,23 +67,38 @@ func RunCli() error {
 // Run the CLI infinite loop to interact with the game.
 func runGameLoop(board *game.BoardState) {
 	errMsg := ""
+	input := ""
 
 	for {
+		// Clear the screen.
+		fmt.Print("\033[H\033[2J")
+
+		println()
+
 		// Print the current board.
 		board.Print(os.Stdout)
-
-		// Print the previous error if there is one.
-		if len(errMsg) > 0 {
-			println(errMsg)
-			errMsg = ""
-		}
 
 		// Show the current score.
 		board.PrintScore(os.Stdout)
 
+		// Print the previous error if there is one.
+		if len(errMsg) > 0 {
+			println()
+
+			// Print the previous input if there is one.
+			if len(input) > 0 {
+				println(coloring.Cyan("Tried to play \"" + input + "\""))
+			}
+
+			println(coloring.Red("Error: " + errMsg))
+			errMsg = ""
+		}
+
+		println()
+
 		// Prompt the current player for a new move list.
-		fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", cases.Title(language.English).String(board.CurrentPlayer.Color()))
-		var input string
+		fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", board.CurrentPlayer.ColoredName())
+		input = ""
 		fmt.Scanln(&input)
 		println()
 
