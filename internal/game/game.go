@@ -289,9 +289,7 @@ func (board *BoardState) MovePawnAndSave(serializedMoveList string) error {
 }
 
 // Count pawns of each player that are in the player target area.
-func (board BoardState) CountPawnsInTargetAreas() (int8, int8) {
-	greenPawns := int8(0)
-	redPawns := int8(0)
+func (board BoardState) CountPawnsInTargetAreas() (greenPawns int8, redPawns int8) {
 	// Evaluate all cells of the board to determine if there is a pawn in the target area.
 	for rowIndex, row := range board.Board {
 		for columnIndex, cell := range row {
