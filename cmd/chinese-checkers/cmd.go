@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 
 	"github.com/go-color-term/go-color-term/coloring"
 	"github.com/spf13/cobra"
@@ -94,23 +95,37 @@ func runGameLoop(board *game.BoardState) {
 			errMsg = ""
 		}
 
-		println()
+		// If there is a winner, show them and exit.
+		if winner := board.GetWinner(); winner != game.None {
+			fmt.Printf("%s won the game!\n", winner.ColoredName())
 
-		// Prompt the current player for a new move list.
-		fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", board.CurrentPlayer.ColoredName())
-		input = ""
-		fmt.Scanln(&input)
-		println()
+			println()
 
-		// The provided move is empty, exit the game.
-		if len(input) == 0 {
-			println("Bye bye!")
+			print("Press enter to exit the game...")
+			// Do not display entered characters on the screen.
+			exec.Command("stty", "-F", "/dev/tty", "-echo").Run()
+			fmt.Scanln(&input)
+			println()
 			break
-		}
+		} else {
+			println()
 
-		// Try to move the pawn and store the error if there is one.
-		if err := board.MovePawnAndSave(input); err != nil {
-			errMsg = err.Error()
+			// Prompt the current player for a new move list.
+			fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", board.CurrentPlayer.ColoredName())
+			input = ""
+			fmt.Scanln(&input)
+			println()
+
+			// The provided move is empty, exit the game.
+			if len(input) == 0 {
+				println("Bye bye!")
+				break
+			}
+
+			// Try to move the pawn and store the error if there is one.
+			if err := board.MovePawnAndSave(input); err != nil {
+				errMsg = err.Error()
+			}
 		}
 	}
 }
