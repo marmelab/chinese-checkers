@@ -40,7 +40,7 @@ bash: ## Connect to the FrankenPHP container via bash so up and down arrows go t
 
 test: ## Start tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure"
 	@$(eval c ?=)
-	@$(DOCKER_COMP) run -e APP_ENV=test php bin/phpunit $(c)
+	@$(DOCKER_COMP) run --rm -e APP_ENV=test php bin/phpunit $(c)
 
 
 ## —— Composer 🧙 ——————————————————————————————————————————————————————————————
@@ -53,10 +53,10 @@ vendor: c=install --prefer-dist --no-dev --no-progress --no-scripts --no-interac
 vendor: composer
 
 install: ## Install dependencies according to the current composer.lock file
-	$(DOCKER_COMP) run php composer install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction
+	$(DOCKER_COMP) run --rm php composer install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction
 
 install-test: ## Install dependencies for testing the web application
-	$(DOCKER_COMP) run php composer install --prefer-dist --no-progress --no-scripts --no-interaction
+	$(DOCKER_COMP) run --rm php composer install --prefer-dist --no-progress --no-scripts --no-interaction
 
 ## —— Symfony 🎵 ———————————————————————————————————————————————————————————————
 sf: ## List all Symfony commands or pass the parameter "c=" to run a given command, example: make sf c=about
