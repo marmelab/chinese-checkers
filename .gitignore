@@ -1,5 +1,5 @@
 # Binaries
-bin/
+/bin/
 
 # Go build artifacts
 *.exe
