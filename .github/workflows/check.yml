@@ -50,8 +50,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Start
-        run: (cd web && make start)
+      - name: Build
+        run: (cd web && make build)
+
+      - name: Install
+        run: (cd web && make install)
 
       - name: Test
         run: (cd web && make test)
