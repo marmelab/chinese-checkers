@@ -54,7 +54,7 @@ jobs:
         run: (cd web && make build)
 
       - name: Install
-        run: (cd web && make install)
+        run: (cd web && make install-test)
 
       - name: Test
         run: (cd web && make test)
