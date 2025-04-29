@@ -52,6 +52,9 @@ vendor: ## Install vendors according to the current composer.lock file
 vendor: c=install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction
 vendor: composer
 
+install: ## Install dependencies according to the current composer.lock file
+	$(DOCKER_COMP) run php composer install --prefer-dist --no-dev --no-progress --no-scripts --no-interaction
+
 ## —— Symfony 🎵 ———————————————————————————————————————————————————————————————
 sf: ## List all Symfony commands or pass the parameter "c=" to run a given command, example: make sf c=about
 	@$(eval c ?=)
