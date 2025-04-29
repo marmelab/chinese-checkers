@@ -63,6 +63,36 @@ func TestLoadBoardWithInvalidPlayerInBoard(t *testing.T) {
 	assert.Equal(t, "3 is not a valid player ID", err.Error(), "should return an invalid player error")
 }
 
+func TestLoadBoardFromString(t *testing.T) {
+	expected := &BoardState{
+		Board: [][]Cell{
+			{0, 1, 1, 0, 0},
+			{0, 1, 0, 0, 0},
+			{1, 1, 0, 2, 0},
+			{1, 0, 2, 2, 2},
+			{0, 0, 0, 2, 2},
+		},
+		CurrentPlayer:  Red,
+		gameDefinition: &gameDefinitions[0],
+	}
+
+	board, err := NewBoardFromState([]byte(`
+{
+  "board": [
+    [0, 1, 1, 0, 0],
+    [0, 1, 0, 0, 0],
+    [1, 1, 0, 2, 0],
+    [1, 0, 2, 2, 2],
+    [0, 0, 0, 2, 2]
+  ],
+  "currentPlayer": 2
+}
+`))
+
+	assert.Nil(t, err)
+	assert.Equal(t, expected, board, "should be an ongoing game board")
+}
+
 func TestNewDefaultBoard(t *testing.T) {
 	expected := &DefaultBoard5
 	board := NewDefaultBoard5()
