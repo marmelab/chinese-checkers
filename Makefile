@@ -22,7 +22,7 @@ GO_PACKAGE=github.com/marmelab/chinese-checkers
 
 # Misc
 .DEFAULT_GOAL = help
-.PHONY        : help install build run deps lint vet check clean up start down logs sh bash test composer vendor composer-install composer-install-test sf cc
+.PHONY        : help install build cli deps lint vet check clean up web down logs sh bash test composer vendor composer-install composer-install-test sf cc
 
 ## —— Chinese Checkers ♟️ ——————————————————————————————————————————————————————
 help: ## Outputs this help screen
@@ -36,7 +36,7 @@ install: ## Builds the Docker images for cli and web apps.
 build: deps ## Build the Go binary (inside Docker).
 	@$(CHINESE_CHECKERS_RUN) go build -o bin/$(APP_NAME) ./cmd/$(APP_NAME)
 
-run: ## Run the application.
+cli: ## Run the CLI application.
 	@$(CHINESE_CHECKERS_RUN) go run $(GO_PACKAGE)/cmd/$(APP_NAME) $(APP_ARGS)
 
 deps: ## Tidy `go.mod` and `go.sum` files (inside Docker).
@@ -58,7 +58,7 @@ clean: ## Remove the built binary (inside Docker).
 up: ## Start web app in detached mode.
 	@$(DOCKER_COMP) up --detach
 
-start: build up ## Build and start the web application
+web: build up ## Build and start the web application
 
 down: ## Stop web app
 	@$(DOCKER_COMP) down --remove-orphans
