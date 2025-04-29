@@ -2,12 +2,12 @@
 services:
   php:
     build:
-      context: .
+      context: web
       target: frankenphp_dev
     volumes:
-      - ./:/app
-      - ./frankenphp/Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./frankenphp/conf.d/20-app.dev.ini:/usr/local/etc/php/app.conf.d/20-app.dev.ini:ro
+      - ./web:/app
+      - ./web/frankenphp/Caddyfile:/etc/caddy/Caddyfile:ro
+      - ./web/frankenphp/conf.d/20-app.dev.ini:/usr/local/etc/php/app.conf.d/20-app.dev.ini:ro
       # If you develop on Mac or Windows you can remove the vendor/ directory
       #  from the bind-mount for better performance by enabling the next line:
       #- /app/vendor
