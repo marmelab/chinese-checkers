@@ -22,7 +22,7 @@ GO_PACKAGE=github.com/marmelab/chinese-checkers
 
 # Misc
 .DEFAULT_GOAL = help
-.PHONY        : help install build start-cli deps lint vet check clean up start-web-app down logs sh bash test composer vendor composer-install composer-install-test sf cc
+.PHONY        : help install build-cli build-api start-cli deps lint vet check clean up start-web-app down logs sh bash test composer vendor composer-install composer-install-test sf cc
 
 ## —— Chinese Checkers ♟️ ——————————————————————————————————————————————————————
 help: ## Outputs this help screen
@@ -33,8 +33,11 @@ install: ## Builds the Docker images for cli and web apps.
 
 ## —— CLI app ⌨️ ———————————————————————————————————————————————————————————————
 
-build: deps ## Build the Go binary (inside Docker).
+build-cli: deps ## Build the Go binary (inside Docker).
 	@$(CHINESE_CHECKERS_RUN) go build -o bin/$(APP_NAME) ./cmd/$(APP_NAME)
+
+build-api: deps ## Build the API binary (inside Docker).
+	@$(CHINESE_CHECKERS_RUN) go build -o bin/game-api ./api/$(APP_NAME)
 
 start-cli: ## Run the CLI application.
 	@$(CHINESE_CHECKERS_RUN) go run $(GO_PACKAGE)/cmd/$(APP_NAME) $(APP_ARGS)
@@ -58,7 +61,7 @@ clean: ## Remove the built binary (inside Docker).
 up: ## Start web app in detached mode.
 	@$(DOCKER_COMP) up --detach
 
-start-web-app: build up ## Build and start the web application
+start-web-app: install build-api up ## Build and start the web application
 
 down: ## Stop web app
 	@$(DOCKER_COMP) down --remove-orphans
