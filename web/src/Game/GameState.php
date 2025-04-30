@@ -19,9 +19,9 @@ class GameState
 
 	/**
 	 * @param RequestStack $requestStack Request stack.
-	 * @param BoardService $boardService Board utilities.
+	 * @param BoardUtilities $boardUtilities Board utilities.
 	 */
-	public function __construct(private RequestStack $requestStack, private BoardService $boardService)
+	public function __construct(private RequestStack $requestStack, private BoardUtilities $boardUtilities)
 	{
 	}
 
@@ -32,7 +32,7 @@ class GameState
 	public function getDefaultGame(): Board
 	{
 		$board = new Board();
-		$board->board = $this->boardService->getDefaultGameBoard();
+		$board->board = $this->boardUtilities->getDefaultGameBoard();
 		$board->currentPlayer = Player::GREEN;
 		return $board;
 	}

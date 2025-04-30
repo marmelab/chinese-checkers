@@ -5,7 +5,7 @@ namespace App\Game;
 /**
  * Service with game board utilities.
  */
-class BoardService
+class BoardUtilities
 {
 	/**
 	 * Get the default game board.

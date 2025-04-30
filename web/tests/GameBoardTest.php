@@ -3,7 +3,7 @@
 namespace App\Tests;
 
 use App\Entity\Board;
-use App\Game\BoardService;
+use App\Game\BoardUtilities;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 /**
@@ -21,10 +21,10 @@ class GameBoardTest extends WebTestCase
 		$client = static::createClient();
 
 		/**
-		 * Get the board service.
-		 * @var BoardService $boardService
+		 * Get the board utilities.
+		 * @var BoardUtilities $boardUtilities
 		 */
-		$boardService = static::getContainer()->get(BoardService::class);
+		$boardUtilities = static::getContainer()->get(BoardUtilities::class);
 
 		$client->request("GET", "/");
 
@@ -47,7 +47,7 @@ class GameBoardTest extends WebTestCase
 
 		// Check the 7 row headers title.
 		foreach (range(0, 6) as $index)
-			$this->assertAnySelectorTextSame("th", $boardService->getRowName($index));
+			$this->assertAnySelectorTextSame("th", $boardUtilities->getRowName($index));
 
 		// Check the 7 column headers title.
 		foreach (range(1, 7) as $index)
