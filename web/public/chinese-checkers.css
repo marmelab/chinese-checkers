@@ -27,7 +27,7 @@ html, body
 	font-family: system-ui, sans-serif;
 }
 
-/* Game board style */
+/* Game board component */
 
 table.game-board
 {
@@ -64,7 +64,9 @@ table.game-board td.red-target
 	background: var(--board-red-background);
 }
 
-table.game-board .pawn
+/* Pawn component */
+
+.pawn
 {
 	margin: auto;
 	width: 1.66em;
@@ -73,11 +75,11 @@ table.game-board .pawn
 
 	background: var(--board-border);
 }
-table.game-board .pawn.red
+.pawn.red
 {
 	background: var(--board-red);
 }
-table.game-board .pawn.green
+.pawn.green
 {
 	background: var(--board-green);
 }
