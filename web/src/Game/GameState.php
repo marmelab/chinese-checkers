@@ -15,7 +15,7 @@ class GameState
 	/**
 	 * Name of the cookie to use for game state storage.
 	 */
-	const COOKIE_NAME = "game";
+	const string COOKIE_NAME = "game";
 
 	/**
 	 * @param RequestStack $requestStack Request stack.
