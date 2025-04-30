@@ -14,7 +14,7 @@
 		{# Render the game board content #}
 		{% for rowIndex, row in board %}
 		<tr>
-			<th>{{ (("a"|ord) + rowIndex)|chr }}</th>
+			<th>{{ rowName(rowIndex) }}</th>
 
 			{% for columnIndex, cell in row %}
 				{# Determine if the current cell is a red target. #}

@@ -2,7 +2,9 @@
 
 namespace App\Tests;
 
+use App\Game\BoardService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Test rendered game board.
@@ -15,8 +17,16 @@ class GameBoardTest extends WebTestCase
 	 */
 	public function testGameBoardView(): void
 	{
+		// Create test client.
 		$client = static::createClient();
-		$crawler = $client->request("GET", "/");
+
+		/**
+		 * Get the board service.
+		 * @var BoardService $boardService
+		 */
+		$boardService = static::getContainer()->get(BoardService::class);
+
+		$client->request("GET", "/");
 
 		$this->assertResponseIsSuccessful();
 
@@ -29,7 +39,7 @@ class GameBoardTest extends WebTestCase
 
 		// Check the 7 row headers.
 		foreach (range(0, 6) as $index)
-			$this->assertAnySelectorTextSame("th", chr(ord('a') + $index));
+			$this->assertAnySelectorTextSame("th", $boardService->rowName($index));
 
 		// Check the 7 column headers.
 		foreach (range(1, 7) as $index)
