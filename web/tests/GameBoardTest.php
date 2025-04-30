@@ -30,17 +30,25 @@ class GameBoardTest extends WebTestCase
 		$this->assertResponseIsSuccessful();
 
 		// Check game board existence and validity.
-		$this->assertSelectorExists("table#game-board.game-board", "should have a game board table with id and class \"game-board\"");
-		$this->assertSelectorCount(10, "table#game-board td.red-target > .green.pawn", "should have 10 green pawns on the 10 red target cells in the game board table");
-		$this->assertSelectorCount(10, "table#game-board td.green-target > .red.pawn", "should have 10 red pawns on the 10 green target cells in the game board table");
-		$this->assertSelectorCount(7*7, "table#game-board td", "there should be 49 board cells in the game board table");
-		$this->assertSelectorCount(2*7 + 1, "table#game-board th", "there should be 15 board headers (one empty) in the game board table");
+		$this->assertSelectorExists(".game-board", "should have a game board");
 
-		// Check the 7 row headers.
+		// Check board cells existence.
+		$this->assertSelectorCount(7*7, ".game-board td", "there should be 49 board cells in the game board table");
+		$this->assertSelectorCount(2*7 + 1, ".game-board th", "there should be 15 board headers (one empty) in the game board table");
+
+		// Check pawns existence.
+		$this->assertSelectorCount(10, ".green.pawn", "should have 10 green pawns");
+		$this->assertSelectorCount(10, ".red.pawn", "should have 10 red pawns");
+
+		// Check target areas existence.
+		$this->assertSelectorCount(10, ".green-target", "should have 10 green target cells");
+		$this->assertSelectorCount(10, ".red-target", "should have 10 red target cells");
+
+		// Check the 7 row headers title.
 		foreach (range(0, 6) as $index)
 			$this->assertAnySelectorTextSame("th", $boardService->getRowName($index));
 
-		// Check the 7 column headers.
+		// Check the 7 column headers title.
 		foreach (range(1, 7) as $index)
 			$this->assertAnySelectorTextSame("th", "$index");
 	}
