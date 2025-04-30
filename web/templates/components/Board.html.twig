@@ -13,12 +13,12 @@
 	{% for rowIndex, row in board %}
 		<tr>
 			{# Show the header of each row #}
-			<th>{{ rowName(rowIndex) }}</th>
+			<th>{{ getRowName(rowIndex) }}</th>
 
 			{% for columnIndex, cell in row %}
 				<td class="{{ inGreenTargetArea(rowIndex, columnIndex) ? "green-target" : (inRedTargetArea(rowIndex, columnIndex) ? "red-target") }}">
 					{% if cell > 0 %}
-						<twig:pawn player="{{ cell }}" />
+						<twig:Pawn player="{{ cell }}" />
 					{% endif %}
 				</td>
 			{% endfor %}

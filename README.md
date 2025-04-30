@@ -57,7 +57,7 @@ Clone the repository, then:
     install                        Builds the Docker images for cli and web apps.
      —— CLI app ⌨️ ———————————————————————————————————————————————————————————————
     build                          Build the Go binary (inside Docker).
-    cli                            Run the CLI application.
+    start-cli                      Run the CLI application.
     deps                           Tidy `go.mod` and `go.sum` files (inside Docker).
     lint                           Run `staticcheck` linter (inside Docker).
     vet                            Run `go vet` (inside Docker).
@@ -65,7 +65,7 @@ Clone the repository, then:
     clean                          Remove the built binary (inside Docker).
      —— Web app 🌐 ———————————————————————————————————————————————————————————————
     up                             Start web app in detached mode.
-    web                            Build and start the web application
+    start-web-app                  Build and start the web application
     down                           Stop web app
     logs                           Show live logs
     sh                             Connect to the FrankenPHP container
