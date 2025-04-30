@@ -94,6 +94,16 @@ func TestBoardCloning(t *testing.T) {
 	assert.NotSame(t, &DefaultBoard5.gameDefinition.RedTargetAreaMask[0], &clonedBoard.gameDefinition.RedTargetAreaMask[0], "shouldn't be the same pointer")
 }
 
+func TestPreviousPlayer(t *testing.T) {
+	board := NewDefaultBoard7()
+
+	board.CurrentPlayer = Red
+	assert.Equal(t, Green, board.GetPreviousPlayer(), "the previous player must be Green when the current player is Red")
+
+	board.CurrentPlayer = Green
+	assert.Equal(t, Red, board.GetPreviousPlayer(), "the previous player must be Red when the current player is Green")
+}
+
 func TestMovePawnInDefaultBoard(t *testing.T) {
 	expected := &BoardState{
 		Board: [][]Cell{
