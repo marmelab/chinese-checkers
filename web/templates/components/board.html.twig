@@ -3,6 +3,7 @@
 
 	<tr>
 		<th></th>
+		{# Show the header of each column #}
 		{% for columnIndex in board[0]|keys %}
 			<th>{{ columnIndex + 1 }}</th>
 		{% endfor %}
@@ -11,6 +12,7 @@
 	{# Render the game board content #}
 	{% for rowIndex, row in board %}
 		<tr>
+			{# Show the header of each row #}
 			<th>{{ rowName(rowIndex) }}</th>
 
 			{% for columnIndex, cell in row %}
