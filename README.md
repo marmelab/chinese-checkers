@@ -56,7 +56,8 @@ Clone the repository, then:
     help                           Outputs this help screen
     install                        Builds the Docker images for cli and web apps.
      —— CLI app ⌨️ ———————————————————————————————————————————————————————————————
-    build                          Build the Go binary (inside Docker).
+    build-cli                      Build the Go binary (inside Docker).
+    build-api                      Build the API binary (inside Docker).
     start-cli                      Run the CLI application.
     deps                           Tidy `go.mod` and `go.sum` files (inside Docker).
     lint                           Run `staticcheck` linter (inside Docker).
