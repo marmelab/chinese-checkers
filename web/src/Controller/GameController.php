@@ -22,7 +22,6 @@ class GameController extends AbstractController
 	{
 		return $this->render("game/index.html.twig", [
 			"board" => $boardService->getDefaultGameBoard(),
-			"targetAreaShape" => $boardService->getTargetAreaShape(),
 		]);
 	}
 }
