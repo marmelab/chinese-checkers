@@ -11,11 +11,8 @@ import (
 func (board *BoardState) PrintLastMove(writer io.Writer) {
 	// Only print the last move if there actually is a last move.
 	if len(board.LastMove) > 0 {
-		// Find out who was the previous player.
-		previousPlayer := Green
-		if board.CurrentPlayer == Green {
-			previousPlayer = Red
-		}
+		// Find out who is the previous player.
+		previousPlayer := board.GetPreviousPlayer()
 
 		// Print the previous player move.
 		fmt.Fprintf(writer, "Last move from %s player: ", previousPlayer.ColoredName())
@@ -35,11 +32,8 @@ func (board *BoardState) PrintLastMove(writer io.Writer) {
 
 // Print the game board to the console.
 func (board *BoardState) Print(writer io.Writer) {
-	// Find out who was the previous player.
-	previousPlayer := Green
-	if board.CurrentPlayer == Green {
-		previousPlayer = Red
-	}
+	// Find out who is the previous player.
+	previousPlayer := board.GetPreviousPlayer()
 
 	// Columns indices.
 	fmt.Fprint(writer, "    ")
