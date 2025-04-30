@@ -161,3 +161,76 @@ func TestBoardScorePrinting(t *testing.T) {
 		assert.Equal(t, expected, output.String(), "should have printed an accurate scoreboard")
 	}
 }
+
+func TestBoardPrintLastMove(t *testing.T) {
+	board := NewDefaultBoard7()
+	board.CurrentPlayer = Green
+
+	err := board.MovePawn("b2,b4")
+	assert.Nil(t, err, "should move the pawn without error")
+
+	var output bytes.Buffer
+	board.PrintLastMove(&output)
+	assert.Equal(t, "Last move from "+coloring.For("Green").Bold().Green().String()+" player: b2, b4\n", output.String(), "should have an accurate last move")
+}
+
+func TestBoardPrintingWithLastMove(t *testing.T) {
+	board := NewDefaultBoard7()
+	board.CurrentPlayer = Green
+
+	err := board.MovePawn("b2,b4")
+	assert.Nil(t, err, "should move the pawn without error")
+
+	expected := `     1    2    3    4    5    6    7   
+ . +----+----+----+----+----+----+----+
+ a | 🟢 | 🟢 | 🟢 | 🟢 |    |    |    |
+ . +----+----+----+----+----+----+----+
+ b | 🟢 |` + coloring.For("  ⬤ ").Rgb(0, 70, 0).String() + `| 🟢 | 🟢 |    |    |    |
+ . +----+----+----+----+----+----+----+
+ c | 🟢 | 🟢 |    |    |    |    |    |
+ . +----+----+----+----+----+----+----+
+ d | 🟢 |    |    |    |    |    | 🔴 |
+ . +----+----+----+----+----+----+----+
+ e |    |    |    |    |    | 🔴 | 🔴 |
+ . +----+----+----+----+----+----+----+
+ f |    |    |    |    | 🔴 | 🔴 | 🔴 |
+ . +----+----+----+----+----+----+----+
+ g |    |    |    | 🔴 | 🔴 | 🔴 | 🔴 |
+ . +----+----+----+----+----+----+----+
+`
+
+	var output bytes.Buffer
+	board.Print(&output)
+	assert.Equal(t, expected, output.String(), "should have printed an default game board with one last move")
+}
+
+func TestBoardPrintingWithJumpAsLastMove(t *testing.T) {
+	board, err := NewBoardFromStateFile(ongoing7x7GameStateTestPath)
+	assert.Nil(t, err, "should load the board without error")
+	board.CurrentPlayer = Green
+
+	err = board.MovePawn("b2,d2,d4")
+	assert.Nil(t, err, "should move the pawn without error")
+
+	expected := `     1    2    3    4    5    6    7   
+ . +----+----+----+----+----+----+----+
+ a |    | 🟢 | 🟢 |    |    |    |    |
+ . +----+----+----+----+----+----+----+
+ b | 🟢 |` + coloring.For("  ⬤ ").Rgb(0, 70, 0).String() + `| 🟢 | 🟢 |    |    |    |
+ . +----+----+----+----+----+----+----+
+ c | 🟢 | 🟢 |    |    |    |    |    |
+ . +----+----+----+----+----+----+----+
+ d | 🟢 |` + coloring.For("  ⬤ ").Rgb(0, 70, 0).String() + `| 🟢 | 🟢 |    |    | 🔴 |
+ . +----+----+----+----+----+----+----+
+ e |    |    |    |    |    | 🔴 | 🔴 |
+ . +----+----+----+----+----+----+----+
+ f |    |    | 🔴 | 🔴 | 🔴 | 🔴 |    |
+ . +----+----+----+----+----+----+----+
+ g |    |    |    | 🔴 |    | 🔴 | 🔴 |
+ . +----+----+----+----+----+----+----+
+`
+
+	var output bytes.Buffer
+	board.Print(&output)
+	assert.Equal(t, expected, output.String(), "should have printed an default game board with one last move")
+}

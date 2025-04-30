@@ -15,8 +15,8 @@ const (
 )
 
 type CellIdentifier struct {
-	Row    int8
-	Column int8
+	Row    int8 `json:"row"`
+	Column int8 `json:"column"`
 }
 
 // Convert a cell identifier to its string format.

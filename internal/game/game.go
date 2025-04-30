@@ -64,8 +64,9 @@ var gameDefinitions = [...]GameDefinition{
 
 // The main board state.
 type BoardState struct {
-	Board          [][]Cell `json:"board"`
-	CurrentPlayer  Player   `json:"currentPlayer"`
+	Board          [][]Cell         `json:"board"`
+	CurrentPlayer  Player           `json:"currentPlayer"`
+	LastMove       []CellIdentifier `json:"lastMove,omitempty"`
 	stateFile      *string
 	gameDefinition *GameDefinition
 }
@@ -358,6 +359,9 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 	// Remove the start pawn from its previous position.
 	board.Board[moveList[0].Row][moveList[0].Column] = 0
 
+	// Store the current move list as the last move.
+	board.LastMove = moveList
+
 	// After moving a pawn, switch player turn.
 	if board.CurrentPlayer == Green {
 		board.CurrentPlayer = Red
@@ -419,4 +423,13 @@ func (board BoardState) GetWinner() Player {
 	}
 
 	return None
+}
+
+// Find out who is the previous player.
+func (board BoardState) GetPreviousPlayer() Player {
+	previousPlayer := Green
+	if board.CurrentPlayer == Green {
+		previousPlayer = Red
+	}
+	return previousPlayer
 }

@@ -7,8 +7,34 @@ import (
 	"github.com/go-color-term/go-color-term/coloring"
 )
 
+// Print the last move.
+func (board *BoardState) PrintLastMove(writer io.Writer) {
+	// Only print the last move if there actually is a last move.
+	if len(board.LastMove) > 0 {
+		// Find out who is the previous player.
+		previousPlayer := board.GetPreviousPlayer()
+
+		// Print the previous player move.
+		fmt.Fprintf(writer, "Last move from %s player: ", previousPlayer.ColoredName())
+
+		lastIndex := len(board.LastMove) - 1
+		for cellIndex, cell := range board.LastMove {
+			// Print each cell string, with a comma to separate move parts.
+			fmt.Fprint(writer, cell.String())
+			if cellIndex != lastIndex {
+				fmt.Fprint(writer, ", ")
+			}
+		}
+
+		fmt.Fprintln(writer)
+	}
+}
+
 // Print the game board to the console.
 func (board *BoardState) Print(writer io.Writer) {
+	// Find out who is the previous player.
+	previousPlayer := board.GetPreviousPlayer()
+
 	// Columns indices.
 	fmt.Fprint(writer, "    ")
 	for columnIndex := range board.Board[0] {
@@ -46,7 +72,24 @@ func (board *BoardState) Print(writer io.Writer) {
 				}
 				fmt.Fprint(writer, pawnCellStr)
 			} else {
-				fmt.Fprint(writer, "    ")
+				emptyCellStr := "    "
+
+				// Show a dimmed cell if it was the previous position of a cell.
+				for _, cellPos := range board.LastMove {
+					// Try to find a previous cell matching the current one.
+					if cellPos.Row == int8(rowIndex) && cellPos.Column == int8(columnIndex) {
+						// Build a small circle with a dimmed color of the previous player.
+						emptyCellBuilder := coloring.For("  ⬤ ")
+						if previousPlayer == Green {
+							emptyCellBuilder = emptyCellBuilder.Rgb(0, 70, 0)
+						} else {
+							emptyCellBuilder = emptyCellBuilder.Rgb(84, 0, 0)
+						}
+						emptyCellStr = emptyCellBuilder.String()
+						break
+					}
+				}
+				fmt.Fprint(writer, emptyCellStr)
 			}
 
 			fmt.Fprint(writer, "|")

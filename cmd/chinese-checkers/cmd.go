@@ -69,6 +69,7 @@ func RunCli() error {
 				// Print the board with the moved pawn and the current score.
 				board.Print(os.Stdout)
 				board.PrintScore(os.Stdout)
+				board.PrintLastMove(os.Stdout)
 
 				return nil
 			} else {
@@ -108,6 +109,9 @@ func runGameLoop(board *game.BoardState) {
 
 		// Show the current score.
 		board.PrintScore(os.Stdout)
+
+		// Print the last move.
+		board.PrintLastMove(os.Stdout)
 
 		// Print the previous error if there is one.
 		if len(errMsg) > 0 {

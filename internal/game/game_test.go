@@ -94,6 +94,16 @@ func TestBoardCloning(t *testing.T) {
 	assert.NotSame(t, &DefaultBoard5.gameDefinition.RedTargetAreaMask[0], &clonedBoard.gameDefinition.RedTargetAreaMask[0], "shouldn't be the same pointer")
 }
 
+func TestPreviousPlayer(t *testing.T) {
+	board := NewDefaultBoard7()
+
+	board.CurrentPlayer = Red
+	assert.Equal(t, Green, board.GetPreviousPlayer(), "the previous player must be Green when the current player is Red")
+
+	board.CurrentPlayer = Green
+	assert.Equal(t, Red, board.GetPreviousPlayer(), "the previous player must be Red when the current player is Green")
+}
+
 func TestMovePawnInDefaultBoard(t *testing.T) {
 	expected := &BoardState{
 		Board: [][]Cell{
@@ -105,6 +115,7 @@ func TestMovePawnInDefaultBoard(t *testing.T) {
 		},
 		CurrentPlayer:  Red,
 		gameDefinition: &gameDefinitions[0],
+		LastMove:       []CellIdentifier{{2, 0}, {2, 1}},
 	}
 
 	board := NewDefaultBoard5()
@@ -127,6 +138,7 @@ func TestMovePawnInOngoingGameBoard(t *testing.T) {
 		CurrentPlayer:  Green,
 		stateFile:      &stateFilePath,
 		gameDefinition: &gameDefinitions[0],
+		LastMove:       []CellIdentifier{{4, 3}, {4, 2}},
 	}
 
 	board, err := NewBoardFromStateFile(ongoingGameStateTestPath)
@@ -223,7 +235,7 @@ func TestMovePawnAndSave(t *testing.T) {
 	{ // The file should now have been updated with the expected board state.
 		board, err := NewBoardFromStateFile(testFilePath)
 		assert.Nil(t, err)
-		assert.Equal(t, expectedBoard, board, "saved board must be the default board with one moved pawn")
+		assert.Equal(t, expectedBoard, board, "saved board must be the default board with one moved pawn, and a saved last move")
 	}
 
 	os.Remove(testFilePath)
