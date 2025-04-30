@@ -4,7 +4,6 @@ namespace App\Tests;
 
 use App\Game\BoardService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Symfony\Component\DependencyInjection\Container;
 
 /**
  * Test rendered game board.
