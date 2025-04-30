@@ -44,7 +44,7 @@ class BoardService
 	 * @param int $rowIndex The row index.
 	 * @return string The row name.
 	 */
-	public function rowName(int $rowIndex): string
+	public function getRowName(int $rowIndex): string
 	{
 		// Get the ASCII code of 'a', and shift the ASCII code using the row index.
 		$ascii = ord('a') + $rowIndex;

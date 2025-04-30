@@ -21,7 +21,7 @@ class AppExtension extends AbstractExtension
 	{
 		return [
 			// Function to get a row name from a row index.
-			new TwigFunction("rowName", [$this->boardService, "rowName"]),
+			new TwigFunction("rowName", [$this->boardService, "getRowName"]),
 
 			// Functions to find out if a provided cell is in a target area.
 			new TwigFunction("inGreenTargetArea", [$this->boardService, "inGreenTargetArea"]),

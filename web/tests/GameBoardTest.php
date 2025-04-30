@@ -39,7 +39,7 @@ class GameBoardTest extends WebTestCase
 
 		// Check the 7 row headers.
 		foreach (range(0, 6) as $index)
-			$this->assertAnySelectorTextSame("th", $boardService->rowName($index));
+			$this->assertAnySelectorTextSame("th", $boardService->getRowName($index));
 
 		// Check the 7 column headers.
 		foreach (range(1, 7) as $index)
