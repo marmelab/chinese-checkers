@@ -12,6 +12,8 @@
 	--board-green: #24C217;
 	--board-red-background: #ebc7c7;
 	--board-red: #EA0A0A;
+
+	--board-cell-clickable-hover: rgba(0, 0, 0, 0.1);
 }
 
 /* General page styles */
@@ -45,8 +47,6 @@ table.game-board th
 }
 table.game-board td
 {
-	width: 2.5em;
-	height: 2.5em;
 	padding: 0;
 
 	border: solid var(--board-border) thin;
@@ -64,10 +64,32 @@ table.game-board td.red-target
 	background: var(--board-red-background);
 }
 
+table.game-board td button
+{
+	transition: 0.1s ease background;
+
+	width: 2.5em;
+	height: 2.5em;
+	padding: 0;
+
+	border: none;
+	background: none;
+}
+table.game-board td button:not(:disabled)
+{
+	cursor: pointer;
+}
+table.game-board td button:not(:disabled):hover
+{
+	background: var(--board-cell-clickable-hover);
+}
+
 /* Pawn component */
 
 .pawn
 {
+	display: block;
+
 	margin: auto;
 	width: 1.66em;
 	height: 1.66em;

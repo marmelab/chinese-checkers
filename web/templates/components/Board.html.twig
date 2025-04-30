@@ -16,11 +16,7 @@
 			<th>{{ getRowName(rowIndex) }}</th>
 
 			{% for columnIndex, cell in row %}
-				<td class="{{ inGreenTargetArea(rowIndex, columnIndex) ? "green-target" : (inRedTargetArea(rowIndex, columnIndex) ? "red-target") }}">
-					{% if cell > 0 %}
-						<twig:Pawn player="{{ cell }}" />
-					{% endif %}
-				</td>
+				<twig:Cell cell="{{ cell }}" rowIndex="{{ rowIndex }}" columnIndex="{{ columnIndex }}" />
 			{% endfor %}
 		</tr>
 	{% endfor %}

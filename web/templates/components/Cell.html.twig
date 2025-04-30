@@ -1,0 +1,7 @@
+<td class="{{ inGreenTargetArea(rowIndex, columnIndex) ? "green-target" : (inRedTargetArea(rowIndex, columnIndex) ? "red-target") }}">
+	<button {{ cell == 0 ? "disabled" }}>
+		{% if cell > 0 %}
+			<twig:Pawn player="{{ cell }}" />
+		{% endif %}
+	</button>
+</td>
