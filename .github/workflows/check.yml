@@ -43,5 +43,5 @@ jobs:
       - name: Install web dependencies
         run: make composer-install-test
 
-      - name: Test
-        run: make test
+      - name: Run the web app and test
+        run: make start-web-app && make test && make down
