@@ -1,0 +1,85 @@
+/* Page colors */
+
+:root
+{
+	--background: #FFFFFF;
+	--foreground: #080808;
+
+	--board-border: #545454;
+	--board-background: #F4F4F4;
+
+	--board-green-background: #cbe6ca;
+	--board-green: #24C217;
+	--board-red-background: #ebc7c7;
+	--board-red: #EA0A0A;
+}
+
+/* General page styles */
+
+html, body
+{
+	margin: 0;
+	padding: 0;
+
+	background: var(--background);
+	color: var(--foreground);
+
+	font-family: system-ui, sans-serif;
+}
+
+/* Game board component */
+
+table.game-board
+{
+	margin: 6em;
+	border-collapse: collapse;
+
+	transform: rotate(45deg);
+}
+table.game-board th
+{
+	padding: 0 0.3em;
+	font-size: 1.1em;
+	font-weight: 500;
+	transform: rotate(-45deg);
+}
+table.game-board td
+{
+	width: 2.5em;
+	height: 2.5em;
+	padding: 0;
+
+	border: solid var(--board-border) thin;
+	background: var(--board-background);
+
+	text-align: center;
+	vertical-align: middle;
+}
+table.game-board td.green-target
+{
+	background: var(--board-green-background);
+}
+table.game-board td.red-target
+{
+	background: var(--board-red-background);
+}
+
+/* Pawn component */
+
+.pawn
+{
+	margin: auto;
+	width: 1.66em;
+	height: 1.66em;
+	border-radius: 1.66em;
+
+	background: var(--board-border);
+}
+.pawn.red
+{
+	background: var(--board-red);
+}
+.pawn.green
+{
+	background: var(--board-green);
+}

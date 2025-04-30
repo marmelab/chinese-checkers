@@ -5,12 +5,11 @@ A simple two-player Chinese Checkers game playable in the terminal, written in G
 ## Features ✨
 
 - Standard Go project structure (`cmd/`, `internal/`).
+- Web application (`web/`).
 - `Makefile` for automating common development tasks (build, test, lint, run).
 - `Dockerfile` for a consistent Go development environment with necessary tools (including `staticcheck`).
+- `web/Dockerfile` for easy deployment and local tests.
 - Linting configured with `staticcheck`.
-- Basic `HelloWorld` example function with a corresponding unit test.
-- Development workflow entirely containerized via Docker.
-- Ready for further development of the Chinese Checkers game logic!
 
 ## 🛠️ Requirements
 
@@ -19,21 +18,21 @@ Before you begin, ensure you have the following installed:
 - **Docker:** To build and run the development container. [Install Docker](https://docs.docker.com/get-docker/)
 - **Make:** To use the Makefile automation. (Usually pre-installed on Linux/macOS, may need installation on Windows).
 
-_(Note: Go and staticcheck do NOT need to be installed locally.)_
+_(Note: PHP, Go and staticcheck do NOT need to be installed locally.)_
 
 ## 🚀 Getting Started
 
 Clone the repository, then:
 
 1.  **Install the development Docker Image:**
-    This creates the container image with the Go environment and tools. Run this once initially, or when the `Dockerfile` changes.
+    This creates the container images with the Go environment and tools, and the PHP environment. Run this once initially, or when the `Dockerfile` or `web/Dockerfile` changes.
 
     ```bash
     make install
     ```
 
 2.  **Run the CLI:**
-    This runs the project inside the container.
+    This runs the CLI game inside the container.
 
     ```bash
 		# Show help.
@@ -43,7 +42,7 @@ Clone the repository, then:
     ```
 
 3.  **Test:**
-    Runs all Go tests inside the container.
+    Runs all PHP and Go tests inside containers.
 
     ```bash
     make test
@@ -53,29 +52,36 @@ Clone the repository, then:
     With the container running, use standard `make` commands directly from your terminal. They automatically execute _inside_ the Docker container:
 
     ```bash
-    make build                          Build the Go binary (inside Docker).
-    make check                          Run `staticcheck` and `go vet` (inside Docker).
-    make clean                          Remove the built binary (inside Docker).
-    make deps                           Tidy `go.mod` and `go.sum` files (inside Docker).
-    make docker-exec                    Run a command inside the docker container - Example: make docker-exec CMD="ls -l"
-    make install                        Build the Docker development image.
-    make lint                           Run `staticcheck` linter (inside Docker).
-    make run                            run the application.
-    make test                           Run Go tests (inside Docker).
-    make vet                            Run `go vet` (inside Docker).
+     —— Chinese Checkers ♟️ ——————————————————————————————————————————————————————
+    help                           Outputs this help screen
+    install                        Builds the Docker images for cli and web apps.
+     —— CLI app ⌨️ ———————————————————————————————————————————————————————————————
+    build                          Build the Go binary (inside Docker).
+    start-cli                      Run the CLI application.
+    deps                           Tidy `go.mod` and `go.sum` files (inside Docker).
+    lint                           Run `staticcheck` linter (inside Docker).
+    vet                            Run `go vet` (inside Docker).
+    check                          Run `staticcheck` and `go vet` (inside Docker).
+    clean                          Remove the built binary (inside Docker).
+     —— Web app 🌐 ———————————————————————————————————————————————————————————————
+    up                             Start web app in detached mode.
+    start-web-app                  Build and start the web application
+    down                           Stop web app
+    logs                           Show live logs
+    sh                             Connect to the FrankenPHP container
+    bash                           Connect to the FrankenPHP container via bash so up and down arrows go to previous commands
+    test                           Run tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure"
+     —— Composer 🧙 ——————————————————————————————————————————————————————————————
+    composer                       Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'
+    vendor                         Install vendors according to the current composer.lock file
+    composer-install               Install web app dependencies according to the current composer.lock file
+    composer-install-test          Install dependencies for testing the web app
+     —— Symfony 🎵 ———————————————————————————————————————————————————————————————
+    sf                             List all Symfony commands or pass the parameter "c=" to run a given command, example: make sf c=about
+    cc                             Clear the cache
     ```
 
     _(See Makefile Targets below or run `make help` for all commands)_
-
-5.  **Accessing the Container Shell (Optional):**
-    If you need direct shell access inside the container:
-
-    ```bash
-    docker exec -it chinese-checkers-dev-instance bash
-    # Now you are inside the container at /app
-    # You can run Go commands (go test...) or make commands directly here.
-    # Type 'exit' to leave the container shell
-    ```
 
 ## 🧱 Project Structure (main folders)
 
@@ -83,4 +89,5 @@ Clone the repository, then:
 cmd/chinese-checkers/ # Main entry point
 internal/game/        # Core game logic
 bin/                  # Binary file
+web/                  # Web application (Symfony)
 ```

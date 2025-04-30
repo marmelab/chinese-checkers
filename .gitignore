@@ -1,9 +1,8 @@
 # Binaries
-bin/
+/bin/
 
 # Go build artifacts
 *.exe
-*.test
 *.out
 .cache/
 

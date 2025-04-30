@@ -39,7 +39,9 @@ jobs:
           
       - name: Build
         run: make build
+        
+      - name: Install web dependencies
+        run: make composer-install-test
 
       - name: Test
         run: make test
-

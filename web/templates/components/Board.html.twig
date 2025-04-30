@@ -1,0 +1,29 @@
+<table id="game-board" class="game-board">
+	<tbody>
+
+	<tr>
+		<th></th>
+		{# Show the header of each column #}
+		{% for columnIndex in board[0]|keys %}
+			<th>{{ columnIndex + 1 }}</th>
+		{% endfor %}
+	</tr>
+
+	{# Render the game board content #}
+	{% for rowIndex, row in board %}
+		<tr>
+			{# Show the header of each row #}
+			<th>{{ getRowName(rowIndex) }}</th>
+
+			{% for columnIndex, cell in row %}
+				<td class="{{ inGreenTargetArea(rowIndex, columnIndex) ? "green-target" : (inRedTargetArea(rowIndex, columnIndex) ? "red-target") }}">
+					{% if cell > 0 %}
+						<twig:Pawn player="{{ cell }}" />
+					{% endif %}
+				</td>
+			{% endfor %}
+		</tr>
+	{% endfor %}
+
+	</tbody>
+</table>
