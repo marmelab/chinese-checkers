@@ -436,3 +436,12 @@ func (board BoardState) GetWinner() Player {
 
 	return None
 }
+
+// Find out who is the previous player.
+func (board BoardState) GetPreviousPlayer() Player {
+	previousPlayer := Green
+	if board.CurrentPlayer == Green {
+		previousPlayer = Red
+	}
+	return previousPlayer
+}

@@ -1,36 +1,5 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-	<table id="game-board" class="game-board">
-		<tbody>
-
-		<tr>
-			<th></th>
-			{% for columnIndex in board[0]|keys %}
-				<th>{{ columnIndex + 1 }}</th>
-			{% endfor %}
-		</tr>
-
-		{# Render the game board content #}
-		{% for rowIndex, row in board %}
-		<tr>
-			<th>{{ (("a"|ord) + rowIndex)|chr }}</th>
-
-			{% for columnIndex, cell in row %}
-				{# Determine if the current cell is a red target. #}
-				{% set redTarget = targetAreaShape[rowIndex][columnIndex] | default(0) %}
-				{# Determine if the current cell is a green target. #}
-				{% set greenTarget = targetAreaShape[board|length - 1 - rowIndex][row|length - 1 - columnIndex] | default(0) %}
-
-				<td class="{{ greenTarget ? "green-target" : (redTarget ? "red-target") }}">
-					{% if cell > 0 %}
-						<twig:pawn player="{{ cell }}" />
-					{% endif %}
-				</td>
-			{% endfor %}
-		</tr>
-		{% endfor %}
-
-		</tbody>
-	</table>
+	<twig:board board="{{ board }}" />
 {% endblock %}
