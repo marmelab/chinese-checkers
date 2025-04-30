@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Entity\Board;
 use App\Game\BoardService;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -51,5 +52,10 @@ class GameBoardTest extends WebTestCase
 		// Check the 7 column headers title.
 		foreach (range(1, 7) as $index)
 			$this->assertAnySelectorTextSame("th", "$index");
+
+		// Check the game cookie.
+		$this->assertResponseHasCookie("game");
+		$this->assertNotNull($rawBoard = json_decode($client->getCookieJar()->get("game")->getValue()), "the game cookie should contain a valid and decodable JSON");
+		$this->assertNotNull(Board::fromRaw($rawBoard), "the game cookie should successfully instantiate a board");
 	}
 }

@@ -64,12 +64,7 @@ class GameApi
 
 			// Success, parse the updated board and return it.
 			$rawBoard = json_decode($response->getContent());
-
-			$board = new Board();
-			$board->board = $rawBoard->board;
-			$board->currentPlayer = Player::from($rawBoard->currentPlayer);
-
-			return $board;
+			return Board::fromRaw($rawBoard);
 		}
 		catch (ClientException $exception)
 		{ // Error, throw an exception.
