@@ -68,8 +68,6 @@ button
 	background: var(--button-background);
 
 	font-size: 1em;
-
-	cursor: pointer;
 }
 button:not(:disabled):hover
 {
