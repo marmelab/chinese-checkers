@@ -82,9 +82,62 @@ class GameApiTest extends KernelTestCase
 		{ // Try an invalid move.
 			$this->gameApi->move($board, ["a4", "a6"]);
 			$this->fail("unreachable statement");
-		} catch (GameApiException $exception)
+		}
+		catch (GameApiException $exception)
 		{
 			$this->assertEquals("'a6' cannot be reached from 'a4'", $exception->getMessage(), "should catch an exception with the invalid move details");
+		}
+	}
+
+	public function testNoWinner(): void
+	{
+		// Test game board.
+		$board = new Board();
+		$board->setBoard([
+			[0, 1, 1, 0, 0, 0, 0],
+			[1, 1, 1, 1, 0, 0, 0],
+			[1, 1, 0, 0, 0, 0, 0],
+			[1, 0, 1, 0, 0, 0, 2],
+			[0, 0, 0, 0, 0, 2, 2],
+			[0, 0, 2, 2, 2, 2, 0],
+			[0, 0, 0, 2, 0, 2, 2],
+		]);
+		$board->setCurrentPlayer(Player::Red);
+
+		try
+		{ // Try an invalid move.
+			$winner = $this->gameApi->getWinner($board);
+			$this->assertNull($winner, "should have no winner");
+		}
+		catch (GameApiException $exception)
+		{
+			$this->fail("unreachable statement");
+		}
+	}
+
+	public function testGreenWinner(): void
+	{
+		// Test game board.
+		$board = new Board();
+		$board->setBoard([
+			[0, 2, 2, 2, 0, 0, 0],
+			[2, 2, 2, 2, 0, 0, 0],
+			[2, 2, 0, 0, 0, 0, 0],
+			[2, 0, 0, 0, 0, 0, 1],
+			[0, 0, 0, 0, 0, 1, 1],
+			[0, 0, 0, 0, 1, 1, 1],
+			[0, 0, 0, 1, 1, 1, 1],
+		]);
+		$board->setCurrentPlayer(Player::Red);
+
+		try
+		{ // Try an invalid move.
+			$winner = $this->gameApi->getWinner($board);
+			$this->assertEquals(Player::Green, $winner, "should have green as a winner");
+		}
+		catch (GameApiException $exception)
+		{
+			$this->fail("unreachable statement");
 		}
 	}
 }
