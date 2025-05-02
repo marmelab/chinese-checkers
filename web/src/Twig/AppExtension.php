@@ -31,7 +31,7 @@ class AppExtension extends AbstractExtension
 			new TwigFunction("inRedTargetArea", [$this->boardUtilities, "inRedTargetArea"]),
 
 			// Functions about the current game session.
-			new TwigFunction("getCurrentMove", [$this->gameSession, "getCurrentMove"]),
+			new TwigFunction("getCurrentMove", [$this->gameSession, "getMoveList"]),
 			new TwigFunction("isMoveStarted", [$this->gameSession, "isMoveStarted"]),
 			new TwigFunction("isMoveStartCell", [$this->gameSession, "isMoveStartCell"]),
 		];
