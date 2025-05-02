@@ -105,6 +105,8 @@ table.game-board td
 
 	text-align: center;
 	vertical-align: middle;
+
+	line-height: 0;
 }
 table.game-board td.green-target
 {
