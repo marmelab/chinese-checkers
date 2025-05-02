@@ -14,7 +14,7 @@ class Cell
 	 * @var string
 	 */
 	#[Assert\Length(2)]
-	protected string $cell;
+	protected string $name;
 
 	/**
 	 * Create a new cell.
@@ -22,7 +22,7 @@ class Cell
 	 */
 	public function __construct(string|null $cell = null)
 	{
-		if (!empty($cell)) $this->cell = $cell;
+		if (!empty($cell)) $this->name = $cell;
 	}
 
 	/**
@@ -31,7 +31,7 @@ class Cell
 	 */
 	public function getRowIndex(): int
 	{ // The index is the shift from 'a' ASCII code of the first character.
-		return ord($this->cell[0]) - ord('a');
+		return ord($this->name[0]) - ord('a');
 	}
 
 	/**
@@ -40,7 +40,7 @@ class Cell
 	 */
 	public function getColumnIndex(): int
 	{ // The index is the shift from '1' ASCII code of the second character.
-		return ord($this->cell[1]) - ord('1');
+		return ord($this->name[1]) - ord('1');
 	}
 
 	/**
@@ -49,7 +49,7 @@ class Cell
 	 */
 	public function getName(): string
 	{
-		return $this->cell;
+		return $this->name;
 	}
 
 	/**
