@@ -7,11 +7,12 @@ WEB_DIR = cd web
 # Docker containers
 PHP_CONT = $(DOCKER_COMP) exec php
 PHP_RUN = $(DOCKER_COMP) run --rm php
-CHINESE_CHECKERS_RUN = $(DOCKER_COMP) run --rm chinese-checkers
+CHINESE_CHECKERS_RUN = $(DOCKER_COMP) -f compose.cli.yaml run --rm chinese-checkers
 
 # Docker compose files.
 DOCKER_COMPOSE_WEB_MAIN=compose.yaml
 DOCKER_COMPOSE_WEB_PROD=compose.prod.yaml
+DOCKER_COMPOSE_CLI_MAIN=compose.cli.yaml
 
 # Executables
 PHP      = $(PHP_CONT) php
