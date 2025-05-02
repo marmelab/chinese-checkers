@@ -73,8 +73,6 @@ button
 	background: var(--button-background);
 
 	font-size: 1em;
-
-	cursor: pointer;
 }
 button:not(:disabled):hover
 {
@@ -110,6 +108,8 @@ table.game-board td
 
 	text-align: center;
 	vertical-align: middle;
+
+	line-height: 0;
 }
 table.game-board td.green-target
 {
