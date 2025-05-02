@@ -1,9 +1,6 @@
 # Development environment override
 services:
   php:
-    build:
-      context: web
-      target: frankenphp_dev
     volumes:
       - ./web:/app
       - ./web/frankenphp/Caddyfile:/etc/caddy/Caddyfile:ro

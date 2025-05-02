@@ -13,4 +13,6 @@
 .DS_Store
 Thumbs.db
 
+# Application
 vendor/
+/.env

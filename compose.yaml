@@ -30,7 +30,9 @@ services:
       - GOFLAGS=-buildvcs=false
   
   php:
-    image: ${IMAGES_PREFIX:-}app-php
+    build:
+      context: web
+      target: frankenphp_dev
     restart: unless-stopped
     environment:
       SERVER_NAME: ${SERVER_NAME:-localhost}, php:80
@@ -45,6 +47,8 @@ services:
       # The two next lines can be removed after initial installation
       SYMFONY_VERSION: ${SYMFONY_VERSION:-}
       STABILITY: ${STABILITY:-stable}
+      # Application specific environment
+      APP_GAME_ENGINE_API_URL: ${APP_GAME_ENGINE_API_URL:-http://game-api:3003}
     volumes:
       - caddy_data:/data
       - caddy_config:/config
