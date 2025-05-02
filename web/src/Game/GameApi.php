@@ -6,6 +6,7 @@ use App\Entity\Board;
 use App\Exceptions\GameApiException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\DependencyInjection\ParameterBag\ContainerBagInterface;
 use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
@@ -20,21 +21,14 @@ use Symfony\Contracts\HttpClient\HttpClientInterface;
 class GameApi
 {
 	/**
-	 * Base URL of the game engine API.
-	 * @var string
-	 */
-	protected readonly string $baseUrl;
-
-	/**
-	 * @param ContainerBagInterface $parameters Services parameters.
+	 * @param string $baseUrl Base URL of the game engine API.
 	 * @param HttpClientInterface $http HTTP client.
-	 * @throws ContainerExceptionInterface
-	 * @throws NotFoundExceptionInterface
 	 */
-	public function __construct(private readonly ContainerBagInterface $parameters, private readonly HttpClientInterface $http)
-	{
-		$this->baseUrl = $this->parameters->get("app.game_engine_api_url");
-	}
+	public function __construct(
+		#[Autowire(param: "app.game_engine_api_url")]
+		private readonly string $baseUrl,
+		private readonly HttpClientInterface $http,
+	) {}
 
 	/**
 	 * Move a pawn on the provided board.
