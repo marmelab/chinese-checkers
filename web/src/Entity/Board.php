@@ -20,22 +20,6 @@ class Board
 	public Player $currentPlayer;
 
 	/**
-	 * Initialize a game board instance with the raw game board data.
-	 * @param object|null $rawBoard A raw game board.
-	 * @return Board|null The deserialized game board.
-	 */
-	public static function fromRaw(object|null $rawBoard): Board|null
-	{
-		if (empty($rawBoard)) return null;
-
-		$board = new self();
-		$board->board = $rawBoard->board;
-		$board->currentPlayer = Player::from($rawBoard->currentPlayer);
-
-		return $board;
-	}
-
-	/**
 	 * Get the board cells.
 	 * @return int[][]
 	 */
@@ -71,5 +55,21 @@ class Board
 	public function setCurrentPlayer(Player $currentPlayer): void
 	{
 		$this->currentPlayer = $currentPlayer;
+	}
+
+	/**
+	 * Initialize a game board instance with the raw game board data.
+	 * @param object|null $rawBoard A raw game board.
+	 * @return Board|null The deserialized game board.
+	 */
+	public static function initFromRaw(object|null $rawBoard): Board|null
+	{
+		if (empty($rawBoard)) return null;
+
+		$board = new self();
+		$board->board = $rawBoard->board;
+		$board->currentPlayer = Player::from($rawBoard->currentPlayer);
+
+		return $board;
 	}
 }
