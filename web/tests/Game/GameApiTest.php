@@ -25,7 +25,7 @@ class GameApiTest extends KernelTestCase
 		self::bootKernel();
 
 		// Get the game API service.
-		$this->gameApi = static::getContainer()->get(GameApi::class . ".test");
+		$this->gameApi = static::getContainer()->get(GameApi::class);
 	}
 
 	public function testValidMove(): void
