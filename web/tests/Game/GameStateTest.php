@@ -44,17 +44,19 @@ class GameStateTest extends KernelTestCase
 	{
 		$game = $this->gameState->getCurrentGame();
 
-		$this->assertEquals((new BoardUtilities())->getDefaultGameBoard(), $game->board, "the default current game should use the default game board");
-		$this->assertEquals(Player::GREEN, $game->currentPlayer, "the default current game should have green as starting player");
+		$this->assertEquals((new BoardUtilities())->getDefaultGameBoard(), $game->getBoard(), "the default current game should use the default game board");
+		$this->assertEquals(Player::GREEN, $game->getCurrentPlayer(), "the default current game should have green as starting player");
 	}
 
 	public function testGameStateCookie(): void
 	{
 		// Get a game and move a green pawn.
 		$game = $this->gameState->getCurrentGame();
-		$game->board[0][3] = 0;
-		$game->board[0][4] = 1;
-		$game->currentPlayer = Player::RED;
+		$board = $game->getBoard();
+		$board[0][3] = 0;
+		$board[0][4] = 1;
+		$game->setBoard($board);
+		$game->setCurrentPlayer(Player::RED);
 
 		$cookie = $this->gameState->createCookie($game);
 
@@ -83,7 +85,7 @@ class GameStateTest extends KernelTestCase
 			[0, 0, 0, 0, 0, 2, 2],
 			[0, 0, 0, 0, 2, 2, 2],
 			[0, 0, 0, 2, 2, 2, 2],
-		], $game->board, "should have a default game board with one moved pawn");
-		$this->assertEquals(Player::RED, $game->currentPlayer, "should have red as current player");
+		], $game->getBoard(), "should have a default game board with one moved pawn");
+		$this->assertEquals(Player::RED, $game->getCurrentPlayer(), "should have red as current player");
 	}
 }

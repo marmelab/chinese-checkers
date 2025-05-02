@@ -29,7 +29,7 @@ class GameController extends AbstractController
 
 		// Return the response, with the rendered game.
 		return $this->render("game/index.html.twig", [
-			"board" => $game->board,
+			"board" => $game->getBoard(),
 		], $response);
 	}
 }

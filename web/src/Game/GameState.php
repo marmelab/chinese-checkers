@@ -32,8 +32,8 @@ class GameState
 	public function getDefaultGame(): Board
 	{
 		$board = new Board();
-		$board->board = $this->boardUtilities->getDefaultGameBoard();
-		$board->currentPlayer = Player::GREEN;
+		$board->setBoard($this->boardUtilities->getDefaultGameBoard());
+		$board->setCurrentPlayer(Player::GREEN);
 		return $board;
 	}
 

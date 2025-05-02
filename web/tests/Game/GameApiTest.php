@@ -32,7 +32,7 @@ class GameApiTest extends KernelTestCase
 	{
 		// Test game board.
 		$board = new Board();
-		$board->board = [
+		$board->setBoard([
 			[1, 1, 1, 1, 0, 0, 0],
 			[1, 1, 1, 0, 0, 0, 0],
 			[1, 1, 0, 0, 0, 0, 0],
@@ -40,8 +40,8 @@ class GameApiTest extends KernelTestCase
 			[0, 0, 0, 0, 0, 2, 2],
 			[0, 0, 0, 0, 2, 2, 2],
 			[0, 0, 0, 2, 2, 2, 2],
-		];
-		$board->currentPlayer = Player::GREEN;
+		]);
+		$board->setCurrentPlayer(Player::GREEN);
 
 		try
 		{ // Try a valid move.
@@ -55,8 +55,8 @@ class GameApiTest extends KernelTestCase
 				[0, 0, 0, 0, 0, 2, 2],
 				[0, 0, 0, 0, 2, 2, 2],
 				[0, 0, 0, 2, 2, 2, 2],
-			], $board->board, "a pawn has moved from a4 to a5");
-			$this->assertEquals(Player::RED, $board->currentPlayer, "the next player to move is red");
+			], $board->getBoard(), "a pawn has moved from a4 to a5");
+			$this->assertEquals(Player::RED, $board->getCurrentPlayer(), "the next player to move is red");
 		} catch (Throwable $exception)
 		{
 			$this->fail("unreachable statement");
@@ -67,7 +67,7 @@ class GameApiTest extends KernelTestCase
 	{
 		// Test game board.
 		$board = new Board();
-		$board->board = [
+		$board->setBoard([
 			[1, 1, 1, 1, 0, 0, 0],
 			[1, 1, 1, 0, 0, 0, 0],
 			[1, 1, 0, 0, 0, 0, 0],
@@ -75,8 +75,8 @@ class GameApiTest extends KernelTestCase
 			[0, 0, 0, 0, 0, 2, 2],
 			[0, 0, 0, 0, 2, 2, 2],
 			[0, 0, 0, 2, 2, 2, 2],
-		];
-		$board->currentPlayer = Player::GREEN;
+		]);
+		$board->setCurrentPlayer(Player::GREEN);
 
 		try
 		{ // Try an invalid move.

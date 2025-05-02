@@ -24,8 +24,8 @@ class BoardTest extends KernelTestCase
 		];
 
 		$board = Board::fromRaw($rawBoard);
-		$this->assertEquals($rawBoard->board, $board->board, "should have the same board");
-		$this->assertEquals(Player::from($rawBoard->currentPlayer), $board->currentPlayer, "should have the same current player");
+		$this->assertEquals($rawBoard->board, $board->getBoard(), "should have the same board");
+		$this->assertEquals(Player::from($rawBoard->currentPlayer), $board->getCurrentPlayer(), "should have the same current player");
 
 		$this->assertNull(Board::fromRaw(null), "should be null when raw board is null");
 	}
