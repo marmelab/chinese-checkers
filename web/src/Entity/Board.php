@@ -26,6 +26,8 @@ class Board
 	 */
 	public static function fromRaw(object|null $rawBoard): Board|null
 	{
+		if (empty($rawBoard)) return null;
+
 		$board = new Board();
 		$board->board = $rawBoard->board;
 		$board->currentPlayer = Player::from($rawBoard->currentPlayer);
