@@ -94,3 +94,22 @@ internal/game/        # Core game logic
 bin/                  # Binary file
 web/                  # Web application (Symfony)
 ```
+
+## 👷 Testing web application
+
+You should not need to configure anything to start the web application in development mode:
+
+```shell
+make start-web-app-dev
+```
+
+## 🌐 Deploy web application
+
+To deploy the web application in production, copy `.env.sample` to `.env`
+and set the application secret using the provided command.
+
+```shell
+openssl rand -hex 64
+```
+
+You can then start the application with `make start-web-app`.
