@@ -1,5 +1,11 @@
 {% extends "base.html.twig" %}
 
 {% block body %}
-	<twig:Board board="{{ board }}" />
+	<main>
+		<twig:Board board="{{ board }}" />
+	</main>
+	<aside>
+		<twig:Flash />
+		<twig:Turn />
+	</aside>
 {% endblock %}

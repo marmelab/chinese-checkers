@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Game\BoardUtilities;
+use App\Game\GameSession;
 use App\Game\GameState;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,7 +16,7 @@ class GameController extends AbstractController
 {
 	/**
 	 * The main game board route.
-	 * @param GameState $gameState The game state service.
+	 * @param GameState $gameState Game state service.
 	 * @return Response
 	 */
 	#[Route("/", name: "game")]

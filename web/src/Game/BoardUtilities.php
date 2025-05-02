@@ -53,6 +53,17 @@ class BoardUtilities
 	}
 
 	/**
+	 * Get a cell name from its provided indices.
+	 * @param int $rowIndex The row index.
+	 * @param int $columnIndex The column index.
+	 * @return string The cell name.
+	 */
+	public function getCellName(int $rowIndex, int $columnIndex): string
+	{
+		return $this->getRowName($rowIndex).($columnIndex+1);
+	}
+
+	/**
 	 * Find out if the provided cell (row;column) is in the green target area.
 	 * @param int $rowIndex The row index.
 	 * @param int $columnIndex The column index.
