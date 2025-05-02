@@ -3,7 +3,6 @@
 namespace App\Game;
 
 use App\Entity\Board;
-use App\Entity\Player;
 use App\Exceptions\GameApiException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\NotFoundExceptionInterface;

@@ -2,8 +2,6 @@
 
 namespace App\Controller;
 
-use App\Game\BoardUtilities;
-use App\Game\GameSession;
 use App\Game\GameState;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -22,7 +20,6 @@ class GameController extends AbstractController
 	#[Route("/", name: "game")]
 	public function index(GameState $gameState): Response
 	{
-		// Get the current game state.
 		$game = $gameState->getCurrentGame();
 
 		// Initialize a response.
