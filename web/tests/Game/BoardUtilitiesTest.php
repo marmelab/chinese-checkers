@@ -31,6 +31,13 @@ class BoardUtilitiesTest extends KernelTestCase
 		$this->assertEquals("g", $this->boardUtilities->getRowName(6), "row name should be \"g\"");
 	}
 
+	public function testCellName(): void
+	{
+		$this->assertEquals("a1", $this->boardUtilities->getCellName(0, 0), "cell name should be \"a1\"");
+		$this->assertEquals("e4", $this->boardUtilities->getCellName(4, 3), "cell name should be \"e4\"");
+		$this->assertEquals("h9", $this->boardUtilities->getCellName(7, 8), "cell name should be \"h9\"");
+	}
+
 	public function testGreenTargetArea(): void
 	{
 		$this->assertTrue($this->boardUtilities->inGreenTargetArea(6, 6));
