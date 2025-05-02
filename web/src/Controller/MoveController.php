@@ -34,28 +34,25 @@ class MoveController extends AbstractController
 	#[Route("/move", name: "move")]
 	public function move(Request $request): Response
 	{
-		// Read the cell from form data.
+		// Read the cell from form data, and check its validity.
 		$cell = new Cell($request->get("cell"));
-
-		// Check cell validity.
-		if ($this->validator->validate($cell)->count() == 0)
-		{ // The cell is valid, add it to the move.
-			try
-			{
-				$this->gameSession->addMove($cell);
-			}
-			catch (GameApiException $apiException)
-			{ // Caught an API exception: show the error.
-				$this->addFlash("error", $apiException->getMessage());
-			}
-			catch (Throwable $exception)
-			{ // Caught any other exception: show an internal error.
-				$this->addFlash("error", "internal error");
-			}
-		}
-		else
+		if ($this->validator->validate($cell)->count() > 0)
 		{ // Invalid cell format.
 			$this->addFlash("error", "invalid cell format");
+		}
+
+		// The cell is valid, add it to the move.
+		try
+		{
+			$this->gameSession->addMove($cell);
+		}
+		catch (GameApiException $apiException)
+		{ // Caught an API exception: show the error.
+			$this->addFlash("error", $apiException->getMessage());
+		}
+		catch (Throwable $exception)
+		{ // Caught any other exception: show an internal error.
+			$this->addFlash("error", "internal error");
 		}
 
 		// Redirect to the view.
