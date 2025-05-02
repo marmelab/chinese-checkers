@@ -3,6 +3,7 @@
 namespace App\Tests\View;
 
 use App\Entity\Board;
+use App\Entity\Player;
 use App\Game\BoardUtilities;
 use App\Game\GameState;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -69,8 +70,13 @@ class GameBoardTest extends WebTestCase
 		// Create test client.
 		$client = static::createClient();
 
-		// Get the main view.
-		$crawler = $client->request("GET", "/");
+		do
+		{ // Get the main view again, until green player starts.
+			$client->getCookieJar()->clear();
+			$crawler = $client->request("GET", "/");
+			$rawBoard = json_decode($client->getCookieJar()->get(GameState::COOKIE_NAME)->getValue());;
+		}
+		while($rawBoard->currentPlayer != 1);
 
 		// Check that we can select a pawn to move, and that there is no pawn on A5.
 		$this->assertSelectorTextSame("aside", "Select a pawn to move");
@@ -91,6 +97,7 @@ class GameBoardTest extends WebTestCase
 
 		// The pawn has moved to A5, we could select a new pawn to move.
 		$this->assertSelectorTextSame("aside", "Select a pawn to move");
+		$this->assertSelectorNotExists(".flash .error", "should have no error");
 		$this->assertSelectorExists("button[value=\"a5\"] .green.pawn", "should have a green pawn on a5");
 	}
 
@@ -103,8 +110,13 @@ class GameBoardTest extends WebTestCase
 		// Create test client.
 		$client = static::createClient();
 
-		// Get the main view.
-		$crawler = $client->request("GET", "/");
+		do
+		{ // Get the main view again, until green player starts.
+			$client->getCookieJar()->clear();
+			$crawler = $client->request("GET", "/");
+			$rawBoard = json_decode($client->getCookieJar()->get(GameState::COOKIE_NAME)->getValue());;
+		}
+		while($rawBoard->currentPlayer != 1);
 
 		// Check that we can select a pawn to move, and that there is no pawn on A5.
 		$this->assertSelectorTextSame("aside", "Select a pawn to move");
@@ -135,6 +147,7 @@ class GameBoardTest extends WebTestCase
 
 		// The pawn has moved to A5, we could select a new pawn to move.
 		$this->assertSelectorTextSame("aside", "Select a pawn to move");
+		$this->assertSelectorNotExists(".flash .error", "should have no error");
 		$this->assertSelectorExists("button[value=\"a5\"] .green.pawn", "should have a green pawn on a5");
 	}
 
@@ -147,8 +160,13 @@ class GameBoardTest extends WebTestCase
 		// Create test client.
 		$client = static::createClient();
 
-		// Get the main view.
-		$crawler = $client->request("GET", "/");
+		do
+		{ // Get the main view again, until green player starts.
+			$client->getCookieJar()->clear();
+			$crawler = $client->request("GET", "/");
+			$rawBoard = json_decode($client->getCookieJar()->get(GameState::COOKIE_NAME)->getValue());;
+		}
+		while($rawBoard->currentPlayer != 1);
 
 		// Check that we can select a pawn to move.
 		$this->assertSelectorTextSame("aside", "Select a pawn to move");

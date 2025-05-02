@@ -33,7 +33,7 @@ class GameState
 	{
 		$board = new Board();
 		$board->setBoard($this->boardUtilities->getDefaultGameBoard());
-		$board->setCurrentPlayer(Player::Green);
+		$board->setCurrentPlayer(Player::random());
 		return $board;
 	}
 

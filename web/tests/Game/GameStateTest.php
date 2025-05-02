@@ -45,7 +45,7 @@ class GameStateTest extends KernelTestCase
 		$game = $this->gameState->getCurrentGame();
 
 		$this->assertEquals((new BoardUtilities())->getDefaultGameBoard(), $game->getBoard(), "the default current game should use the default game board");
-		$this->assertEquals(Player::Green, $game->getCurrentPlayer(), "the default current game should have green as starting player");
+		$this->assertTrue(in_array($game->getCurrentPlayer(), [Player::Green, Player::Red]), "the default current game should have a defined starting player");
 	}
 
 	public function testGameStateCookie(): void
