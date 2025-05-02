@@ -41,7 +41,7 @@ class GameApiTest extends KernelTestCase
 			[0, 0, 0, 0, 2, 2, 2],
 			[0, 0, 0, 2, 2, 2, 2],
 		]);
-		$board->setCurrentPlayer(Player::GREEN);
+		$board->setCurrentPlayer(Player::Green);
 
 		try
 		{ // Try a valid move.
@@ -56,7 +56,7 @@ class GameApiTest extends KernelTestCase
 				[0, 0, 0, 0, 2, 2, 2],
 				[0, 0, 0, 2, 2, 2, 2],
 			], $board->getBoard(), "a pawn has moved from a4 to a5");
-			$this->assertEquals(Player::RED, $board->getCurrentPlayer(), "the next player to move is red");
+			$this->assertEquals(Player::Red, $board->getCurrentPlayer(), "the next player to move is red");
 		} catch (Throwable $exception)
 		{
 			$this->fail("unreachable statement");
@@ -76,7 +76,7 @@ class GameApiTest extends KernelTestCase
 			[0, 0, 0, 0, 2, 2, 2],
 			[0, 0, 0, 2, 2, 2, 2],
 		]);
-		$board->setCurrentPlayer(Player::GREEN);
+		$board->setCurrentPlayer(Player::Green);
 
 		try
 		{ // Try an invalid move.

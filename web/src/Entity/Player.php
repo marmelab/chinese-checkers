@@ -7,6 +7,6 @@ namespace App\Entity;
  */
 enum Player: int
 {
-	case GREEN = 1;
-	case RED = 2;
+	case Green = 1;
+	case Red = 2;
 }

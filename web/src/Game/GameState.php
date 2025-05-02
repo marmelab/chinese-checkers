@@ -33,7 +33,7 @@ class GameState
 	{
 		$board = new Board();
 		$board->setBoard($this->boardUtilities->getDefaultGameBoard());
-		$board->setCurrentPlayer(Player::GREEN);
+		$board->setCurrentPlayer(Player::Green);
 		return $board;
 	}
 
