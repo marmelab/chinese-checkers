@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\Game;
 
 use App\Game\BoardUtilities;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

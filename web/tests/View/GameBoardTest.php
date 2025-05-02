@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\View;
 
 use App\Entity\Board;
 use App\Game\BoardUtilities;
