@@ -58,7 +58,7 @@ class GameBoardTest extends WebTestCase
 		// Check the game cookie.
 		$this->assertResponseHasCookie(GameState::COOKIE_NAME);
 		$this->assertNotNull($rawBoard = json_decode($client->getCookieJar()->get(GameState::COOKIE_NAME)->getValue()), "the game cookie should contain a valid and decodable JSON");
-		$this->assertNotNull(Board::fromRaw($rawBoard), "the game cookie should successfully instantiate a board");
+		$this->assertNotNull(Board::initFromRaw($rawBoard), "the game cookie should successfully instantiate a board");
 	}
 
 	/**

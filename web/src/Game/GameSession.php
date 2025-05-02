@@ -2,8 +2,14 @@
 
 namespace App\Game;
 
+use App\Entity\Board;
 use App\Entity\Cell;
+use App\Exceptions\GameApiException;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
+use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
 /**
  * Game session service.
@@ -13,23 +19,33 @@ class GameSession
 	/**
 	 * The current move attribute name in session store.
 	 */
-	const string CURRENT_MOVE_ATTRIBUTE_NAME = "currentMove";
+	const string MOVE_LIST_ATTRIBUTE_NAME = "moveList";
+
+	/**
+	 * The updated game state after a move.
+	 * @var Board|null
+	 */
+	protected Board|null $updatedGameState = null;
 
 	/**
 	 * @param RequestStack $requestStack Request stack.
+	 * @param GameState $gameState Game state service.
+	 * @param GameApi $gameApi Game API service.
 	 */
-	public function __construct(private RequestStack $requestStack)
-	{
-	}
+	public function __construct(
+		private readonly RequestStack $requestStack,
+		private readonly GameState    $gameState,
+		private readonly GameApi      $gameApi,
+	) {}
 
 	/**
 	 * Get the current move.
 	 * Return an empty array if nothing is currently saved.
 	 * @return string[] Move path (all visited cells, with origin cell as the first element).
 	 */
-	public function getCurrentMove(): array
+	public function getMoveList(): array
 	{
-		return $this->requestStack->getCurrentRequest()->getSession()->get(self::CURRENT_MOVE_ATTRIBUTE_NAME, []);
+		return $this->requestStack->getCurrentRequest()->getSession()->get(self::MOVE_LIST_ATTRIBUTE_NAME, []);
 	}
 
 	/**
@@ -38,8 +54,8 @@ class GameSession
 	 */
 	public function getMoveStartCell(): Cell|null
 	{
-		if (!empty($this->getCurrentMove()))
-			return new Cell($this->getCurrentMove()[0]);
+		if (!empty($this->getMoveList()))
+			return new Cell($this->getMoveList()[0]);
 		else
 			return null;
 	}
@@ -64,7 +80,7 @@ class GameSession
 	 */
 	public function isMoveStarted(): bool
 	{
-		return !empty($this->getCurrentMove());
+		return !empty($this->getMoveList());
 	}
 
 	/**
@@ -73,45 +89,97 @@ class GameSession
 	 */
 	public function isSimpleMove(): bool
 	{
-		// A simple move has only 2 cells in the move (origin and destination).
-		if (count($this->getCurrentMove()) != 2)
+		// A simple move has only 2 cells in the move list (origin and destination).
+		if (count($this->getMoveList()) != 2)
 			return false;
-		$origin = new Cell($this->getCurrentMove()[0]);
-		$destination = new Cell($this->getCurrentMove()[1]);
+		$origin = new Cell($this->getMoveList()[0]);
+		$destination = new Cell($this->getMoveList()[1]);
 
 		// A simple move has only one difference (in row or column) between origin and destination.
 		return $origin->diff($destination) == 1;
 	}
 
 	/**
-	 * Set the current move.
+	 * Set the current move list.
 	 * @param array $moveList Move path (all visited cells, with origin cell as the first element).
 	 * @return void
 	 */
-	public function setCurrentMove(array $moveList): void
+	public function setCurrentMoveList(array $moveList): void
 	{
-		$this->requestStack->getCurrentRequest()->getSession()->set(self::CURRENT_MOVE_ATTRIBUTE_NAME, $moveList);
+		$this->requestStack->getCurrentRequest()->getSession()->set(self::MOVE_LIST_ATTRIBUTE_NAME, $moveList);
 	}
 
 	/**
-	 * Append a cell to the current move list.
-	 * @param string $cell The cell to add to the list.
+	 * Append the cell name to the current move list.
+	 * @param string $cell Name of the cell to add to the move list.
 	 * @return void
 	 */
-	public function appendCellToMove(string $cell): void
+	public function appendCellToMoveList(string $cell): void
 	{
-		// Get the current move, and append the provided cell.
-		$move = $this->getCurrentMove();
+		// Get the current move list, and append the provided cell.
+		$move = $this->getMoveList();
 		$move[] = $cell;
-		$this->setCurrentMove($move);
+		$this->setCurrentMoveList($move);
 	}
 
 	/**
 	 * Reset the current move list.
 	 * @return void
 	 */
-	public function resetCurrentMove(): void
+	public function resetMoveList(): void
 	{
-		$this->requestStack->getCurrentRequest()->getSession()->remove(self::CURRENT_MOVE_ATTRIBUTE_NAME);
+		$this->requestStack->getCurrentRequest()->getSession()->remove(self::MOVE_LIST_ATTRIBUTE_NAME);
+	}
+
+	/**
+	 * Add a cell to the current move list.
+	 * If the move after adding the cell is a simple move (to an adjacent cell), instantly end the turn.
+	 * @param Cell $cell The cell to add to the move.
+	 * @return void
+	 * @throws ClientExceptionInterface
+	 * @throws GameApiException
+	 * @throws RedirectionExceptionInterface
+	 * @throws ServerExceptionInterface
+	 * @throws TransportExceptionInterface
+	 */
+	public function addMove(Cell $cell): void
+	{
+		$this->appendCellToMoveList($cell->getName());
+
+		if ($this->isSimpleMove())
+		{ // If the move is a simple move (to an adjacent cell), end the turn now.
+			$this->endTurn();
+		}
+	}
+
+	/**
+	 * End the turn.
+	 * Call the game API to check moves validity and move the pawn to the right cell.
+	 * @return void
+	 * @throws GameApiException
+	 * @throws ClientExceptionInterface
+	 * @throws RedirectionExceptionInterface
+	 * @throws ServerExceptionInterface
+	 * @throws TransportExceptionInterface
+	 */
+	public function endTurn(): void
+	{
+		try
+		{ // Execute the move in the game engine, with the current state and move.
+			$this->updatedGameState = $this->gameApi->move($this->gameState->getCurrentGame(), $this->getMoveList());
+		}
+		finally
+		{ // Reset the current move in any case (success or failure).
+			$this->resetMoveList();
+		}
+	}
+
+	/**
+	 * Get the updated game state.
+	 * @return Board|null Game state.
+	 */
+	public function getUpdatedGameState(): Board|null
+	{
+		return $this->updatedGameState;
 	}
 }

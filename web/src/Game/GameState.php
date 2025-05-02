@@ -50,7 +50,7 @@ class GameState
 
 		if (!empty($serializedGame))
 		{ // A serialized game has been found, parse it.
-			return Board::fromRaw(json_decode($serializedGame)) ?? $this->getDefaultGame();
+			return Board::initFromRaw(json_decode($serializedGame)) ?? $this->getDefaultGame();
 		}
 		else
 		{ // No serialized game.
