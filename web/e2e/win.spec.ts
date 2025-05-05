@@ -5,7 +5,7 @@ test.use({
 });
 
 test('test', async ({ page }) => {
-  await page.goto('https://localhost/');
+  await page.goto('http://localhost/local');
 
 	// Set green as starting player.
 	const gameCookie = (await page.context().cookies()).find(cookie => cookie.name == "game");
