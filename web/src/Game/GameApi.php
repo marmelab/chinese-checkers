@@ -2,7 +2,7 @@
 
 namespace App\Game;
 
-use App\Entity\Board;
+use App\Entity\Game;
 use App\Entity\Player;
 use App\Exceptions\GameApiException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -32,7 +32,7 @@ class GameApi
 	/**
 	 * Call the game engine API.
 	 * @param string $endpoint The endpoint to call.
-	 * @param Board $board The board to send to the game engine API.
+	 * @param Game $board The board to send to the game engine API.
 	 * @param array $options Request options.
 	 * @return ResponseInterface The API HTTP response.
 	 * @throws ClientExceptionInterface
@@ -41,7 +41,7 @@ class GameApi
 	 * @throws ServerExceptionInterface
 	 * @throws TransportExceptionInterface
 	 */
-	protected function call(string $endpoint, Board $board, array $options = []): ResponseInterface
+	protected function call(string $endpoint, Game $board, array $options = []): ResponseInterface
 	{
 		// Do the HTTP request.
 		$response = $this->http->request("POST", $this->baseUrl.$endpoint, [
@@ -62,16 +62,16 @@ class GameApi
 
 	/**
 	 * Move a pawn on the provided board.
-	 * @param Board $board The board on which to move the pawn.
+	 * @param Game $board The board on which to move the pawn.
 	 * @param string[] $moveList The list of visited cells in the move path.
-	 * @return Board The updated board.
+	 * @return Game The updated board.
 	 * @throws TransportExceptionInterface
 	 * @throws ClientExceptionInterface
 	 * @throws RedirectionExceptionInterface
 	 * @throws ServerExceptionInterface
 	 * @throws GameApiException
 	 */
-	public function move(Board $board, array $moveList): Board
+	public function move(Game $board, array $moveList): Game
 	{
 		// Call the API and parse the updated board.
 		$rawBoard = json_decode($this->call("/move", $board, [
@@ -80,12 +80,12 @@ class GameApi
 				"path" => implode(",", $moveList),
 			],
 		])->getContent());
-		return Board::initFromRaw($rawBoard);
+		return Game::initFromRaw($rawBoard);
 	}
 
 	/**
 	 * Get the winner of the board, if there is one.
-	 * @param Board $board The board for which to check the winner.
+	 * @param Game $board The board for which to check the winner.
 	 * @return Player|null The winner, or NULL if there is no winner.
 	 * @throws ClientExceptionInterface
 	 * @throws GameApiException
@@ -93,7 +93,7 @@ class GameApi
 	 * @throws ServerExceptionInterface
 	 * @throws TransportExceptionInterface
 	 */
-	public function getWinner(Board $board): Player|null
+	public function getWinner(Game $board): Player|null
 	{
 		// Call the API and parse the winner.
 		$rawPlayer = json_decode($this->call("/winner", $board)->getContent());

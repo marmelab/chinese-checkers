@@ -2,22 +2,46 @@
 
 namespace App\Entity;
 
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * Game board state.
  */
-class Board
+#[ORM\Entity]
+#[ORM\Table("games")]
+class Game implements \JsonSerializable
 {
+	/**
+	 * The game UUID.
+	 * @var string
+	 */
+	#[ORM\Id]
+	#[ORM\GeneratedValue]
+	#[ORM\Column(type: "uuid")]
+	private string $uuid;
+
 	/**
 	 * The board cells.
 	 * @var int[][]
 	 */
-	public array $board;
+	#[ORM\Column(type: "json", options: ["jsonb" => true])]
+	private array $board;
 
 	/**
 	 * The current player.
 	 * @var Player
 	 */
-	public Player $currentPlayer;
+	#[ORM\Column(type: "smallint")]
+	private Player $currentPlayer;
+
+	/**
+	 * Get the game UUID.
+	 * @return string
+	 */
+	public function getUuid(): string
+	{
+		return $this->uuid;
+	}
 
 	/**
 	 * Get the board cells.
@@ -60,9 +84,9 @@ class Board
 	/**
 	 * Initialize a game board instance with the raw game board data.
 	 * @param object|null $rawBoard A raw game board.
-	 * @return Board|null The deserialized game board.
+	 * @return Game|null The deserialized game board.
 	 */
-	public static function initFromRaw(object|null $rawBoard): Board|null
+	public static function initFromRaw(object|null $rawBoard): Game|null
 	{
 		if (empty($rawBoard)) return null;
 
@@ -71,5 +95,10 @@ class Board
 		$board->currentPlayer = Player::from($rawBoard->currentPlayer);
 
 		return $board;
+	}
+
+	public function jsonSerialize(): mixed
+	{
+		return get_object_vars($this);
 	}
 }

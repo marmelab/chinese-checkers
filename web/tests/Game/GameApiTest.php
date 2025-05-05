@@ -3,7 +3,7 @@
 
 namespace App\Tests\Game;
 
-use App\Entity\Board;
+use App\Entity\Game;
 use App\Entity\Player;
 use App\Exceptions\GameApiException;
 use App\Game\GameApi;
@@ -31,7 +31,7 @@ class GameApiTest extends KernelTestCase
 	public function testValidMove(): void
 	{
 		// Test game board.
-		$board = new Board();
+		$board = new Game();
 		$board->setBoard([
 			[1, 1, 1, 1, 0, 0, 0],
 			[1, 1, 1, 0, 0, 0, 0],
@@ -66,7 +66,7 @@ class GameApiTest extends KernelTestCase
 	public function testInvalidMove(): void
 	{
 		// Test game board.
-		$board = new Board();
+		$board = new Game();
 		$board->setBoard([
 			[1, 1, 1, 1, 0, 0, 0],
 			[1, 1, 1, 0, 0, 0, 0],
@@ -92,7 +92,7 @@ class GameApiTest extends KernelTestCase
 	public function testNoWinner(): void
 	{
 		// Test game board.
-		$board = new Board();
+		$board = new Game();
 		$board->setBoard([
 			[0, 1, 1, 0, 0, 0, 0],
 			[1, 1, 1, 1, 0, 0, 0],
@@ -118,7 +118,7 @@ class GameApiTest extends KernelTestCase
 	public function testGreenWinner(): void
 	{
 		// Test game board.
-		$board = new Board();
+		$board = new Game();
 		$board->setBoard([
 			[0, 2, 2, 2, 0, 0, 0],
 			[2, 2, 2, 2, 0, 0, 0],

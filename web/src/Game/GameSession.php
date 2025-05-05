@@ -2,7 +2,7 @@
 
 namespace App\Game;
 
-use App\Entity\Board;
+use App\Entity\Game;
 use App\Entity\Cell;
 use App\Exceptions\GameApiException;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -176,9 +176,9 @@ class GameSession
 
 	/**
 	 * Get the updated game state.
-	 * @return Board|null Game state.
+	 * @return Game|null Game state.
 	 */
-	public function getUpdatedGameState(): Board|null
+	public function getUpdatedGameState(): Game|null
 	{
 		return $this->requestStack->getCurrentRequest()->getSession()->get(self::UPDATED_GAME_STATE_ATTRIBUTE_NAME);
 	}

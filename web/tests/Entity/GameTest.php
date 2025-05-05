@@ -2,11 +2,11 @@
 
 namespace App\Tests\Entity;
 
-use App\Entity\Board;
+use App\Entity\Game;
 use App\Entity\Player;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
-class BoardTest extends KernelTestCase
+class GameTest extends KernelTestCase
 {
 	public function testBoardFromRaw(): void
 	{
@@ -23,10 +23,10 @@ class BoardTest extends KernelTestCase
 			"currentPlayer" => 2,
 		];
 
-		$board = Board::initFromRaw($rawBoard);
+		$board = Game::initFromRaw($rawBoard);
 		$this->assertEquals($rawBoard->board, $board->getBoard(), "should have the same board");
 		$this->assertEquals(Player::from($rawBoard->currentPlayer), $board->getCurrentPlayer(), "should have the same current player");
 
-		$this->assertNull(Board::initFromRaw(null), "should be null when raw board is null");
+		$this->assertNull(Game::initFromRaw(null), "should be null when raw board is null");
 	}
 }

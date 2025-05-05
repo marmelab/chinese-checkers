@@ -2,7 +2,7 @@
 
 namespace App\Game;
 
-use App\Entity\Board;
+use App\Entity\Game;
 use App\Entity\Player;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -27,11 +27,11 @@ class GameState
 
 	/**
 	 * Get a new instance of the default game state.
-	 * @return Board A default game state.
+	 * @return Game A default game state.
 	 */
-	public function getDefaultGame(): Board
+	public function getDefaultGame(): Game
 	{
-		$board = new Board();
+		$board = new Game();
 		$board->setBoard($this->boardUtilities->getDefaultGameBoard());
 		$board->setCurrentPlayer(Player::random());
 		return $board;
@@ -41,16 +41,16 @@ class GameState
 	 * Get the current game state.
 	 * If the "game" cookie is set, retrieve the game state from it.
 	 * Otherwise, initialize a default game state.
-	 * @return Board The game state instance.
+	 * @return Game The game state instance.
 	 */
-	public function getCurrentGame(): Board
+	public function getCurrentGame(): Game
 	{
 		// Try to get the serialized game from cookies.
 		$serializedGame = $this->requestStack->getCurrentRequest()?->cookies?->get(self::COOKIE_NAME);
 
 		if (!empty($serializedGame))
 		{ // A serialized game has been found, parse it.
-			return Board::initFromRaw(json_decode($serializedGame)) ?? $this->getDefaultGame();
+			return Game::initFromRaw(json_decode($serializedGame)) ?? $this->getDefaultGame();
 		}
 		else
 		{ // No serialized game.
@@ -60,10 +60,10 @@ class GameState
 
 	/**
 	 * Create the cookie to store the provided game.
-	 * @param Board $game The game to store in cookies.
+	 * @param Game $game The game to store in cookies.
 	 * @return Cookie The cookie to send back in response.
 	 */
-	public function createCookie(Board $game): Cookie
+	public function createCookie(Game $game): Cookie
 	{
 		return Cookie::create(self::COOKIE_NAME)
 			->withValue(json_encode($game))

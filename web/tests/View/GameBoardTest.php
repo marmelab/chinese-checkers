@@ -2,7 +2,7 @@
 
 namespace App\Tests\View;
 
-use App\Entity\Board;
+use App\Entity\Game;
 use App\Entity\Player;
 use App\Game\BoardUtilities;
 use App\Game\GameState;
@@ -58,7 +58,7 @@ class GameBoardTest extends WebTestCase
 		// Check the game cookie.
 		$this->assertResponseHasCookie(GameState::COOKIE_NAME);
 		$this->assertNotNull($rawBoard = json_decode($client->getCookieJar()->get(GameState::COOKIE_NAME)->getValue()), "the game cookie should contain a valid and decodable JSON");
-		$this->assertNotNull(Board::initFromRaw($rawBoard), "the game cookie should successfully instantiate a board");
+		$this->assertNotNull(Game::initFromRaw($rawBoard), "the game cookie should successfully instantiate a board");
 	}
 
 	/**
