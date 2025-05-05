@@ -46,6 +46,10 @@ html, body
 
 /* General layout */
 
+body
+{
+	text-align: center;
+}
 body > main, body > aside
 {
 	display: inline-block;
@@ -220,4 +224,11 @@ ol.moves > li:not(:last-of-type)::after
 {
 	border: solid var(--winner-window-green-border) thin;
 	background: var(--winner-window-green-background);
+}
+
+@media screen and (min-width: 800px) {
+	table.game-board
+	{
+		font-size: 1.5em;
+	}
 }
