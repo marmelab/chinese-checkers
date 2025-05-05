@@ -237,7 +237,6 @@ ol.moves > li:not(:last-of-type)::after
 
 main.home
 {
-	display: block;
 	margin: auto;
 }
 main.home a.button
