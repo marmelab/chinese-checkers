@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -33,6 +35,19 @@ class Game implements \JsonSerializable
 	 */
 	#[ORM\Column(type: "smallint")]
 	private GamePlayer $currentPlayer;
+
+	/**
+	 * Related online players.
+	 * @var Collection<int, OnlinePlayer>
+	 */
+	#[ORM\OneToMany(targetEntity: OnlinePlayer::class, mappedBy: "game")]
+	#[ORM\JoinColumn(referencedColumnName: "uuid")]
+	private Collection $players;
+
+	public function __construct()
+	{
+		$this->players = new ArrayCollection();
+	}
 
 	/**
 	 * Get the game UUID.
@@ -79,6 +94,15 @@ class Game implements \JsonSerializable
 	public function setCurrentPlayer(GamePlayer $currentPlayer): void
 	{
 		$this->currentPlayer = $currentPlayer;
+	}
+
+	/**
+	 * Get related players of the game.
+	 * @return Collection<int, OnlinePlayer>
+	 */
+	public function getPlayers(): Collection
+	{
+		return $this->players;
 	}
 
 	/**
