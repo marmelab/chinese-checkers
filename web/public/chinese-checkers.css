@@ -21,8 +21,13 @@
 
 	--flash-default-border: #CECECE;
 	--flash-default-background: #EEEEEE;
-	--flash-error-border: #cc8585;
-	--flash-error-background: #ffa5a5;
+	--flash-error-border: #CC8585;
+	--flash-error-background: #FFA5A5;
+
+	--winner-window-green-border: #89cc85;
+	--winner-window-green-background: #aaffa6;
+	--winner-window-red-border: #CC8585;
+	--winner-window-red-background: #FFA5A5;
 }
 
 /* General page styles */
@@ -41,10 +46,17 @@ html, body
 
 /* General layout */
 
+body
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
+}
 body > main, body > aside
 {
-	display: inline-block;
-	vertical-align: middle;
+	display: block;
 	text-align: center;
 }
 body > aside
@@ -195,4 +207,31 @@ ol.moves > li:not(:last-of-type)::after
 	border: solid var(--flash-error-border) thin;
 	background: var(--flash-error-background);
 	font-weight: 700;
+}
+
+/* Winner */
+
+.winner
+{
+	margin: auto;
+	padding: 0.25em 1em;
+	width: fit-content;
+	border-radius: 1em;
+}
+.red.winner
+{
+	border: solid var(--winner-window-red-border) thin;
+	background: var(--winner-window-red-background);
+}
+.green.winner
+{
+	border: solid var(--winner-window-green-border) thin;
+	background: var(--winner-window-green-background);
+}
+
+@media screen and (min-width: 800px) {
+	table.game-board
+	{
+		font-size: 1.5em;
+	}
 }

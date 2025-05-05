@@ -89,6 +89,12 @@ test: ## Run tests with phpunit, pass the parameter "c=" to add options to phpun
 	@$(eval c ?=)
 	@$(DOCKER_COMP) run --rm -e APP_ENV=test php bin/phpunit $(c)
 
+install-e2e: ## Install dependencies for end to end tests with playwright.
+	@(cd web && yarn install && yarn playwright install --with-deps)
+
+test-e2e: ## Run end to end tests with playwright.
+	@(cd web && yarn playwright test)
+
 
 ## —— Composer 🧙 ——————————————————————————————————————————————————————————————
 composer: ## Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'.

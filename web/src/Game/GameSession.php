@@ -182,4 +182,13 @@ class GameSession
 	{
 		return $this->requestStack->getCurrentRequest()->getSession()->get(self::UPDATED_GAME_STATE_ATTRIBUTE_NAME);
 	}
+
+	/**
+	 * Clear the updated game state.
+	 * @return void
+	 */
+	public function clearUpdatedGameState(): void
+	{
+		$this->requestStack->getCurrentRequest()->getSession()->remove(self::UPDATED_GAME_STATE_ATTRIBUTE_NAME);
+	}
 }

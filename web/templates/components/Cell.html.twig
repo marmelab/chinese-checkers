@@ -3,7 +3,8 @@
 		      name="cell" value="{{ getCellName(rowIndex, columnIndex) }}"
 					{# Cells with pawns are clickable when the move is not started, #}
 					{# and cells without pawns are clickable when the move is started. #}
-		      {{ (isMoveStarted() ? cell != 0 : cell == 0) ? "disabled" }}>
+					{# Also disable cells when there is a winner. #}
+		      {{ winner or (isMoveStarted() ? cell != 0 : cell == 0) ? "disabled" }}>
 		{% if cell > 0 %}
 			<twig:Pawn player="{{ cell }}" />
 		{% endif %}

@@ -126,3 +126,71 @@ func TestMoveApiGameError(t *testing.T) {
 	// Check the error.
 	assert.Equal(t, "there is no pawn on c7", errorResponse.Error, "should indicate that there is no pawn on c7")
 }
+
+func TestWinnerApiNoWinner(t *testing.T) {
+	// Build the request.
+	request := httptest.NewRequest(http.MethodPost, "/winner", strings.NewReader(`
+{
+  "board": [
+    [0, 1, 1, 0, 0, 0, 0],
+    [1, 1, 1, 1, 0, 0, 0],
+    [1, 1, 0, 0, 0, 0, 0],
+    [1, 0, 1, 0, 0, 0, 2],
+    [0, 0, 0, 0, 0, 2, 2],
+    [0, 0, 2, 2, 2, 2, 0],
+    [0, 0, 0, 2, 0, 2, 2]
+  ],
+  "currentPlayer": 2
+}
+`))
+	response := httptest.NewRecorder()
+
+	// Run the request.
+	e := echo.New()
+	context := e.NewContext(request, response)
+	err := HandleWinner(context)
+	assert.Nil(t, err)
+
+	// Parse the response.
+	responseBody, err := io.ReadAll(response.Body)
+	assert.Nil(t, err, "should read the response body without error")
+	var winner int8
+	err = json.Unmarshal(responseBody, &winner)
+	assert.Nil(t, err, "should parse the winner without error")
+
+	assert.Equal(t, int8(0), winner, "should have no winner")
+}
+
+func TestWinnerApiGreenWinner(t *testing.T) {
+	// Build the request.
+	request := httptest.NewRequest(http.MethodPost, "/winner", strings.NewReader(`
+{
+  "board": [
+    [0, 2, 2, 2, 0, 0, 0],
+    [2, 2, 2, 2, 0, 0, 0],
+    [2, 2, 0, 0, 0, 0, 0],
+    [2, 0, 0, 0, 0, 0, 1],
+    [0, 0, 0, 0, 0, 1, 1],
+    [0, 0, 0, 0, 1, 1, 1],
+    [0, 0, 0, 1, 1, 1, 1]
+  ],
+  "currentPlayer": 2
+}
+`))
+	response := httptest.NewRecorder()
+
+	// Run the request.
+	e := echo.New()
+	context := e.NewContext(request, response)
+	err := HandleWinner(context)
+	assert.Nil(t, err)
+
+	// Parse the response.
+	responseBody, err := io.ReadAll(response.Body)
+	assert.Nil(t, err, "should read the response body without error")
+	var winner int8
+	err = json.Unmarshal(responseBody, &winner)
+	assert.Nil(t, err, "should parse the winner without error")
+
+	assert.Equal(t, int8(1), winner, "should have green as a winner")
+}

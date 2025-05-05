@@ -51,11 +51,36 @@ func HandleMove(c echo.Context) error {
 	return c.JSON(http.StatusOK, board)
 }
 
+func HandleWinner(c echo.Context) error {
+	// Read the full body.
+	body, err := io.ReadAll(c.Request().Body)
+
+	// Cannot read the body, return an internal error.
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, ErrorResponse{
+			Error: "internal server error",
+		})
+	}
+
+	// Initialize a board state from the request body.
+	board, err := game.NewBoardFromState(body)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, ErrorResponse{
+			Error: err.Error(),
+		})
+	}
+
+	// Return the updated board.
+	return c.JSON(http.StatusOK, board.GetWinner())
+}
+
 func main() {
 	// Initialize the API.
 	e := echo.New()
 
 	e.POST("/move", HandleMove)
+
+	e.POST("/winner", HandleWinner)
 
 	// Start the API server.
 	e.Logger.Fatal(e.Start(":3003"))
