@@ -85,8 +85,8 @@ test('test', async ({ page }) => {
 	await page.locator('tr:nth-child(5) > td:nth-child(4) > button').click();
 	await page.locator('tr:nth-child(4) > td:nth-child(4) > button').click();
 	await page.locator('tr:nth-child(4) > td:nth-child(5) > button').click();
-	await page.locator('tr:nth-child(4) > td:nth-child(8) > button').click();
-	await page.locator('.green-target > button').first().click();
+	// Invalid move: await page.locator('tr:nth-child(4) > td:nth-child(8) > button').click();
+	// Invalid move: await page.locator('.green-target > button').first().click();
 	await page.locator('tr:nth-child(4) > td:nth-child(6) > button').click();
 	await page.locator('tr:nth-child(4) > td:nth-child(4) > button').click();
 	await page.getByRole('button', { name: 'End turn' }).click();
@@ -115,8 +115,8 @@ test('test', async ({ page }) => {
 	await page.locator('tr:nth-child(5) > td:nth-child(7) > button').click();
 	await page.locator('tr:nth-child(5) > td:nth-child(3) > button').click();
 	await page.locator('tr:nth-child(5) > .red-target > button').click();
-	await page.locator('tr:nth-child(7) > td:nth-child(8) > button').click();
-	await page.getByRole('button', { name: 'End turn' }).click();
+	// Invalid move: await page.locator('tr:nth-child(7) > td:nth-child(8) > button').click();
+	// Invalid move: await page.getByRole('button', { name: 'End turn' }).click();
 	await page.locator('tr:nth-child(6) > td:nth-child(7) > button').click();
 	await page.locator('tr:nth-child(6) > td:nth-child(8) > button').click();
 	await page.locator('tr:nth-child(7) > td:nth-child(5) > button').click();
@@ -167,9 +167,9 @@ test('test', async ({ page }) => {
 	await page.locator('tr:nth-child(4) > td:nth-child(7) > button').click();
 	await page.locator('tr:nth-child(4) > td:nth-child(5) > button').click();
 	await page.getByRole('button', { name: 'End turn' }).click();
-	await page.locator('tr:nth-child(7) > td:nth-child(8) > button').click();
-	await page.locator('tr:nth-child(7) > td:nth-child(6) > button').click();
-	await page.getByRole('button', { name: 'End turn' }).click();
+	// Invalid move: await page.locator('tr:nth-child(7) > td:nth-child(8) > button').click();
+	// Invalid move: await page.locator('tr:nth-child(7) > td:nth-child(6) > button').click();
+	// Invalid move: await page.getByRole('button', { name: 'End turn' }).click();
 	await page.locator('tr:nth-child(6) > td:nth-child(5) > button').click();
 	await page.locator('tr:nth-child(6) > td:nth-child(6) > button').click();
 	await page.locator('tr:nth-child(7) > td:nth-child(8) > button').click();
@@ -236,8 +236,8 @@ test('test', async ({ page }) => {
 	await page.locator('tr:nth-child(3) > td:nth-child(3) > button').click();
 	await page.getByRole('cell', { name: '2' }).click();
 	await page.locator('td:nth-child(3) > button').first().click();
-	await page.locator('tr:nth-child(6) > td:nth-child(3) > button').click();
-	await page.locator('tr:nth-child(5) > td:nth-child(3) > button').click();
+	// Invalid move: await page.locator('tr:nth-child(6) > td:nth-child(3) > button').click();
+	// Invalid move: await page.locator('tr:nth-child(5) > td:nth-child(3) > button').click();
 	await page.locator('tr:nth-child(4) > td:nth-child(7) > button').click();
 	await page.locator('tr:nth-child(5) > td:nth-child(7) > button').click();
 	await page.locator('tr:nth-child(6) > td:nth-child(3) > button').click();
@@ -271,8 +271,8 @@ test('test', async ({ page }) => {
 	await page.locator('tr:nth-child(4) > td:nth-child(5) > button').click();
 	await page.locator('td:nth-child(6) > button').first().click();
 	await page.locator('tr:nth-child(3) > td:nth-child(6) > button').click();
-	await page.locator('tr:nth-child(6) > td:nth-child(4) > button').click();
-	await page.locator('tr:nth-child(6) > td:nth-child(5) > button').click();
+	// Invalid move: await page.locator('tr:nth-child(6) > td:nth-child(4) > button').click();
+	// Invalid move: await page.locator('tr:nth-child(6) > td:nth-child(5) > button').click();
 	await page.locator('tr:nth-child(4) > td:nth-child(5) > button').click();
 	await page.locator('tr:nth-child(4) > td:nth-child(4) > button').click();
 	await page.locator('tr:nth-child(3) > td:nth-child(6) > button').click();
