@@ -2,10 +2,11 @@
 
 {% block body %}
 	<main>
-		<twig:Board board="{{ board }}" winner="{{ winner }}" />
+		<twig:Board board="{{ board }}" winner="{{ winner }}" currentPlayer="{{ currentPlayer }}" />
 	</main>
 	<aside>
 		<twig:Winner winner="{{ winner }}" />
+		<twig:CurrentPlayer currentPlayer="{{ currentPlayer }}" />
 
 		<twig:Flash />
 		<twig:Turn />

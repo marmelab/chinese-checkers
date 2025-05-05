@@ -17,7 +17,7 @@
 				<th>{{ getRowName(rowIndex) }}</th>
 
 				{% for columnIndex, cell in row %}
-					<twig:Cell cell="{{ cell }}" rowIndex="{{ rowIndex }}" columnIndex="{{ columnIndex }}" winner="{{ winner }}" />
+					<twig:Cell cell="{{ cell }}" rowIndex="{{ rowIndex }}" columnIndex="{{ columnIndex }}" winner="{{ winner }}" currentPlayer="{{ currentPlayer }}" />
 				{% endfor %}
 			</tr>
 		{% endfor %}

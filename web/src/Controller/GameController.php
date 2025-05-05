@@ -126,6 +126,7 @@ class GameController extends AbstractController
 		// Return the rendered game.
 		return $this->render("game/index.html.twig", [
 			"board" => $game->getBoard(),
+			"currentPlayer" => $game->getCurrentPlayer()->value,
 			"winner" => $gameApi->getWinner($game)?->value,
 		], $response);
 	}
@@ -154,6 +155,7 @@ class GameController extends AbstractController
 		// Return the response, with the rendered game.
 		return $this->render("game/index.html.twig", [
 			"board" => $game->getBoard(),
+			"currentPlayer" => $game->getCurrentPlayer()->value,
 			"winner" => $gameApi->getWinner($game)?->value,
 		], $response);
 	}
