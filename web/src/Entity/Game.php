@@ -18,7 +18,8 @@ class Game implements \JsonSerializable
 	 * @var string
 	 */
 	#[ORM\Id]
-	#[ORM\GeneratedValue]
+	#[ORM\GeneratedValue("CUSTOM")]
+	#[ORM\CustomIdGenerator("doctrine.uuid_generator")]
 	#[ORM\Column(type: "uuid")]
 	private string $uuid;
 
@@ -33,7 +34,7 @@ class Game implements \JsonSerializable
 	 * The current player.
 	 * @var GamePlayer
 	 */
-	#[ORM\Column(type: "smallint")]
+	#[ORM\Column(type: "smallint", enumType: GamePlayer::class)]
 	private GamePlayer $currentPlayer;
 
 	/**

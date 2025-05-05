@@ -11,7 +11,8 @@ use Doctrine\ORM\Mapping as ORM;
 class OnlinePlayer
 {
 	#[ORM\Id]
-	#[ORM\GeneratedValue]
+	#[ORM\GeneratedValue("CUSTOM")]
+	#[ORM\CustomIdGenerator("doctrine.uuid_generator")]
 	#[ORM\Column]
 	private string $uuid;
 

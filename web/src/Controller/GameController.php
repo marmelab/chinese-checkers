@@ -6,6 +6,7 @@ use App\Exceptions\GameApiException;
 use App\Game\GameApi;
 use App\Game\GameSession;
 use App\Game\GameState;
+use App\Game\OnlineGame;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -23,11 +24,12 @@ class GameController extends AbstractController
 	/**
 	 * Create a local or online game.
 	 * @param Request $request The request.
+	 * @param OnlineGame $onlineGame Online game service.
 	 * @param GameSession $gameSession Game session service.
 	 * @return Response
 	 */
 	#[Route("/new", name: "newGame")]
-	public function create(Request $request, GameSession $gameSession): Response
+	public function create(Request $request, OnlineGame $onlineGame, GameSession $gameSession): Response
 	{
 		if ($request->isMethod("POST"))
 		{
@@ -38,11 +40,40 @@ class GameController extends AbstractController
 			}
 			else
 			{ // We want to create an online game.
-				//TODO
+				$newGame = $onlineGame->newGame();
+				return $this->redirectToRoute("onlineGame", [
+					"gameId" => $newGame->getUuid(),
+				]);
 			}
 		}
 
 		return $this->render("game/new.html.twig");
+	}
+
+	/**
+	 * The online game board route.
+	 * @param string $gameId The game UUID.
+	 * @param GameApi $gameApi Game API service.
+	 * @param OnlineGame $onlineGame Online game service.
+	 * @return Response
+	 * @throws ClientExceptionInterface
+	 * @throws GameApiException
+	 * @throws RedirectionExceptionInterface
+	 * @throws ServerExceptionInterface
+	 * @throws TransportExceptionInterface
+	 */
+	#[Route("/game/{gameId}", name: "onlineGame")]
+	public function online(string $gameId, GameApi $gameApi, OnlineGame $onlineGame): Response
+	{
+		// Try to find the game from its UUID.
+		if (empty($game = $onlineGame->findGame($gameId)))
+			throw $this->createNotFoundException("No game for ID $gameId");
+
+		// Return the rendered game.
+		return $this->render("game/index.html.twig", [
+			"board" => $game->getBoard(),
+			"winner" => $gameApi->getWinner($game)?->value,
+		]);
 	}
 
 	/**
@@ -57,7 +88,7 @@ class GameController extends AbstractController
 	 * @throws TransportExceptionInterface
 	 */
 	#[Route("/local", name: "localGame")]
-	public function index(GameApi $gameApi, GameState $gameState): Response
+	public function local(GameApi $gameApi, GameState $gameState): Response
 	{
 		$game = $gameState->getCurrentGame();
 

@@ -17,7 +17,7 @@ final class Version20250505132418 extends AbstractMigration
 	public function up(Schema $schema): void
 	{
 		$this->addSql(<<<'SQL'
-            CREATE TABLE online_player (uuid VARCHAR(255) NOT NULL, game_player INT NOT NULL, game_uuid UUID DEFAULT NULL, PRIMARY KEY(uuid))
+            CREATE TABLE online_player (uuid VARCHAR(255) NOT NULL DEFAULT gen_random_uuid(), game_player INT NOT NULL, game_uuid UUID DEFAULT NULL, PRIMARY KEY(uuid))
         SQL
 		);
 		$this->addSql(<<<'SQL'
