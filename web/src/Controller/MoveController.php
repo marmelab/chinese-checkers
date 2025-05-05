@@ -56,7 +56,7 @@ class MoveController extends AbstractController
 		}
 
 		// Redirect to the view.
-		return $this->redirect("/");
+		return $this->redirectToRoute("localGame");
 	}
 
 	/**
@@ -80,6 +80,6 @@ class MoveController extends AbstractController
 		}
 
 		// Redirect to the view.
-		return $this->redirect("/");
+		return $this->redirectToRoute("localGame");
 	}
 }

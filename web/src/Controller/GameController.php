@@ -29,7 +29,7 @@ class GameController extends AbstractController
 	 * @throws ServerExceptionInterface
 	 * @throws TransportExceptionInterface
 	 */
-	#[Route("/", name: "game")]
+	#[Route("/local", name: "localGame")]
 	public function index(GameApi $gameApi, GameState $gameState): Response
 	{
 		$game = $gameState->getCurrentGame();

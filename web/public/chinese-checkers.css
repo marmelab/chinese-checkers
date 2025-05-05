@@ -60,25 +60,28 @@ body > aside
 
 /* Buttons */
 
-button
+a.button, button
 {
 	transition: background 0.1s ease;
 	display: inline-block;
 
 	margin: 1em auto;
 	padding: 0.5em 1em;
+	width: fit-content;
 	border-radius: 0.5em;
 
 	border: solid var(--button-border) thin;
 	background: var(--button-background);
+	color: var(--foreground);
 
 	font-size: 1em;
+	text-decoration: none;
 }
-button:not(:disabled):hover
+a.button:not(:disabled):hover, button:not(:disabled):hover
 {
 	background: var(--button-background-hover);
 }
-button:not(:disabled)
+a.button:not(:disabled), button:not(:disabled)
 {
 	cursor: pointer;
 }
@@ -220,4 +223,17 @@ ol.moves > li:not(:last-of-type)::after
 {
 	border: solid var(--winner-window-green-border) thin;
 	background: var(--winner-window-green-background);
+}
+
+/* Homepage */
+
+main.home
+{
+	display: block;
+	margin: auto;
+}
+main.home a.button
+{
+	display: block;
+	margin: 1em auto;
 }
