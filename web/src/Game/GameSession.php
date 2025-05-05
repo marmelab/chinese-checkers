@@ -22,10 +22,9 @@ class GameSession
 	const string MOVE_LIST_ATTRIBUTE_NAME = "moveList";
 
 	/**
-	 * The updated game state after a move.
-	 * @var Board|null
+	 * The updated game state attribute.
 	 */
-	protected Board|null $updatedGameState = null;
+	const string UPDATED_GAME_STATE_ATTRIBUTE_NAME = "updatedGameState";
 
 	/**
 	 * @param RequestStack $requestStack Request stack.
@@ -166,7 +165,8 @@ class GameSession
 	{
 		try
 		{ // Execute the move in the game engine, with the current state and move.
-			$this->updatedGameState = $this->gameApi->move($this->gameState->getCurrentGame(), $this->getMoveList());
+			$updatedGameState = $this->gameApi->move($this->gameState->getCurrentGame(), $this->getMoveList());
+			$this->requestStack->getCurrentRequest()->getSession()->set(self::UPDATED_GAME_STATE_ATTRIBUTE_NAME, $updatedGameState);
 		}
 		finally
 		{ // Reset the current move in any case (success or failure).
@@ -180,6 +180,6 @@ class GameSession
 	 */
 	public function getUpdatedGameState(): Board|null
 	{
-		return $this->updatedGameState;
+		return $this->requestStack->getCurrentRequest()->getSession()->get(self::UPDATED_GAME_STATE_ATTRIBUTE_NAME);
 	}
 }
