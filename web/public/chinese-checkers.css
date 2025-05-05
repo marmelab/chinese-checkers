@@ -48,11 +48,15 @@ html, body
 
 body
 {
-	text-align: center;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	min-height: 100vh;
 }
 body > main, body > aside
 {
-	display: inline-block;
+	display: block;
 	vertical-align: middle;
 	text-align: center;
 }

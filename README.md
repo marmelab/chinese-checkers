@@ -75,6 +75,7 @@ Clone the repository, then:
     sh                             Connect to the FrankenPHP container.
     bash                           Connect to the FrankenPHP container via bash so up and down arrows go to previous commands.
     test                           Run tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure".
+    install-e2e                    Install dependencies for end to end tests with playwright.
     test-e2e                       Run end to end tests with playwright.
      —— Composer 🧙 ——————————————————————————————————————————————————————————————
     composer                       Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'.
