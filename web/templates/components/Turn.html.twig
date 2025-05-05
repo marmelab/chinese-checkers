@@ -1,17 +1,21 @@
 <div class="turn">
-	{% if isMoveStarted() %}
-		<p>Moves :</p>
-		<ol class="moves">
-			{# Show all visited cells in the move. #}
-			{% for cell in getCurrentMove() %}
-				<li>{{ cell }}</li>
-			{% endfor %}
-		</ol>
+	{% if canPlay %}
+		{% if isMoveStarted() %}
+			<p>Moves :</p>
+			<ol class="moves">
+				{# Show all visited cells in the move. #}
+				{% for cell in getCurrentMove() %}
+					<li>{{ cell }}</li>
+				{% endfor %}
+			</ol>
 
-		<form method="POST" action="{{ path("move_end") }}">
-			<button>End turn</button>
-		</form>
+			<form method="POST" action="{{ path("move_end") }}">
+				<button>End turn</button>
+			</form>
+		{% else %}
+			<p>Select a pawn to move</p>
+		{% endif %}
 	{% else %}
-		<p>Select a pawn to move</p>
+		<p>Wait for your opponent to move...</p>
 	{% endif %}
 </div>

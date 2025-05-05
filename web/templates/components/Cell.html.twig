@@ -5,7 +5,7 @@
 					{# and cells without pawns are clickable when the move is started. #}
 					{# Also disable cells when there is a winner. #}
 					{# Only enable cells of the current player. #}
-		      {{ winner or (isMoveStarted() ? cell != 0 : cell != currentPlayer) ? "disabled" }}>
+		      {{ not canPlay or winner or (isMoveStarted() ? cell != 0 : cell != currentPlayer) ? "disabled" }}>
 		{% if cell > 0 %}
 			<twig:Pawn player="{{ cell }}" />
 		{% endif %}

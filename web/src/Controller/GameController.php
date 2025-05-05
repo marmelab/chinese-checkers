@@ -119,7 +119,8 @@ class GameController extends AbstractController
 
 		$response = new Response();
 
-		if ($game->getCurrentPlayer() != $game->findGamePlayerByUuid($onlineGame->getPlayerUuid($game)))
+		$currentPlayerTurn = $game->getCurrentPlayer() == $game->findGamePlayerByUuid($onlineGame->getPlayerUuid($game));
+		if (!$currentPlayerTurn)
 			// If it is not the turn of the current player, refresh the page regularly.
 			$response->headers->set("Refresh", "10");
 
@@ -128,6 +129,7 @@ class GameController extends AbstractController
 			"board" => $game->getBoard(),
 			"currentPlayer" => $game->getCurrentPlayer()->value,
 			"winner" => $gameApi->getWinner($game)?->value,
+			"canPlay" => $currentPlayerTurn,
 		], $response);
 	}
 
@@ -157,6 +159,7 @@ class GameController extends AbstractController
 			"board" => $game->getBoard(),
 			"currentPlayer" => $game->getCurrentPlayer()->value,
 			"winner" => $gameApi->getWinner($game)?->value,
+			"canPlay" => true,
 		], $response);
 	}
 }
