@@ -25,6 +25,7 @@ readonly class GameStateCookieSubscriber implements EventSubscriberInterface
 		if (!empty($updatedGameState = $this->gameSession->getUpdatedGameState()))
 		{ // Create a cookie from the updated game state, if there is one.
 			$event->getResponse()->headers->setCookie($this->gameState->createCookie($updatedGameState));
+			$this->gameSession->clearUpdatedGameState();
 		}
 	}
 

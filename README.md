@@ -17,6 +17,7 @@ Before you begin, ensure you have the following installed:
 
 - **Docker:** To build and run the development container. [Install Docker](https://docs.docker.com/get-docker/)
 - **Make:** To use the Makefile automation. (Usually pre-installed on Linux/macOS, may need installation on Windows).
+- **Yarn:** To install and run e2e tests.
 
 _(Note: PHP, Go and staticcheck do NOT need to be installed locally.)_
 
@@ -74,6 +75,7 @@ Clone the repository, then:
     sh                             Connect to the FrankenPHP container.
     bash                           Connect to the FrankenPHP container via bash so up and down arrows go to previous commands.
     test                           Run tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure".
+    test-e2e                       Run end to end tests with playwright.
      —— Composer 🧙 ——————————————————————————————————————————————————————————————
     composer                       Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'.
     vendor                         Install vendors according to the current composer.lock file.
@@ -101,6 +103,31 @@ You should not need to configure anything to start the web application in develo
 
 ```shell
 make start-web-app-dev
+```
+
+You can then access the web application on [`https://localhost`](https://localhost).
+
+## 🧪 Running tests
+
+### Unit tests
+
+`make install` is optional is you already did it before.
+
+```shell
+make install
+make start-web-app-dev
+make test
+```
+
+### End to end tests
+
+`make install` is optional is you already did it before.
+
+```shell
+make install
+make install-e2e # Install playwright and playwright browsers locally.
+make start-web-app # Start the web application to run tests on it.
+make test-e2e # Run end to end tests.
 ```
 
 ## 🌐 Deploy web application

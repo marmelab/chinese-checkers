@@ -46,6 +46,10 @@ html, body
 
 /* General layout */
 
+body
+{
+	text-align: center;
+}
 body > main, body > aside
 {
 	display: inline-block;
@@ -236,4 +240,13 @@ main.home a.button
 {
 	display: block;
 	margin: 1em auto;
+}
+
+
+
+@media screen and (min-width: 800px) {
+	table.game-board
+	{
+		font-size: 1.5em;
+	}
 }

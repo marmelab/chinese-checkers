@@ -47,7 +47,7 @@ jobs:
         with:
           node-version: lts/*
       - name: Install playwright dependencies
-        run: (cd web && yarn install && yarn playwright install --with-deps)
+        run: make install-e2e
       - name: Run the web app and run e2e tests
         run: make start-web-app && make test-e2e && make down
         
