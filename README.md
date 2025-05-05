@@ -17,6 +17,7 @@ Before you begin, ensure you have the following installed:
 
 - **Docker:** To build and run the development container. [Install Docker](https://docs.docker.com/get-docker/)
 - **Make:** To use the Makefile automation. (Usually pre-installed on Linux/macOS, may need installation on Windows).
+- **Yarn:** To install and run e2e tests.
 
 _(Note: PHP, Go and staticcheck do NOT need to be installed locally.)_
 
