@@ -29,10 +29,10 @@ class Game implements \JsonSerializable
 
 	/**
 	 * The current player.
-	 * @var Player
+	 * @var GamePlayer
 	 */
 	#[ORM\Column(type: "smallint")]
-	private Player $currentPlayer;
+	private GamePlayer $currentPlayer;
 
 	/**
 	 * Get the game UUID.
@@ -64,19 +64,19 @@ class Game implements \JsonSerializable
 
 	/**
 	 * Get the current player.
-	 * @return Player
+	 * @return GamePlayer
 	 */
-	public function getCurrentPlayer(): Player
+	public function getCurrentPlayer(): GamePlayer
 	{
 		return $this->currentPlayer;
 	}
 
 	/**
 	 * Set the current player.
-	 * @param Player $currentPlayer The new current player.
+	 * @param GamePlayer $currentPlayer The new current player.
 	 * @return void
 	 */
-	public function setCurrentPlayer(Player $currentPlayer): void
+	public function setCurrentPlayer(GamePlayer $currentPlayer): void
 	{
 		$this->currentPlayer = $currentPlayer;
 	}
@@ -92,7 +92,7 @@ class Game implements \JsonSerializable
 
 		$board = new self();
 		$board->board = $rawBoard->board;
-		$board->currentPlayer = Player::from($rawBoard->currentPlayer);
+		$board->currentPlayer = GamePlayer::from($rawBoard->currentPlayer);
 
 		return $board;
 	}

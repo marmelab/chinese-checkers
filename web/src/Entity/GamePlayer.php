@@ -5,17 +5,17 @@ namespace App\Entity;
 /**
  * Game player.
  */
-enum Player: int
+enum GamePlayer: int
 {
 	case Green = 1;
 	case Red = 2;
 
 	/**
 	 * Get a random player.
-	 * @return Player
+	 * @return GamePlayer
 	 */
-	public static function random(): Player
+	public static function random(): GamePlayer
 	{
-		return Player::from(rand(1, 2));
+		return GamePlayer::from(rand(1, 2));
 	}
 }

@@ -3,7 +3,7 @@
 namespace App\Game;
 
 use App\Entity\Game;
-use App\Entity\Player;
+use App\Entity\GamePlayer;
 use App\Exceptions\GameApiException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpClient\Exception\ClientException;
@@ -86,14 +86,14 @@ class GameApi
 	/**
 	 * Get the winner of the board, if there is one.
 	 * @param Game $board The board for which to check the winner.
-	 * @return Player|null The winner, or NULL if there is no winner.
+	 * @return GamePlayer|null The winner, or NULL if there is no winner.
 	 * @throws ClientExceptionInterface
 	 * @throws GameApiException
 	 * @throws RedirectionExceptionInterface
 	 * @throws ServerExceptionInterface
 	 * @throws TransportExceptionInterface
 	 */
-	public function getWinner(Game $board): Player|null
+	public function getWinner(Game $board): GamePlayer|null
 	{
 		// Call the API and parse the winner.
 		$rawPlayer = json_decode($this->call("/winner", $board)->getContent());
@@ -103,6 +103,6 @@ class GameApi
 			return null;
 
 		// There is a player, return it.
-		return Player::from($rawPlayer);
+		return GamePlayer::from($rawPlayer);
 	}
 }

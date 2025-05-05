@@ -3,7 +3,7 @@
 namespace App\Tests\View;
 
 use App\Entity\Game;
-use App\Entity\Player;
+use App\Entity\GamePlayer;
 use App\Game\BoardUtilities;
 use App\Game\GameState;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;

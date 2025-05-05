@@ -3,7 +3,7 @@
 namespace App\Game;
 
 use App\Entity\Game;
-use App\Entity\Player;
+use App\Entity\GamePlayer;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -33,7 +33,7 @@ class GameState
 	{
 		$board = new Game();
 		$board->setBoard($this->boardUtilities->getDefaultGameBoard());
-		$board->setCurrentPlayer(Player::random());
+		$board->setCurrentPlayer(GamePlayer::random());
 		return $board;
 	}
 
