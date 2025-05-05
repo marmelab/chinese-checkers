@@ -2,7 +2,10 @@
 
 {% block body %}
 	<main class="home">
-		<a class="button" href="/local">Play a local game</a>
-		<a class="button" href="/online/new">Play with a friend</a>
+		<form action="/new" method="POST">
+			<button name="type" value="local">Create a local game</button>
+		</form>
+
+		<a class="button" href="/new">Play with a friend</a>
 	</main>
 {% endblock %}

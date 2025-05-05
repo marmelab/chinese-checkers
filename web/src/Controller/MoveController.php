@@ -31,7 +31,7 @@ class MoveController extends AbstractController
 	 * @param Request $request The request.
 	 * @return Response
 	 */
-	#[Route("/move", name: "move")]
+	#[Route("/move", name: "move", methods: "POST")]
 	public function move(Request $request): Response
 	{
 		// Read the cell from form data, and check its validity.
@@ -63,7 +63,7 @@ class MoveController extends AbstractController
 	 * End the current turn.
 	 * @return Response
 	 */
-	#[Route("/move/end", name: "move_end")]
+	#[Route("/move/end", name: "move_end", methods: "POST")]
 	public function end(): Response
 	{
 		try

@@ -94,6 +94,22 @@ a.button:not(:disabled), button:not(:disabled)
 	cursor: pointer;
 }
 
+/* Forms */
+
+label
+{
+	display: block;
+	text-align: left;
+}
+label > input
+{
+	display: block;
+	margin: 0.5em auto;
+	padding: 0.5em;
+
+	font-size: 1em;
+}
+
 /* Game board component */
 
 table.game-board

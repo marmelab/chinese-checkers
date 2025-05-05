@@ -175,6 +175,15 @@ class GameSession
 	}
 
 	/**
+	 * Reset the game state to the default (initial) game state.
+	 * @return void
+	 */
+	public function resetGameState(): void
+	{
+		$this->requestStack->getCurrentRequest()->getSession()->set(self::UPDATED_GAME_STATE_ATTRIBUTE_NAME, $this->gameState->getDefaultGame());
+	}
+
+	/**
 	 * Get the updated game state.
 	 * @return Game|null Game state.
 	 */
