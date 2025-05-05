@@ -11,7 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 /**
  * Test rendered game board.
  */
-class GameBoardTest extends WebTestCase
+class LocalGameTest extends WebTestCase
 {
 	/**
 	 * Test the game board simple view.
@@ -28,7 +28,7 @@ class GameBoardTest extends WebTestCase
 		 */
 		$boardUtilities = static::getContainer()->get(BoardUtilities::class);
 
-		$client->request("GET", "/");
+		$client->request("GET", "/local");
 
 		$this->assertResponseIsSuccessful();
 
@@ -73,7 +73,7 @@ class GameBoardTest extends WebTestCase
 		do
 		{ // Get the main view again, until green player starts.
 			$client->getCookieJar()->clear();
-			$crawler = $client->request("GET", "/");
+			$crawler = $client->request("GET", "/local");
 			$rawBoard = json_decode($client->getCookieJar()->get(GameState::COOKIE_NAME)->getValue());;
 		}
 		while($rawBoard->currentPlayer != 1);
@@ -113,7 +113,7 @@ class GameBoardTest extends WebTestCase
 		do
 		{ // Get the main view again, until green player starts.
 			$client->getCookieJar()->clear();
-			$crawler = $client->request("GET", "/");
+			$crawler = $client->request("GET", "/local");
 			$rawBoard = json_decode($client->getCookieJar()->get(GameState::COOKIE_NAME)->getValue());;
 		}
 		while($rawBoard->currentPlayer != 1);
@@ -163,7 +163,7 @@ class GameBoardTest extends WebTestCase
 		do
 		{ // Get the main view again, until green player starts.
 			$client->getCookieJar()->clear();
-			$crawler = $client->request("GET", "/");
+			$crawler = $client->request("GET", "/local");
 			$rawBoard = json_decode($client->getCookieJar()->get(GameState::COOKIE_NAME)->getValue());;
 		}
 		while($rawBoard->currentPlayer != 1);
