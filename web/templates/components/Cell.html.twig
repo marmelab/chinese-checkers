@@ -1,11 +1,16 @@
 <td class="{{ inGreenTargetArea(rowIndex, columnIndex) ? "green-target" : (inRedTargetArea(rowIndex, columnIndex) ? "red-target") }}">
 	<button {{ isMoveStartCell(rowIndex, columnIndex) ? 'class="move-start"' }}
 		      name="cell" value="{{ getCellName(rowIndex, columnIndex) }}"
-					{# Cells with pawns are clickable when the move is not started, #}
-					{# and cells without pawns are clickable when the move is started. #}
-					{# Also disable cells when there is a winner. #}
-					{# Only enable cells of the current player. #}
-		      {{ not canPlay or winner or (isMoveStarted() ? cell != 0 : cell != currentPlayer) ? "disabled" }}>
+					{# Cells with pawns are NOT clickable when the move is started, #}
+					{# and cells without pawns are NOT clickable when the move is not started. #}
+					{% set disabled = isMoveStarted() ? cell != 0 : cell == 0 %}
+					{# Disable cells that are playable by the current player. #}
+					{% set disabled = disabled or (not isMoveStarted() and cell != currentPlayer) %}
+					{# Cells are always disabled when there is a winner. #}
+					{% set disabled = disabled or winner %}
+					{# Cells are always disabled if the current player cannot play. #}
+					{% set disabled = disabled or not canPlay %}
+		      {{ disabled ? "disabled" }}>
 		{% if cell > 0 %}
 			<twig:Pawn player="{{ cell }}" />
 		{% endif %}
