@@ -8,7 +8,7 @@ test('test', async ({ page }) => {
   await page.goto('https://localhost/');
 
 	// Set green as starting player.
-	const gameCookie = (await page.context().cookies()).find(cookie => cookie.name == "game");
+	const gameCookie = (await page.context().cookies()).find(cookie => cookie.name == "game")!;
 	gameCookie.value = JSON.stringify(
 		{...JSON.parse(decodeURIComponent(gameCookie.value)), currentPlayer: 1},
 	);
