@@ -53,10 +53,11 @@ Clone the repository, then:
 
     ```bash
      —— Chinese Checkers ♟️ ——————————————————————————————————————————————————————
-    help                           Outputs this help screen
+    help                           Outputs this help screen.
     install                        Builds the Docker images for cli and web apps.
      —— CLI app ⌨️ ———————————————————————————————————————————————————————————————
-    build                          Build the Go binary (inside Docker).
+    build-cli                      Build the Go binary (inside Docker).
+    build-api                      Build the API binary (inside Docker).
     start-cli                      Run the CLI application.
     deps                           Tidy `go.mod` and `go.sum` files (inside Docker).
     lint                           Run `staticcheck` linter (inside Docker).
@@ -65,20 +66,22 @@ Clone the repository, then:
     clean                          Remove the built binary (inside Docker).
      —— Web app 🌐 ———————————————————————————————————————————————————————————————
     up                             Start web app in detached mode.
-    start-web-app                  Build and start the web application
-    down                           Stop web app
-    logs                           Show live logs
-    sh                             Connect to the FrankenPHP container
-    bash                           Connect to the FrankenPHP container via bash so up and down arrows go to previous commands
-    test                           Run tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure"
+    up-production                  Start web app in detached mode for production.
+    start-web-app                  Build and start the web application for production.
+    start-web-app-dev              Build and start the web application in dev mode.
+    down                           Stop web app.
+    logs                           Show live logs.
+    sh                             Connect to the FrankenPHP container.
+    bash                           Connect to the FrankenPHP container via bash so up and down arrows go to previous commands.
+    test                           Run tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure".
      —— Composer 🧙 ——————————————————————————————————————————————————————————————
-    composer                       Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'
-    vendor                         Install vendors according to the current composer.lock file
-    composer-install               Install web app dependencies according to the current composer.lock file
-    composer-install-test          Install dependencies for testing the web app
+    composer                       Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'.
+    vendor                         Install vendors according to the current composer.lock file.
+    composer-install               Install web app dependencies according to the current composer.lock file.
+    composer-install-dev           Install dependencies for testing and developing the web app.
      —— Symfony 🎵 ———————————————————————————————————————————————————————————————
-    sf                             List all Symfony commands or pass the parameter "c=" to run a given command, example: make sf c=about
-    cc                             Clear the cache
+    sf                             List all Symfony commands or pass the parameter "c=" to run a given command, example: make sf c=about.
+    cc                             Clear the cache.
     ```
 
     _(See Makefile Targets below or run `make help` for all commands)_
@@ -91,3 +94,22 @@ internal/game/        # Core game logic
 bin/                  # Binary file
 web/                  # Web application (Symfony)
 ```
+
+## 👷 Testing web application
+
+You should not need to configure anything to start the web application in development mode:
+
+```shell
+make start-web-app-dev
+```
+
+## 🌐 Deploy web application
+
+To deploy the web application in production, copy `.env.sample` to `.env`
+and set the application secret using the provided command.
+
+```shell
+openssl rand -hex 64
+```
+
+You can then start the application with `make start-web-app`.

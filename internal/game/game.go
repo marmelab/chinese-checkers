@@ -125,8 +125,23 @@ func NewBoardFromStateFile(filePath string) (*BoardState, error) {
 		return nil, err
 	}
 
+	// Initialize the board using the read serialized state.
+	var board *BoardState
+	board, err = NewBoardFromState(fileData)
+	if err != nil {
+		return nil, err
+	}
+
+	// Store the used file path in the board state.
+	board.stateFile = &filePath
+
+	return board, nil
+}
+
+// Initialize a board from a serialized state.
+func NewBoardFromState(serializedState []byte) (*BoardState, error) {
 	var board BoardState
-	err = json.Unmarshal(fileData, &board)
+	err := json.Unmarshal(serializedState, &board)
 
 	if err != nil {
 		return nil, err
@@ -150,13 +165,10 @@ func NewBoardFromStateFile(filePath string) (*BoardState, error) {
 		return nil, err
 	}
 
-	// Store the used file path in the board state.
-	board.stateFile = &filePath
-
 	return &board, nil
 }
 
-// CheckBoardValidity that the board is valid.
+// Check that the board is valid.
 // Automatically called after loading a board from a state file.
 func (board *BoardState) CheckBoardValidity() error {
 	// Could not detect a game definition, the loaded game state is invalid.

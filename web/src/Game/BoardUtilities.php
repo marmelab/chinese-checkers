@@ -5,7 +5,7 @@ namespace App\Game;
 /**
  * Service with game board utilities.
  */
-class BoardService
+class BoardUtilities
 {
 	/**
 	 * Get the default game board.
@@ -50,6 +50,17 @@ class BoardService
 		$ascii = ord('a') + $rowIndex;
 		// Get the character of the ASCII code.
 		return chr($ascii);
+	}
+
+	/**
+	 * Get a cell name from its provided indices.
+	 * @param int $rowIndex The row index.
+	 * @param int $columnIndex The column index.
+	 * @return string The cell name.
+	 */
+	public function getCellName(int $rowIndex, int $columnIndex): string
+	{
+		return $this->getRowName($rowIndex).($columnIndex+1);
 	}
 
 	/**

@@ -9,3 +9,5 @@ RUN apt-get update && \
     go install honnef.co/go/tools/cmd/staticcheck@latest
 
 WORKDIR /app
+
+EXPOSE 3003/tcp

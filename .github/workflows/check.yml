@@ -38,10 +38,7 @@ jobs:
         run: make install
           
       - name: Build
-        run: make build
+        run: make build-cli && make build-api
         
-      - name: Install web dependencies
-        run: make composer-install-test
-
-      - name: Test
-        run: make test
+      - name: Run the web app and test it
+        run: make start-web-app-dev && make test && make down
