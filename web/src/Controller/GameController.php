@@ -117,11 +117,17 @@ class GameController extends AbstractController
 			}
 		}
 
+		$response = new Response();
+
+		if ($game->getCurrentPlayer() != $game->findGamePlayerByUuid($onlineGame->getPlayerUuid($game)))
+			// If it is not the turn of the current player, refresh the page regularly.
+			$response->headers->set("Refresh", "10");
+
 		// Return the rendered game.
 		return $this->render("game/index.html.twig", [
 			"board" => $game->getBoard(),
 			"winner" => $gameApi->getWinner($game)?->value,
-		]);
+		], $response);
 	}
 
 	/**

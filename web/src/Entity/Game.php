@@ -107,6 +107,16 @@ class Game implements \JsonSerializable
 	}
 
 	/**
+	 * Find a game player by its UUID.
+	 * @param string $uuid The online player UUID.
+	 * @return GamePlayer|null Found game player, NULL if it's not a player.
+	 */
+	public function findGamePlayerByUuid(string $uuid): GamePlayer|null
+	{
+		return $this->getPlayers()->findFirst(fn (int $_, OnlinePlayer $player) => $player->getUuid() == $uuid)->getGamePlayer();
+	}
+
+	/**
 	 * Initialize a game board instance with the raw game board data.
 	 * @param object|null $rawBoard A raw game board.
 	 * @return Game|null The deserialized game board.
