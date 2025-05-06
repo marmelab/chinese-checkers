@@ -119,7 +119,7 @@ class GameController extends AbstractController
 
 		$response = new Response();
 
-		$currentPlayerTurn = $game->getCurrentPlayer() == $game->findGamePlayerByUuid($onlineGame->getPlayerUuid($game));
+		$currentPlayerTurn = $game->getCurrentPlayer() == $game->findGamePlayerByUuid($onlineGame->getPlayerUuid($game) ?? "");
 		if (!$currentPlayerTurn)
 			// If it is not the turn of the current player, refresh the page regularly.
 			$response->headers->set("Refresh", "10");
@@ -127,6 +127,7 @@ class GameController extends AbstractController
 		// Return the rendered game.
 		return $this->render("game/index.html.twig", [
 			"board" => $game->getBoard(),
+			"gameId" => $game->getUuid(),
 			"currentPlayer" => $game->getCurrentPlayer()->value,
 			"winner" => $gameApi->getWinner($game)?->value,
 			"canPlay" => $currentPlayerTurn,
@@ -157,6 +158,7 @@ class GameController extends AbstractController
 		// Return the response, with the rendered game.
 		return $this->render("game/index.html.twig", [
 			"board" => $game->getBoard(),
+			"gameId" => "local",
 			"currentPlayer" => $game->getCurrentPlayer()->value,
 			"winner" => $gameApi->getWinner($game)?->value,
 			"canPlay" => true,

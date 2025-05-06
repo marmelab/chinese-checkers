@@ -10,6 +10,7 @@
 			</ol>
 
 			<form method="POST" action="{{ path("move_end") }}">
+				<input type="hidden" name="gameId" value="{{ gameId }}" />
 				<button>End turn</button>
 			</form>
 		{% else %}

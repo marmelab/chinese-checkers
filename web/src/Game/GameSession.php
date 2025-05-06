@@ -5,6 +5,7 @@ namespace App\Game;
 use App\Entity\Game;
 use App\Entity\Cell;
 use App\Exceptions\GameApiException;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -30,11 +31,15 @@ class GameSession
 	 * @param RequestStack $requestStack Request stack.
 	 * @param GameState $gameState Game state service.
 	 * @param GameApi $gameApi Game API service.
+	 * @param OnlineGame $onlineGame Online game service.
+	 * @param EntityManagerInterface $entityManager Entity manager service.
 	 */
 	public function __construct(
-		private readonly RequestStack $requestStack,
-		private readonly GameState    $gameState,
-		private readonly GameApi      $gameApi,
+		private readonly RequestStack           $requestStack,
+		private readonly GameState              $gameState,
+		private readonly GameApi                $gameApi,
+		private readonly OnlineGame             $onlineGame,
+		private readonly EntityManagerInterface $entityManager,
 	) {}
 
 	/**
@@ -165,8 +170,28 @@ class GameSession
 	{
 		try
 		{ // Execute the move in the game engine, with the current state and move.
-			$updatedGameState = $this->gameApi->move($this->gameState->getCurrentGame(), $this->getMoveList());
-			$this->requestStack->getCurrentRequest()->getSession()->set(self::UPDATED_GAME_STATE_ATTRIBUTE_NAME, $updatedGameState);
+			$gameId = $this->requestStack->getCurrentRequest()->get("gameId");
+
+			// Get the game using the provided game ID.
+			if ($gameId == "local")
+				$game = $this->gameState->getCurrentGame();
+			else
+				$game = $this->onlineGame->findGame($gameId);
+
+			// Use the move API to update the game board.
+			$updatedGameState = $this->gameApi->move($game, $this->getMoveList());
+
+			if ($gameId == "local")
+				// Save the game in session for cookie update.
+				$this->requestStack->getCurrentRequest()->getSession()->set(self::UPDATED_GAME_STATE_ATTRIBUTE_NAME, $updatedGameState);
+			else
+			{ // Update and save the game in database.
+				$game->setBoard($updatedGameState->getBoard());
+				$game->setCurrentPlayer($updatedGameState->getCurrentPlayer());
+
+				$this->entityManager->persist($game);
+				$this->entityManager->flush();
+			}
 		}
 		finally
 		{ // Reset the current move in any case (success or failure).

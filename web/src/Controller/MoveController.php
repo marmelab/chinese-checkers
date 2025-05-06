@@ -56,15 +56,19 @@ class MoveController extends AbstractController
 		}
 
 		// Redirect to the view.
-		return $this->redirectToRoute("localGame");
+		if ($request->get("gameId") == "local")
+			return $this->redirectToRoute("localGame");
+		else
+			return $this->redirectToRoute("onlineGame", [ "gameId" => $request->get("gameId") ]);
 	}
 
 	/**
 	 * End the current turn.
+	 * @param Request $request The request.
 	 * @return Response
 	 */
 	#[Route("/move/end", name: "move_end", methods: "POST")]
-	public function end(): Response
+	public function end(Request $request): Response
 	{
 		try
 		{
@@ -80,6 +84,9 @@ class MoveController extends AbstractController
 		}
 
 		// Redirect to the view.
-		return $this->redirectToRoute("localGame");
+		if ($request->get("gameId") == "local")
+			return $this->redirectToRoute("localGame");
+		else
+			return $this->redirectToRoute("onlineGame", [ "gameId" => $request->get("gameId") ]);
 	}
 }

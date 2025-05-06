@@ -1,4 +1,6 @@
 <form id="game-board" method="POST" action="{{ path("move") }}">
+	<input type="hidden" name="gameId" value="{{ gameId }}" />
+
 	<table class="game-board">
 		<tbody>
 

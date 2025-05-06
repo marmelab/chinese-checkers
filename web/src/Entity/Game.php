@@ -113,7 +113,7 @@ class Game implements \JsonSerializable
 	 */
 	public function findGamePlayerByUuid(string $uuid): GamePlayer|null
 	{
-		return $this->getPlayers()->findFirst(fn (int $_, OnlinePlayer $player) => $player->getUuid() == $uuid)->getGamePlayer();
+		return $this->getPlayers()->findFirst(fn (int $_, OnlinePlayer $player) => $player->getUuid() == $uuid)?->getGamePlayer();
 	}
 
 	/**
