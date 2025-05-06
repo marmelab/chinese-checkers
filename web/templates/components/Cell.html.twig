@@ -4,7 +4,7 @@
 					{# Cells with pawns are NOT clickable when the move is started, #}
 					{# and cells without pawns are NOT clickable when the move is not started. #}
 					{% set disabled = isMoveStarted() ? cell != 0 : cell == 0 %}
-					{# Disable cells that are playable by the current player. #}
+					{# Disable cells that are not playable by the current player. #}
 					{% set disabled = disabled or (not isMoveStarted() and cell != currentPlayer) %}
 					{# Cells are always disabled when there is a winner. #}
 					{% set disabled = disabled or winner %}
