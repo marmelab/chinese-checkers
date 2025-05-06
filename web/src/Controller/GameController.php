@@ -25,6 +25,11 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 class GameController extends AbstractController
 {
 	/**
+	 * Page auto refresh time (in seconds).
+	 */
+	const int REFRESH_TIME = 5;
+
+	/**
 	 * Create a local or online game.
 	 * @param Request $request The request.
 	 * @param OnlineGame $onlineGame Online game service.
@@ -102,7 +107,7 @@ class GameController extends AbstractController
 			{
 				// Initialize a response with autorefresh every 10 seconds.
 				$response = new Response();
-				$response->headers->set("Refresh", "10");
+				$response->headers->set("Refresh", (string) self::REFRESH_TIME);
 
 				// Render the waiting page.
 				return $this->render("game/waiting.html.twig", [
@@ -122,7 +127,7 @@ class GameController extends AbstractController
 		$currentPlayerTurn = $game->getCurrentPlayer() == $game->findGamePlayerByUuid($onlineGame->getPlayerUuid($game) ?? "");
 		if (!$currentPlayerTurn)
 			// If it is not the turn of the current player, refresh the page regularly.
-			$response->headers->set("Refresh", "10");
+			$response->headers->set("Refresh", (string) self::REFRESH_TIME);
 
 		// Return the rendered game.
 		return $this->render("game/index.html.twig", [
