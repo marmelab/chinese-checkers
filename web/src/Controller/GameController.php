@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\GamePlayer;
-use App\Entity\OnlinePlayer;
 use App\Exceptions\GameApiException;
 use App\Game\GameApi;
 use App\Game\GameSession;

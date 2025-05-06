@@ -6,7 +6,6 @@ use App\Entity\Game;
 use App\Entity\GamePlayer;
 use App\Exceptions\GameApiException;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
-use Symfony\Component\HttpClient\Exception\ClientException;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
