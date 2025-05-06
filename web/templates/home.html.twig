@@ -2,10 +2,10 @@
 
 {% block body %}
 	<main class="home">
-		<form action="/new" method="POST">
+		<form action="{{ url("newGame") }}" method="POST">
 			<button name="type" value="local">Create a local game</button>
 		</form>
 
-		<a class="button" href="/new">Play with a friend</a>
+		<a class="button" href="{{ url("newGame") }}">Play with a friend</a>
 	</main>
 {% endblock %}

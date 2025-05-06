@@ -2,7 +2,7 @@
 
 {% block body %}
 	<main class="join">
-		<form method="POST" action="/join">
+		<form method="POST" action="{{ url("joinGame") }}">
 			<input type="hidden" name="game" value="{{ gameId }}" />
 
 			<label for="player-name">
