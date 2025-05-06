@@ -80,7 +80,7 @@ class LocalGameTest extends WebTestCase
 
 		// Check that we can select a pawn to move, and that there is no pawn on A5.
 		$this->assertSelectorTextContains("aside", "Select a pawn to move");
-		$this->assertSelectorTextContains("aside", "Green to play");
+		$this->assertSelectorTextContains("aside", "(Green) to play");
 		$this->assertSelectorNotExists("button[value=\"a5\"] .pawn", "shouldn't have a pawn on a5");
 
 		// Click on A4 to start the move.
@@ -98,7 +98,7 @@ class LocalGameTest extends WebTestCase
 
 		// The pawn has moved to A5, we could select a new pawn to move.
 		$this->assertSelectorTextContains("aside", "Select a pawn to move");
-		$this->assertSelectorTextContains("aside", "Red to play");
+		$this->assertSelectorTextContains("aside", "(Red) to play");
 		$this->assertSelectorNotExists(".flash .error", "should have no error");
 		$this->assertSelectorExists("button[value=\"a5\"] .green.pawn", "should have a green pawn on a5");
 	}
@@ -122,7 +122,7 @@ class LocalGameTest extends WebTestCase
 
 		// Check that we can select a pawn to move, and that there is no pawn on A5.
 		$this->assertSelectorTextContains("aside", "Select a pawn to move");
-		$this->assertSelectorTextContains("aside", "Green to play");
+		$this->assertSelectorTextContains("aside", "(Green) to play");
 		$this->assertSelectorNotExists("button[value=\"a5\"] .pawn", "shouldn't have a pawn on a5");
 
 		// Click on A3 to start the move.
@@ -150,7 +150,7 @@ class LocalGameTest extends WebTestCase
 
 		// The pawn has moved to A5, we could select a new pawn to move.
 		$this->assertSelectorTextContains("aside", "Select a pawn to move");
-		$this->assertSelectorTextContains("aside", "Red to play");
+		$this->assertSelectorTextContains("aside", "(Red) to play");
 		$this->assertSelectorNotExists(".flash .error", "should have no error");
 		$this->assertSelectorExists("button[value=\"a5\"] .green.pawn", "should have a green pawn on a5");
 	}
@@ -174,7 +174,7 @@ class LocalGameTest extends WebTestCase
 
 		// Check that we can select a pawn to move.
 		$this->assertSelectorTextContains("aside", "Select a pawn to move");
-		$this->assertSelectorTextContains("aside", "Green to play");
+		$this->assertSelectorTextContains("aside", "(Green) to play");
 
 		// Click on A3 to start the move.
 		$this->assertSelectorExists("button[value=\"a3\"]:not(:disabled)", "there is a clickable button on a3 cell to start the move");
@@ -201,7 +201,7 @@ class LocalGameTest extends WebTestCase
 
 		// Still no pawn on E4, an error has been shown.
 		$this->assertSelectorTextContains("aside", "Select a pawn to move");
-		$this->assertSelectorTextContains("aside", "Green to play");
+		$this->assertSelectorTextContains("aside", "(Green) to play");
 		$this->assertSelectorTextSame(".flash .error", "'e4' cannot be reached from 'a3'");
 		$this->assertSelectorNotExists("button[value=\"e4\"] .pawn", "shouldn't have a pawn on e4");
 	}
