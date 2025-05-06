@@ -263,6 +263,13 @@ ol.moves > li:not(:last-of-type)::after
 	color: var(--board-red);
 }
 
+/* Join page */
+
+#game-url
+{
+	width: 20em;
+}
+
 /* Homepage */
 
 main.home
