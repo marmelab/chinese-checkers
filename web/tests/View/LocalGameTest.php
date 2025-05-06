@@ -141,7 +141,7 @@ class LocalGameTest extends WebTestCase
 		$this->assertSelectorTextSame("ol.moves > li:first-child", "a3", "a3 should be in the move list");
 		$this->assertSelectorTextSame("ol.moves > li:nth-child(2)", "a5", "a5 should be in the move list");
 		// Still no pawn on A5.
-		$this->assertSelectorNotExists("button[value=\"a5\"] .pawn", "shouldn't have a pawn on a5");
+		$this->assertSelectorNotExists("button[value=\"a5\"] .pawn:not(.virtual)", "shouldn't have a pawn on a5");
 
 		// Click on the End turn button.
 		$client->submit($crawler->selectButton("End turn")->form());
@@ -192,7 +192,7 @@ class LocalGameTest extends WebTestCase
 		$this->assertSelectorTextSame("ol.moves > li:first-child", "a3", "a3 should be in the move list");
 		$this->assertSelectorTextSame("ol.moves > li:nth-child(2)", "e4", "e4 should be in the move list");
 		// No pawn on E4.
-		$this->assertSelectorNotExists("button[value=\"e4\"] .pawn", "shouldn't have a pawn on e4");
+		$this->assertSelectorNotExists("button[value=\"e4\"] .pawn:not(.virtual)", "shouldn't have a pawn on e4");
 
 		// Click on the End turn button.
 		$client->submit($crawler->selectButton("End turn")->form());
