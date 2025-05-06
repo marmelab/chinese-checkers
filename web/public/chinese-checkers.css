@@ -188,6 +188,11 @@ table.game-board td button:not(:disabled):hover
 {
 	background: var(--board-green);
 }
+.pawn.virtual
+{
+	opacity: 0.5;
+	transform: scale(0.75);
+}
 
 .move-start .pawn
 {

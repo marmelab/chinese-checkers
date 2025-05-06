@@ -1,1 +1,1 @@
-<span class="{{ player == 1 ? "green" : (player == 2 ? "red" : "unknown") }} pawn"></span>
+<span class="{{ player == 1 ? "green" : (player == 2 ? "red" : "unknown") }} pawn{{ virtual|default(false) ? " virtual" }}"></span>

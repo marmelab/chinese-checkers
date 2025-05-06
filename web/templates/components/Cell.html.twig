@@ -13,6 +13,13 @@
 		      {{ disabled ? "disabled" }}>
 		{% if cell > 0 %}
 			<twig:Pawn player="{{ cell }}" />
+		{% else %}
+			{# Show previously visited cells. #}
+			{% for visitedCellName in getCurrentMove() %}
+				{% if visitedCellName == getCellName(rowIndex, columnIndex) %}
+					<twig:Pawn player="{{ currentPlayer }}" virtual="{{ true }}" />
+				{% endif %}
+			{% endfor %}
 		{% endif %}
 	</button>
 </td>
