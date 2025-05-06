@@ -14,6 +14,9 @@ test('test', async ({ page }) => {
 	);
 	await page.context().addCookies([gameCookie]);
 
+	// Reload the page after cookie change.
+	await page.reload();
+
 	// First green move.
 	await page.locator('td:nth-child(5) > button').first().click();
 	await page.locator('td:nth-child(6) > button').first().click();
