@@ -88,6 +88,17 @@ class Game implements \JsonSerializable
 	}
 
 	/**
+	 * Get the current online player.
+	 * @return OnlinePlayer
+	 */
+	public function getCurrentOnlinePlayer(): OnlinePlayer
+	{
+		return $this->getPlayers()->findFirst(fn (int $_, OnlinePlayer $onlinePlayer) => (
+			$onlinePlayer->getGamePlayer() == $this->getCurrentPlayer()
+		));
+	}
+
+	/**
 	 * Set the current player.
 	 * @param GamePlayer $currentPlayer The new current player.
 	 * @return void

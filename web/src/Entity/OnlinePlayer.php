@@ -17,6 +17,13 @@ class OnlinePlayer
 	private string $uuid;
 
 	/**
+	 * Online player name.
+	 * @var string
+	 */
+	#[ORM\Column]
+	private string $name;
+
+	/**
 	 * Player of the chinese checker game.
 	 * @var Game
 	 */
@@ -74,5 +81,24 @@ class OnlinePlayer
 	public function setGamePlayer(GamePlayer $gamePlayer): void
 	{
 		$this->gamePlayer = $gamePlayer;
+	}
+
+	/**
+	 * Get player name.
+	 * @return string
+	 */
+	public function getName(): string
+	{
+		return $this->name;
+	}
+
+	/**
+	 * Set player name.
+	 * @param string $name The new player name.
+	 * @return void
+	 */
+	public function setName(string $name): void
+	{
+		$this->name = $name;
 	}
 }

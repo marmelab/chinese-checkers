@@ -9,7 +9,7 @@
 	--board-background: #F4F4F4;
 
 	--board-green-background: #cbe6ca;
-	--board-green: #24C217;
+	--board-green: #1B9C10;
 	--board-red-background: #ebc7c7;
 	--board-red: #EA0A0A;
 
@@ -250,6 +250,17 @@ ol.moves > li:not(:last-of-type)::after
 {
 	border: solid var(--winner-window-green-border) thin;
 	background: var(--winner-window-green-background);
+}
+
+/* Current player */
+
+.current-player.green strong
+{
+	color: var(--board-green);
+}
+.current-player.red strong
+{
+	color: var(--board-red);
 }
 
 /* Homepage */

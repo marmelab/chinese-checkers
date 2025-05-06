@@ -43,7 +43,7 @@ class GameController extends AbstractController
 			}
 			else
 			{ // We want to create an online game and register the current player as the green one.
-				$newGame = $onlineGame->newGame();
+				$newGame = $onlineGame->newGame($request->get("name"));
 				return $this->redirectToRoute("onlineGame", [
 					"gameId" => $newGame->getUuid(),
 				]);
@@ -70,7 +70,7 @@ class GameController extends AbstractController
 			throw $this->createAccessDeniedException("The game with ID {$game->getUuid()} is already full, please join another one.");
 
 		// If we can still join the game, join it as red player.
-		$onlineGame->joinAsPlayer($game, GamePlayer::Red);
+		$onlineGame->joinAsPlayer($game, GamePlayer::Red, $request->get("name"));
 
 		return $this->redirectToRoute("onlineGame", [
 			"gameId" => $game->getUuid(),
@@ -129,6 +129,7 @@ class GameController extends AbstractController
 			"board" => $game->getBoard(),
 			"gameId" => $game->getUuid(),
 			"currentPlayer" => $game->getCurrentPlayer()->value,
+			"currentPlayerName" => $game->getCurrentOnlinePlayer()->getName(),
 			"winner" => $gameApi->getWinner($game)?->value,
 			"canPlay" => $currentPlayerTurn,
 		], $response);
@@ -160,6 +161,7 @@ class GameController extends AbstractController
 			"board" => $game->getBoard(),
 			"gameId" => "local",
 			"currentPlayer" => $game->getCurrentPlayer()->value,
+			"currentPlayerName" => "Player",
 			"winner" => $gameApi->getWinner($game)?->value,
 			"canPlay" => true,
 		], $response);

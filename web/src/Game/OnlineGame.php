@@ -39,9 +39,10 @@ class OnlineGame
 
 	/**
 	 * Initialize a new online game.
+	 * @param string $playerName The green player name.
 	 * @return Game
 	 */
-	public function newGame(): Game
+	public function newGame(string $playerName): Game
 	{
 		$game = $this->gameState->getDefaultGame();
 
@@ -49,7 +50,7 @@ class OnlineGame
 		$this->entityManager->flush();
 
 		// Join the game as the green player.
-		$this->joinAsPlayer($game, GamePlayer::Green);
+		$this->joinAsPlayer($game, GamePlayer::Green, $playerName);
 
 		return $game;
 	}
@@ -58,13 +59,15 @@ class OnlineGame
 	 * Create an online player for the provided game.
 	 * @param Game $game The online game.
 	 * @param GamePlayer $gamePlayer The game player ID of the new player.
+	 * @param string $playerName The player name.
 	 * @return OnlinePlayer The created online player.
 	 */
-	public function newOnlinePlayer(Game $game, GamePlayer $gamePlayer): OnlinePlayer
+	public function newOnlinePlayer(Game $game, GamePlayer $gamePlayer, string $playerName): OnlinePlayer
 	{
 		$onlinePlayer = new OnlinePlayer();
 		$onlinePlayer->setGame($game);
 		$onlinePlayer->setGamePlayer($gamePlayer);
+		$onlinePlayer->setName($playerName);
 
 		$this->entityManager->persist($onlinePlayer);
 		$this->entityManager->flush();
@@ -86,12 +89,13 @@ class OnlineGame
 	 * Join a game as the provided player.
 	 * @param Game $game The game to join.
 	 * @param GamePlayer $player The player ID (color) to be.
+	 * @param string $playerName The player name.
 	 * @return void
 	 */
-	public function joinAsPlayer(Game $game, GamePlayer $player): void
+	public function joinAsPlayer(Game $game, GamePlayer $player, string $playerName): void
 	{
 		$this->registerOnlinePlayer(
-			$this->newOnlinePlayer($game, $player)
+			$this->newOnlinePlayer($game, $player, $playerName)
 		);
 	}
 
