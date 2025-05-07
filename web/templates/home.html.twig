@@ -1,0 +1,11 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<main class="home">
+		<form action="{{ path("newGame") }}" method="POST">
+			<button name="type" value="local">Create a local game</button>
+		</form>
+
+		<a class="button" href="{{ path("newGame") }}">Play with a friend</a>
+	</main>
+{% endblock %}

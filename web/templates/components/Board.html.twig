@@ -1,4 +1,6 @@
 <form id="game-board" method="POST" action="{{ path("move") }}">
+	<input type="hidden" name="gameId" value="{{ gameId }}" />
+
 	<table class="game-board">
 		<tbody>
 
@@ -17,7 +19,9 @@
 				<th>{{ getRowName(rowIndex) }}</th>
 
 				{% for columnIndex, cell in row %}
-					<twig:Cell cell="{{ cell }}" rowIndex="{{ rowIndex }}" columnIndex="{{ columnIndex }}" winner="{{ winner }}" />
+					<twig:Cell cell="{{ cell }}" rowIndex="{{ rowIndex }}" columnIndex="{{ columnIndex }}"
+										 winner="{{ winner }}" currentPlayer="{{ currentPlayer }}"
+										 canPlay="{{ canPlay }}" />
 				{% endfor %}
 			</tr>
 		{% endfor %}

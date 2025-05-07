@@ -2,7 +2,7 @@
 
 namespace App\Tests\Game;
 
-use App\Entity\Player;
+use App\Entity\GamePlayer;
 use App\Game\BoardUtilities;
 use App\Game\GameState;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -45,7 +45,7 @@ class GameStateTest extends KernelTestCase
 		$game = $this->gameState->getCurrentGame();
 
 		$this->assertEquals((new BoardUtilities())->getDefaultGameBoard(), $game->getBoard(), "the default current game should use the default game board");
-		$this->assertTrue(in_array($game->getCurrentPlayer(), [Player::Green, Player::Red]), "the default current game should have a defined starting player");
+		$this->assertTrue(in_array($game->getCurrentPlayer(), [GamePlayer::Green, GamePlayer::Red]), "the default current game should have a defined starting player");
 	}
 
 	public function testGameStateCookie(): void
@@ -56,7 +56,7 @@ class GameStateTest extends KernelTestCase
 		$board[0][3] = 0;
 		$board[0][4] = 1;
 		$game->setBoard($board);
-		$game->setCurrentPlayer(Player::Red);
+		$game->setCurrentPlayer(GamePlayer::Red);
 
 		$cookie = $this->gameState->createCookie($game);
 
@@ -71,7 +71,7 @@ class GameStateTest extends KernelTestCase
 			[0, 0, 0, 0, 2, 2, 2],
 			[0, 0, 0, 2, 2, 2, 2],
 		], $rawBoard->board, "should have a default game board with one moved pawn");
-		$this->assertEquals(Player::Red->value, $rawBoard->currentPlayer, "should have red as current player");
+		$this->assertEquals(GamePlayer::Red->value, $rawBoard->currentPlayer, "should have red as current player");
 
 		// Set the cookie in the request to test its retrieval.
 		$this->request->cookies->set(GameState::COOKIE_NAME, $cookie->getValue());
@@ -86,6 +86,6 @@ class GameStateTest extends KernelTestCase
 			[0, 0, 0, 0, 2, 2, 2],
 			[0, 0, 0, 2, 2, 2, 2],
 		], $game->getBoard(), "should have a default game board with one moved pawn");
-		$this->assertEquals(Player::Red, $game->getCurrentPlayer(), "should have red as current player");
+		$this->assertEquals(GamePlayer::Red, $game->getCurrentPlayer(), "should have red as current player");
 	}
 }

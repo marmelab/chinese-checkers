@@ -1,0 +1,12 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+	<main class="waiting">
+		<p>Waiting for another player to join...</p>
+
+		<label for="game-url">
+			Send game URL to a friend
+			<input type="url" id="game-url" name="game-url" value="{{ gameUrl }}" readonly />
+		</label>
+	</main>
+{% endblock %}

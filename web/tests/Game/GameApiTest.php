@@ -3,8 +3,8 @@
 
 namespace App\Tests\Game;
 
-use App\Entity\Board;
-use App\Entity\Player;
+use App\Entity\Game;
+use App\Entity\GamePlayer;
 use App\Exceptions\GameApiException;
 use App\Game\GameApi;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -31,7 +31,7 @@ class GameApiTest extends KernelTestCase
 	public function testValidMove(): void
 	{
 		// Test game board.
-		$board = new Board();
+		$board = new Game();
 		$board->setBoard([
 			[1, 1, 1, 1, 0, 0, 0],
 			[1, 1, 1, 0, 0, 0, 0],
@@ -41,7 +41,7 @@ class GameApiTest extends KernelTestCase
 			[0, 0, 0, 0, 2, 2, 2],
 			[0, 0, 0, 2, 2, 2, 2],
 		]);
-		$board->setCurrentPlayer(Player::Green);
+		$board->setCurrentPlayer(GamePlayer::Green);
 
 		try
 		{ // Try a valid move.
@@ -56,7 +56,7 @@ class GameApiTest extends KernelTestCase
 				[0, 0, 0, 0, 2, 2, 2],
 				[0, 0, 0, 2, 2, 2, 2],
 			], $board->getBoard(), "a pawn has moved from a4 to a5");
-			$this->assertEquals(Player::Red, $board->getCurrentPlayer(), "the next player to move is red");
+			$this->assertEquals(GamePlayer::Red, $board->getCurrentPlayer(), "the next player to move is red");
 		} catch (Throwable $exception)
 		{
 			$this->fail("unreachable statement");
@@ -66,7 +66,7 @@ class GameApiTest extends KernelTestCase
 	public function testInvalidMove(): void
 	{
 		// Test game board.
-		$board = new Board();
+		$board = new Game();
 		$board->setBoard([
 			[1, 1, 1, 1, 0, 0, 0],
 			[1, 1, 1, 0, 0, 0, 0],
@@ -76,7 +76,7 @@ class GameApiTest extends KernelTestCase
 			[0, 0, 0, 0, 2, 2, 2],
 			[0, 0, 0, 2, 2, 2, 2],
 		]);
-		$board->setCurrentPlayer(Player::Green);
+		$board->setCurrentPlayer(GamePlayer::Green);
 
 		try
 		{ // Try an invalid move.
@@ -92,7 +92,7 @@ class GameApiTest extends KernelTestCase
 	public function testNoWinner(): void
 	{
 		// Test game board.
-		$board = new Board();
+		$board = new Game();
 		$board->setBoard([
 			[0, 1, 1, 0, 0, 0, 0],
 			[1, 1, 1, 1, 0, 0, 0],
@@ -102,7 +102,7 @@ class GameApiTest extends KernelTestCase
 			[0, 0, 2, 2, 2, 2, 0],
 			[0, 0, 0, 2, 0, 2, 2],
 		]);
-		$board->setCurrentPlayer(Player::Red);
+		$board->setCurrentPlayer(GamePlayer::Red);
 
 		try
 		{ // Try an invalid move.
@@ -118,7 +118,7 @@ class GameApiTest extends KernelTestCase
 	public function testGreenWinner(): void
 	{
 		// Test game board.
-		$board = new Board();
+		$board = new Game();
 		$board->setBoard([
 			[0, 2, 2, 2, 0, 0, 0],
 			[2, 2, 2, 2, 0, 0, 0],
@@ -128,12 +128,12 @@ class GameApiTest extends KernelTestCase
 			[0, 0, 0, 0, 1, 1, 1],
 			[0, 0, 0, 1, 1, 1, 1],
 		]);
-		$board->setCurrentPlayer(Player::Red);
+		$board->setCurrentPlayer(GamePlayer::Red);
 
 		try
 		{ // Try an invalid move.
 			$winner = $this->gameApi->getWinner($board);
-			$this->assertEquals(Player::Green, $winner, "should have green as a winner");
+			$this->assertEquals(GamePlayer::Green, $winner, "should have green as a winner");
 		}
 		catch (GameApiException $exception)
 		{

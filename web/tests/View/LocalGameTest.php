@@ -2,8 +2,7 @@
 
 namespace App\Tests\View;
 
-use App\Entity\Board;
-use App\Entity\Player;
+use App\Entity\Game;
 use App\Game\BoardUtilities;
 use App\Game\GameState;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -11,7 +10,7 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 /**
  * Test rendered game board.
  */
-class GameBoardTest extends WebTestCase
+class LocalGameTest extends WebTestCase
 {
 	/**
 	 * Test the game board simple view.
@@ -28,7 +27,7 @@ class GameBoardTest extends WebTestCase
 		 */
 		$boardUtilities = static::getContainer()->get(BoardUtilities::class);
 
-		$client->request("GET", "/");
+		$client->request("GET", "/local");
 
 		$this->assertResponseIsSuccessful();
 
@@ -58,7 +57,7 @@ class GameBoardTest extends WebTestCase
 		// Check the game cookie.
 		$this->assertResponseHasCookie(GameState::COOKIE_NAME);
 		$this->assertNotNull($rawBoard = json_decode($client->getCookieJar()->get(GameState::COOKIE_NAME)->getValue()), "the game cookie should contain a valid and decodable JSON");
-		$this->assertNotNull(Board::initFromRaw($rawBoard), "the game cookie should successfully instantiate a board");
+		$this->assertNotNull(Game::initFromRaw($rawBoard), "the game cookie should successfully instantiate a board");
 	}
 
 	/**
@@ -73,13 +72,14 @@ class GameBoardTest extends WebTestCase
 		do
 		{ // Get the main view again, until green player starts.
 			$client->getCookieJar()->clear();
-			$crawler = $client->request("GET", "/");
+			$crawler = $client->request("GET", "/local");
 			$rawBoard = json_decode($client->getCookieJar()->get(GameState::COOKIE_NAME)->getValue());;
 		}
 		while($rawBoard->currentPlayer != 1);
 
 		// Check that we can select a pawn to move, and that there is no pawn on A5.
-		$this->assertSelectorTextSame("aside", "Select a pawn to move");
+		$this->assertSelectorTextContains("aside", "Select a pawn to move");
+		$this->assertSelectorTextContains("aside", "(Green) to play");
 		$this->assertSelectorNotExists("button[value=\"a5\"] .pawn", "shouldn't have a pawn on a5");
 
 		// Click on A4 to start the move.
@@ -96,7 +96,8 @@ class GameBoardTest extends WebTestCase
 		$client->followRedirect();
 
 		// The pawn has moved to A5, we could select a new pawn to move.
-		$this->assertSelectorTextSame("aside", "Select a pawn to move");
+		$this->assertSelectorTextContains("aside", "Select a pawn to move");
+		$this->assertSelectorTextContains("aside", "(Red) to play");
 		$this->assertSelectorNotExists(".flash .error", "should have no error");
 		$this->assertSelectorExists("button[value=\"a5\"] .green.pawn", "should have a green pawn on a5");
 	}
@@ -113,13 +114,14 @@ class GameBoardTest extends WebTestCase
 		do
 		{ // Get the main view again, until green player starts.
 			$client->getCookieJar()->clear();
-			$crawler = $client->request("GET", "/");
+			$crawler = $client->request("GET", "/local");
 			$rawBoard = json_decode($client->getCookieJar()->get(GameState::COOKIE_NAME)->getValue());;
 		}
 		while($rawBoard->currentPlayer != 1);
 
 		// Check that we can select a pawn to move, and that there is no pawn on A5.
-		$this->assertSelectorTextSame("aside", "Select a pawn to move");
+		$this->assertSelectorTextContains("aside", "Select a pawn to move");
+		$this->assertSelectorTextContains("aside", "(Green) to play");
 		$this->assertSelectorNotExists("button[value=\"a5\"] .pawn", "shouldn't have a pawn on a5");
 
 		// Click on A3 to start the move.
@@ -139,14 +141,15 @@ class GameBoardTest extends WebTestCase
 		$this->assertSelectorTextSame("ol.moves > li:first-child", "a3", "a3 should be in the move list");
 		$this->assertSelectorTextSame("ol.moves > li:nth-child(2)", "a5", "a5 should be in the move list");
 		// Still no pawn on A5.
-		$this->assertSelectorNotExists("button[value=\"a5\"] .pawn", "shouldn't have a pawn on a5");
+		$this->assertSelectorNotExists("button[value=\"a5\"] .pawn:not(.virtual)", "shouldn't have a pawn on a5");
 
 		// Click on the End turn button.
 		$client->submit($crawler->selectButton("End turn")->form());
 		$client->followRedirect();
 
 		// The pawn has moved to A5, we could select a new pawn to move.
-		$this->assertSelectorTextSame("aside", "Select a pawn to move");
+		$this->assertSelectorTextContains("aside", "Select a pawn to move");
+		$this->assertSelectorTextContains("aside", "(Red) to play");
 		$this->assertSelectorNotExists(".flash .error", "should have no error");
 		$this->assertSelectorExists("button[value=\"a5\"] .green.pawn", "should have a green pawn on a5");
 	}
@@ -163,13 +166,14 @@ class GameBoardTest extends WebTestCase
 		do
 		{ // Get the main view again, until green player starts.
 			$client->getCookieJar()->clear();
-			$crawler = $client->request("GET", "/");
+			$crawler = $client->request("GET", "/local");
 			$rawBoard = json_decode($client->getCookieJar()->get(GameState::COOKIE_NAME)->getValue());;
 		}
 		while($rawBoard->currentPlayer != 1);
 
 		// Check that we can select a pawn to move.
-		$this->assertSelectorTextSame("aside", "Select a pawn to move");
+		$this->assertSelectorTextContains("aside", "Select a pawn to move");
+		$this->assertSelectorTextContains("aside", "(Green) to play");
 
 		// Click on A3 to start the move.
 		$this->assertSelectorExists("button[value=\"a3\"]:not(:disabled)", "there is a clickable button on a3 cell to start the move");
@@ -188,7 +192,7 @@ class GameBoardTest extends WebTestCase
 		$this->assertSelectorTextSame("ol.moves > li:first-child", "a3", "a3 should be in the move list");
 		$this->assertSelectorTextSame("ol.moves > li:nth-child(2)", "e4", "e4 should be in the move list");
 		// No pawn on E4.
-		$this->assertSelectorNotExists("button[value=\"e4\"] .pawn", "shouldn't have a pawn on e4");
+		$this->assertSelectorNotExists("button[value=\"e4\"] .pawn:not(.virtual)", "shouldn't have a pawn on e4");
 
 		// Click on the End turn button.
 		$client->submit($crawler->selectButton("End turn")->form());
@@ -196,6 +200,7 @@ class GameBoardTest extends WebTestCase
 
 		// Still no pawn on E4, an error has been shown.
 		$this->assertSelectorTextContains("aside", "Select a pawn to move");
+		$this->assertSelectorTextContains("aside", "(Green) to play");
 		$this->assertSelectorTextSame(".flash .error", "'e4' cannot be reached from 'a3'");
 		$this->assertSelectorNotExists("button[value=\"e4\"] .pawn", "shouldn't have a pawn on e4");
 	}

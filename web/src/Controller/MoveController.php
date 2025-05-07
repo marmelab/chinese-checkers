@@ -31,7 +31,7 @@ class MoveController extends AbstractController
 	 * @param Request $request The request.
 	 * @return Response
 	 */
-	#[Route("/move", name: "move")]
+	#[Route("/move", name: "move", methods: "POST")]
 	public function move(Request $request): Response
 	{
 		// Read the cell from form data, and check its validity.
@@ -56,15 +56,19 @@ class MoveController extends AbstractController
 		}
 
 		// Redirect to the view.
-		return $this->redirect("/");
+		if ($request->get("gameId") == "local")
+			return $this->redirectToRoute("localGame");
+		else
+			return $this->redirectToRoute("onlineGame", [ "gameId" => $request->get("gameId") ]);
 	}
 
 	/**
 	 * End the current turn.
+	 * @param Request $request The request.
 	 * @return Response
 	 */
-	#[Route("/move/end", name: "move_end")]
-	public function end(): Response
+	#[Route("/move/end", name: "move_end", methods: "POST")]
+	public function end(Request $request): Response
 	{
 		try
 		{
@@ -80,6 +84,9 @@ class MoveController extends AbstractController
 		}
 
 		// Redirect to the view.
-		return $this->redirect("/");
+		if ($request->get("gameId") == "local")
+			return $this->redirectToRoute("localGame");
+		else
+			return $this->redirectToRoute("onlineGame", [ "gameId" => $request->get("gameId") ]);
 	}
 }

@@ -4,6 +4,7 @@ namespace App\EventSubscriber;
 
 use App\Game\GameSession;
 use App\Game\GameState;
+use App\Game\OnlineGame;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
@@ -15,8 +16,9 @@ readonly class GameStateCookieSubscriber implements EventSubscriberInterface
 	/**
 	 * @param GameState $gameState Game state service.
 	 * @param GameSession $gameSession Game session service.
+	 * @param OnlineGame $onlineGame Online game service.
 	 */
-	public function __construct(private GameState $gameState, private GameSession $gameSession)
+	public function __construct(private GameState $gameState, private GameSession $gameSession, private OnlineGame $onlineGame)
 	{
 	}
 
@@ -27,6 +29,8 @@ readonly class GameStateCookieSubscriber implements EventSubscriberInterface
 			$event->getResponse()->headers->setCookie($this->gameState->createCookie($updatedGameState));
 			$this->gameSession->clearUpdatedGameState();
 		}
+		// Update online games cookie.
+		$event->getResponse()->headers->setCookie($this->onlineGame->createOnlineGamesCookie());
 	}
 
 	public static function getSubscribedEvents(): array

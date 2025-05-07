@@ -2,12 +2,15 @@
 
 {% block body %}
 	<main>
-		<twig:Board board="{{ board }}" winner="{{ winner }}" />
+		<twig:Board board="{{ board }}" gameId="{{ gameId }}"
+								winner="{{ winner }}" currentPlayer="{{ currentPlayer }}"
+								canPlay="{{ canPlay }}" />
 	</main>
 	<aside>
 		<twig:Winner winner="{{ winner }}" />
+		<twig:CurrentPlayer playerName="{{ currentPlayerName }}" currentPlayer="{{ currentPlayer }}" />
 
 		<twig:Flash />
-		<twig:Turn />
+		<twig:Turn canPlay="{{ canPlay }}" gameId="{{ gameId }}" />
 	</aside>
 {% endblock %}

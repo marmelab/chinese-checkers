@@ -9,7 +9,7 @@
 	--board-background: #F4F4F4;
 
 	--board-green-background: #cbe6ca;
-	--board-green: #24C217;
+	--board-green: #1B9C10;
 	--board-red-background: #ebc7c7;
 	--board-red: #EA0A0A;
 
@@ -52,6 +52,7 @@ body
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
+	flex-wrap: wrap;
 	min-height: 100vh;
 }
 body > main, body > aside
@@ -67,37 +68,58 @@ body > aside
 
 /* Buttons */
 
-button
+a.button, button
 {
 	transition: background 0.1s ease;
 	display: inline-block;
 
 	margin: 1em auto;
 	padding: 0.5em 1em;
+	width: fit-content;
 	border-radius: 0.5em;
 
 	border: solid var(--button-border) thin;
 	background: var(--button-background);
+	color: var(--foreground);
 
 	font-size: 1em;
+	text-decoration: none;
 }
-button:not(:disabled):hover
+a.button:not(:disabled):hover, button:not(:disabled):hover
 {
 	background: var(--button-background-hover);
 }
-button:not(:disabled)
+a.button:not(:disabled), button:not(:disabled)
 {
 	cursor: pointer;
+}
+
+/* Forms */
+
+label
+{
+	display: block;
+	text-align: left;
+}
+label > input
+{
+	display: block;
+	margin: 0.5em auto;
+	padding: 0.5em;
+
+	font-size: 1em;
 }
 
 /* Game board component */
 
 table.game-board
 {
-	margin: 6em;
+	margin: 3em 6em 0;
 	border-collapse: collapse;
 
 	transform: rotate(45deg);
+
+	font-size: 0.9em;
 }
 table.game-board th
 {
@@ -165,6 +187,11 @@ table.game-board td button:not(:disabled):hover
 {
 	background: var(--board-green);
 }
+.pawn.virtual
+{
+	opacity: 0.5;
+	transform: scale(0.75);
+}
 
 .move-start .pawn
 {
@@ -228,6 +255,38 @@ ol.moves > li:not(:last-of-type)::after
 	border: solid var(--winner-window-green-border) thin;
 	background: var(--winner-window-green-background);
 }
+
+/* Current player */
+
+.current-player.green strong
+{
+	color: var(--board-green);
+}
+.current-player.red strong
+{
+	color: var(--board-red);
+}
+
+/* Join page */
+
+#game-url
+{
+	width: 20em;
+}
+
+/* Homepage */
+
+main.home
+{
+	margin: auto;
+}
+main.home a.button
+{
+	display: block;
+	margin: 1em auto;
+}
+
+
 
 @media screen and (min-width: 800px) {
 	table.game-board

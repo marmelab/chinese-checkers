@@ -14,3 +14,4 @@ services:
       MERCURE_SUBSCRIBER_JWT_KEY: ${CADDY_MERCURE_JWT_SECRET:-${APP_SECRET}-disabled}
       APP_ENV: "${APP_ENV:-production}"
       APP_DEBUG: "${APP_DEBUG:-false}"
+      CADDY_GLOBAL_OPTIONS: "auto_https off"

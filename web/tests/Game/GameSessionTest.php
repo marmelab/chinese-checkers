@@ -6,6 +6,8 @@ use App\Game\BoardUtilities;
 use App\Game\GameApi;
 use App\Game\GameSession;
 use App\Game\GameState;
+use App\Game\OnlineGame;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -31,7 +33,7 @@ class GameSessionTest extends KernelTestCase
 		$requestStack = new RequestStack();
 		$requestStack->push($request = new Request());
 		$request->setSession(new Session(new MockArraySessionStorage()));
-		$this->gameSession = new GameSession($requestStack, new GameState($requestStack, new BoardUtilities()), static::getContainer()->get(GameApi::class));
+		$this->gameSession = new GameSession($requestStack, new GameState($requestStack, new BoardUtilities()), static::getContainer()->get(GameApi::class), static::getContainer()->get(OnlineGame::class), static::getContainer()->get(EntityManagerInterface::class));
 	}
 
 	/**
