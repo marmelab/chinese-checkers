@@ -29,4 +29,19 @@ class ApiController extends AbstractController
 			],
 		);
 	}
+
+	/**
+	 * Get a game state from its UUID.
+	 * @param string $uuid UUID of the game to get.
+	 * @return Response
+	 */
+	#[Route("/api/v1/games/{uuid}", methods: "GET", format: "json")]
+	public function getGame(string $uuid): Response
+	{
+		$game = $this->entityManager->getRepository(Game::class)->findOneBy(["uuid" => $uuid]);
+
+		if (empty($game)) throw $this->createNotFoundException();
+
+		return $this->json($game, context: [ "groups" => "game:read" ]);
+	}
 }

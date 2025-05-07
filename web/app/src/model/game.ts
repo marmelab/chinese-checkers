@@ -1,17 +1,19 @@
 import {z} from "zod";
 import {OnlinePlayer, zOnlinePlayer} from "./online-player";
-import {GamePlayer} from "./game-player";
+import {GamePlayer, zGamePlayer} from "./game-player";
+import {zCellContent} from "./cell";
 
 export const zGame = z.object({
 	uuid: z.string().uuid(),
 
-	board: z.array(z.array(z.number().int())),
-	currentPlayer: z.nativeEnum(GamePlayer),
+	board: z.array(z.array(zCellContent)),
+	currentPlayer: zGamePlayer,
 
 	players: z.array(zOnlinePlayer),
 });
 
 export type Game = z.infer<typeof zGame>;
+export type GameBoard = Game["board"];
 
 /**
  * Find the green player in players list of the game.
@@ -28,6 +30,19 @@ export function getGameGreenPlayer(game: Game): OnlinePlayer
  */
 export function getGameRedPlayer(game: Game): OnlinePlayer
 {
-	console.log(game.players);
 	return game.players.find(player => player.gamePlayer == GamePlayer.Red);
+}
+
+/**
+ * Get the current online player.
+ * @param game The game from which to get the current player.
+ */
+export function getCurrentPlayer(game: Game): OnlinePlayer
+{
+	if (game.currentPlayer == GamePlayer.Green)
+		return getGameGreenPlayer(game);
+	else if (game.currentPlayer == GamePlayer.Red)
+		return getGameRedPlayer(game);
+	else
+		throw new Error("Unknown current player.");
 }

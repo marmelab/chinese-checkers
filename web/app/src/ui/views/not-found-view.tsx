@@ -1,0 +1,20 @@
+import React from "react";
+import {usePageTitle} from "../layout";
+import {GameList} from "../components/games/game-list";
+import {Link} from "react-router-dom";
+
+/**
+ * Show a not found page.
+ */
+export function NotFoundView()
+{
+	usePageTitle("Not found");
+
+	return (
+		<main>
+			<p className={"center"}>Sorry, we couldn't find what you were looking for!</p>
+
+			<Link to={"/app"}>Go back to home</Link>
+		</main>
+	);
+}

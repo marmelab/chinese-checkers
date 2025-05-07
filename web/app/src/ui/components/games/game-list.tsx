@@ -28,7 +28,7 @@ export function GameList()
 		<>
 			{ // Show all the fetched games.
 				fetchedGames.data?.map(game => (
-					<GameCard game={game} />
+					<GameCard key={game.uuid} game={game} />
 				))
 			}
 		</>

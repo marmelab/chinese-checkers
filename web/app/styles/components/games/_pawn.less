@@ -1,0 +1,25 @@
+.pawn
+{
+	display: block;
+
+	margin: auto;
+	width: 1.66em;
+	height: 1.66em;
+	border-radius: 1.66em;
+	box-sizing: border-box;
+
+	background: var(--board-border);
+
+	&.red
+	{ background: var(--red); }
+	&.green
+	{ background: var(--green); }
+
+	&.virtual
+	{
+		opacity: 0.5;
+		transform: scale(0.75);
+	}
+
+	box-shadow: inset 0.75em 0 0.75em 0 rgba(0, 0, 0, 0.44);
+}
