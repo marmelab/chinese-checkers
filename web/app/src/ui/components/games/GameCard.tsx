@@ -1,6 +1,5 @@
 import React from "react";
-import {Card} from "../Card";
-import {Game} from "../../../model/game";
+import {Game, getGameGreenPlayer, getGameRedPlayer} from "../../../model/game";
 import {Link} from "react-router-dom";
 
 /**
@@ -12,9 +11,9 @@ export function GameCard({game}: {
 {
 	return (
 		<Link className={"game card"} to={`/app/game/${game.uuid}`}>
-			<div className={"green player"}>{game.greenPlayer}</div>
+			<div className={"green player"}>{getGameGreenPlayer(game).name}</div>
 			<div className={"vs"}>VS</div>
-			<div className={"red player"}>{game.redPlayer}</div>
+			<div className={"red player"}>{getGameRedPlayer(game).name}</div>
 		</Link>
 	)
 }

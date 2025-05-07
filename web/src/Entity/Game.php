@@ -2,14 +2,16 @@
 
 namespace App\Entity;
 
+use App\Repository\GamesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Game board state.
  */
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: GamesRepository::class)]
 #[ORM\Table("games")]
 class Game implements \JsonSerializable
 {
@@ -21,6 +23,7 @@ class Game implements \JsonSerializable
 	#[ORM\GeneratedValue("CUSTOM")]
 	#[ORM\CustomIdGenerator("doctrine.uuid_generator")]
 	#[ORM\Column(type: "uuid")]
+	#[Groups(["game:read"])]
 	private string $uuid;
 
 	/**
@@ -28,6 +31,7 @@ class Game implements \JsonSerializable
 	 * @var int[][]
 	 */
 	#[ORM\Column(type: "json", options: ["jsonb" => true])]
+	#[Groups(["game:read"])]
 	private array $board;
 
 	/**
@@ -35,14 +39,16 @@ class Game implements \JsonSerializable
 	 * @var GamePlayer
 	 */
 	#[ORM\Column(type: "smallint", enumType: GamePlayer::class)]
+	#[Groups(["game:read"])]
 	private GamePlayer $currentPlayer;
 
 	/**
 	 * Related online players.
 	 * @var Collection<int, OnlinePlayer>
 	 */
-	#[ORM\OneToMany(targetEntity: OnlinePlayer::class, mappedBy: "game")]
+	#[ORM\OneToMany(targetEntity: OnlinePlayer::class, mappedBy: "game", fetch: "EAGER")]
 	#[ORM\JoinColumn(referencedColumnName: "uuid")]
+	#[Groups(["game:read"])]
 	private Collection $players;
 
 	public function __construct()

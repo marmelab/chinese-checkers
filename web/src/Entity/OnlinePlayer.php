@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Entity of an online player.
@@ -14,6 +15,7 @@ class OnlinePlayer
 	#[ORM\GeneratedValue("CUSTOM")]
 	#[ORM\CustomIdGenerator("doctrine.uuid_generator")]
 	#[ORM\Column]
+	#[Groups(["game:read"])]
 	private string $uuid;
 
 	/**
@@ -21,6 +23,7 @@ class OnlinePlayer
 	 * @var string
 	 */
 	#[ORM\Column]
+	#[Groups(["game:read"])]
 	private string $name;
 
 	/**
@@ -36,6 +39,7 @@ class OnlinePlayer
 	 * @var GamePlayer
 	 */
 	#[ORM\Column]
+	#[Groups(["game:read"])]
 	private GamePlayer $gamePlayer;
 
 	/**

@@ -1,6 +1,6 @@
 import React from "react";
 import {usePageTitle} from "../layout";
-import {GameCard} from "../components/games/GameCard";
+import {GamesList} from "../components/games/GamesList";
 
 /**
  * Home view, with ongoing games.
@@ -13,8 +13,7 @@ export function HomeView()
 		<main>
 			<p className={"center"}>Find a game to spectate!</p>
 
-			<GameCard game={{ uuid: "test", greenPlayer: "Alice", redPlayer: "Bob" }} />
-			<GameCard game={{ uuid: "test", greenPlayer: "Al'", redPlayer: "Bobby" }} />
+			<GamesList />
 		</main>
 	);
 }

@@ -2,6 +2,12 @@ import React from "react";
 import {RouterProvider} from "react-router-dom";
 import {router} from "./router";
 import {IconContext} from "@phosphor-icons/react";
+import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+
+/**
+ * Application global query client instance.
+ */
+const appQueryClient = new QueryClient();
 
 /**
  * Main application component.
@@ -9,14 +15,16 @@ import {IconContext} from "@phosphor-icons/react";
 export function App()
 {
 	return (
-		<IconContext value={{
-			weight: "bold",
-			className: "icon",
-			size: "1em",
-		}}>
-			<main className={"app"}>
-				<RouterProvider router={router} />
-			</main>
-		</IconContext>
+		<QueryClientProvider client={appQueryClient}>
+			<IconContext value={{
+				weight: "bold",
+				className: "icon",
+				size: "1em",
+			}}>
+				<main className={"app"}>
+					<RouterProvider router={router} />
+				</main>
+			</IconContext>
+		</QueryClientProvider>
 	)
 }
