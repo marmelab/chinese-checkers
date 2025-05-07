@@ -27,7 +27,7 @@ GO_PACKAGE=github.com/marmelab/chinese-checkers
 
 # Misc
 .DEFAULT_GOAL = help
-.PHONY        : help install build-cli build-api start-cli deps lint vet check clean up start-web-app start-web-app-dev down logs sh bash test composer vendor composer-install composer-install-dev sf cc
+.PHONY        : help install build-cli build-api start-cli deps lint vet check clean up start-web-app start-web-app-dev down logs sh bash test install-e2e test-e2e build-mobile-app start-mobile-app-dev composer vendor composer-install composer-install-dev sf cc
 
 ## —— Chinese Checkers ♟️ ——————————————————————————————————————————————————————
 help: ## Outputs this help screen.
@@ -69,7 +69,7 @@ up: ## Start web app in detached mode.
 up-production: ## Start web app in detached mode for production.
 	@$(DOCKER_COMP) -f $(DOCKER_COMPOSE_WEB_MAIN) -f $(DOCKER_COMPOSE_WEB_PROD) up --detach
 
-start-web-app: install build-api composer-install up-production ## Build and start the web application for production.
+start-web-app: install build-api build-mobile-app composer-install up-production ## Build and start the web application for production.
 start-web-app-dev: install build-api composer-install-dev up ## Build and start the web application in dev mode.
 
 down: ## Stop web app.
@@ -95,6 +95,14 @@ install-e2e: ## Install dependencies for end to end tests with playwright.
 test-e2e: ## Run end to end tests with playwright.
 	@(cd web && yarn playwright test)
 
+
+## —— Mobile app 📱 ————————————————————————————————————————————————————————————
+
+build-mobile-app: ## Build the mobile app for production use with web app.
+	@(cd web && yarn install && yarn build)
+
+start-mobile-app-dev: ## Run the mobile app in dev mode.
+	@(cd web && yarn install && yarn dev)
 
 ## —— Composer 🧙 ——————————————————————————————————————————————————————————————
 composer: ## Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'.

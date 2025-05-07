@@ -1,0 +1,28 @@
+{
+	"ts-node": {
+		"compilerOptions": {
+			"module": "ESNext",
+			"types": ["node"]
+		}
+	},
+	"compilerOptions": {
+		"outDir": "./lib",
+		"incremental": true,
+		"sourceMap": true,
+		"noImplicitAny": true,
+		"esModuleInterop": true,
+		"allowSyntheticDefaultImports": true,
+		"resolveJsonModule": true,
+		"experimentalDecorators": true,
+		"emitDecoratorMetadata": true,
+		"module": "ES6",
+		"target": "ES6",
+		"moduleResolution": "Bundler",
+		"lib": [
+			"ESNext",
+			"DOM"
+		],
+		"jsx": "react",
+		"allowJs": true
+	}
+}
