@@ -1,19 +1,43 @@
-import React from "react";
-import {Menu} from "./menu";
+import React, {useEffect} from "react";
+import {create} from "zustand";
 import {Outlet} from "react-router-dom";
+import {Menu} from "./menu";
+
+/**
+ * Layout data store.
+ */
+const useLayoutStore = create<{
+	title: string;
+}>(() => ({
+	title: "",
+}));
 
 /**
  * Layout component.
  */
 export function Layout()
 {
+	const title = useLayoutStore(state => state.title);
+
 	return (
 		<>
 			<header>
-				<Menu />
+				<h1>{title}</h1>
 			</header>
 
 			<Outlet />
+
+			<Menu />
 		</>
 	);
+}
+
+/**
+ * Set the page title.
+ */
+export function usePageTitle(title: string): void
+{
+	useEffect(() => {
+		useLayoutStore.setState({ title });
+	}, [title]);
 }
