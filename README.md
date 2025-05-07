@@ -18,6 +18,7 @@ Before you begin, ensure you have the following installed:
 - **Docker:** To build and run the development container. [Install Docker](https://docs.docker.com/get-docker/)
 - **Make:** To use the Makefile automation. (Usually pre-installed on Linux/macOS, may need installation on Windows).
 - **Yarn:** To install and run e2e tests.
+- **Corepack:** To install latest stable yarn. Run `sudo corepack enable` before any `yarn install`.
 
 _(Note: PHP, Go and staticcheck do NOT need to be installed locally.)_
 
@@ -77,6 +78,9 @@ Clone the repository, then:
     test                           Run tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure".
     install-e2e                    Install dependencies for end to end tests with playwright.
     test-e2e                       Run end to end tests with playwright.
+     —— Mobile app 📱 ————————————————————————————————————————————————————————————
+    build-mobile-app               Build the mobile app for production use with web app.
+    start-mobile-app-dev           Run the mobile app in dev mode.
      —— Composer 🧙 ——————————————————————————————————————————————————————————————
     composer                       Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'.
     vendor                         Install vendors according to the current composer.lock file.
@@ -96,9 +100,12 @@ cmd/chinese-checkers/ # Main entry point
 internal/game/        # Core game logic
 bin/                  # Binary file
 web/                  # Web application (Symfony)
+web/app/              # Mobile application (React)
 ```
 
-## 👷 Testing web application
+## 👷 Testing
+
+### Web application
 
 You should not need to configure anything to start the web application in development mode:
 
@@ -107,6 +114,17 @@ make start-web-app-dev
 ```
 
 You can then access the web application on [`https://localhost`](https://localhost).
+
+### Mobile app
+
+```shell
+# Start the web application (backend).
+make start-web-app-dev
+# Start the mobile application.
+make start-mobile-app-dev
+```
+
+You can then access the web application on [`http://localhost:5173/app`](http://localhost:5173/app).
 
 ## 🧪 Running tests
 
