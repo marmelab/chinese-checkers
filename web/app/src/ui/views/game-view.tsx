@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import {useParams} from "react-router-dom";
 import {usePageTitle} from "../layout";
 import {useQuery} from "@tanstack/react-query";
@@ -14,7 +14,11 @@ import {GamePlayer} from "../../model/game-player";
  */
 function useGame(uuid: string)
 {
-	return useQuery({ queryKey: ["game", uuid], queryFn: () => getGame(uuid), retry: false });
+	return useQuery({
+		queryKey: ["game", uuid],
+		queryFn: () => getGame(uuid),
+		retry: false,
+	});
 }
 
 /**
@@ -24,9 +28,15 @@ export function GameView()
 {
 	usePageTitle("Game");
 
+	// Fetch the game with the UUID from the URL.
 	const gameUuid = useParams().uuid;
-
 	const fetchedGame = useGame(gameUuid);
+
+	useEffect(() => {
+		// Refetch the game every 5 seconds.
+		const interval = setInterval(() => fetchedGame.refetch(), 5000);
+		return () => clearInterval(interval);
+	}, []);
 
 	if (fetchedGame.isPending)
 		return <main><p>Loading...</p></main>; //TODO improve this.
