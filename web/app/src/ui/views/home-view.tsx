@@ -1,6 +1,6 @@
 import React from "react";
 import {usePageTitle} from "../layout";
-import {GamesList} from "../components/games/GamesList";
+import {GameList} from "../components/games/game-list";
 
 /**
  * Home view, with ongoing games.
@@ -13,7 +13,7 @@ export function HomeView()
 		<main>
 			<p className={"center"}>Find a game to spectate!</p>
 
-			<GamesList />
+			<GameList />
 		</main>
 	);
 }

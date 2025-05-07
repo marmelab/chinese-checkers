@@ -1,7 +1,7 @@
 import React from "react";
 import {useQuery} from "@tanstack/react-query";
 import {getOngoingGames} from "../../../api/games";
-import {GameCard} from "./GameCard";
+import {GameCard} from "./game-card";
 
 /**
  * Fetch ongoing games.
@@ -14,7 +14,7 @@ function useOngoingGames()
 /**
  * Games list component.
  */
-export function GamesList()
+export function GameList()
 {
 	const fetchedGames = useOngoingGames();
 
