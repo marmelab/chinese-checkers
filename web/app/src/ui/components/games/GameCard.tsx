@@ -1,21 +1,20 @@
 import React from "react";
 import {Card} from "../Card";
+import {Game} from "../../../model/game";
+import {Link} from "react-router-dom";
 
 /**
  * Game card component.
  */
-export function GameCard()
+export function GameCard({game}: {
+	game: Game;
+})
 {
-	const greenPlayer = "Alice";
-	const redPlayer = "Bob";
-
 	return (
-		<Card className={"game"} role={"button"}>
-			<p>
-				<span className={"green player"}>{greenPlayer}</span>
-				{" "}<span className={"vs"}>VS</span>{" "}
-				<span className={"red player"}>{redPlayer}</span>
-			</p>
-		</Card>
+		<Link className={"game card"} to={`/app/game/${game.uuid}`}>
+			<div className={"green player"}>{game.greenPlayer}</div>
+			<div className={"vs"}>VS</div>
+			<div className={"red player"}>{game.redPlayer}</div>
+		</Link>
 	)
 }

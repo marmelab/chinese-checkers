@@ -849,6 +849,7 @@ __metadata:
     react-router-dom: "npm:^7.5.3"
     typescript: "npm:^5.8.3"
     vite: "npm:^6.3.5"
+    zod: "npm:^3.24.4"
     zustand: "npm:^5.0.4"
   languageName: unknown
   linkType: soft
@@ -2232,6 +2233,13 @@ __metadata:
   version: 5.0.0
   resolution: "yallist@npm:5.0.0"
   checksum: 10c0/a499c81ce6d4a1d260d4ea0f6d49ab4da09681e32c3f0472dee16667ed69d01dae63a3b81745a24bd78476ec4fcf856114cb4896ace738e01da34b2c42235416
+  languageName: node
+  linkType: hard
+
+"zod@npm:^3.24.4":
+  version: 3.24.4
+  resolution: "zod@npm:3.24.4"
+  checksum: 10c0/ab3112f017562180a41a0f83d870b333677f7d6b77f106696c56894567051b91154714a088149d8387a4f50806a2520efcb666f108cd384a35c236a191186d91
   languageName: node
   linkType: hard
 

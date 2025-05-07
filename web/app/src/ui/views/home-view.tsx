@@ -13,9 +13,8 @@ export function HomeView()
 		<main>
 			<p className={"center"}>Find a game to spectate!</p>
 
-			<GameCard />
-			<GameCard />
-			<GameCard />
+			<GameCard game={{ uuid: "test", greenPlayer: "Alice", redPlayer: "Bob" }} />
+			<GameCard game={{ uuid: "test", greenPlayer: "Al'", redPlayer: "Bobby" }} />
 		</main>
 	);
 }

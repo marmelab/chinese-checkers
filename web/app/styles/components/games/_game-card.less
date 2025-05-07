@@ -1,14 +1,21 @@
 .game.card
 {
-	text-align: center;
-	vertical-align: middle;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+
+	color: unset;
+	text-decoration: none;
 
 	.player
 	{
+		flex: 1;
+
 		font-weight: 600;
 		vertical-align: middle;
 
-		&.green { color: var(--green); }
+		&.green { color: var(--green); text-align: right; }
 		&.red { color: var(--red); }
 	}
 
