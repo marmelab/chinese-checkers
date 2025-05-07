@@ -1,4 +1,7 @@
 import React from "react";
+import {RouterProvider} from "react-router-dom";
+import {router} from "./router";
+import {IconContext} from "@phosphor-icons/react";
 
 /**
  * Main application component.
@@ -6,6 +9,14 @@ import React from "react";
 export function App()
 {
 	return (
-		<main className={"app"}>Hello World!</main>
+		<IconContext value={{
+			weight: "bold",
+			className: "icon",
+			size: "1em",
+		}}>
+			<main className={"app"}>
+				<RouterProvider router={router} />
+			</main>
+		</IconContext>
 	)
 }
