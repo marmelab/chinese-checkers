@@ -118,6 +118,9 @@ You can then access the web application on [`https://localhost`](https://localho
 ### Mobile app
 
 ```shell
+# Start the web application (backend).
+make start-web-app-dev
+# Start the mobile application.
 make start-mobile-app-dev
 ```
 
