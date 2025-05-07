@@ -13,6 +13,7 @@ use Symfony\Component\Serializer\Annotation\Groups;
  */
 #[ORM\Entity(repositoryClass: GamesRepository::class)]
 #[ORM\Table("games")]
+#[ORM\HasLifecycleCallbacks]
 class Game implements \JsonSerializable
 {
 	/**
@@ -25,6 +26,20 @@ class Game implements \JsonSerializable
 	#[ORM\Column(type: "uuid")]
 	#[Groups(["game:read"])]
 	private string $uuid;
+
+	/**
+	 * Game creation date and time.
+	 * @var \DateTime
+	 */
+	#[ORM\Column(type: "datetimetz")]
+	private \DateTime $createdAt;
+
+	/**
+	 * Game update date and time.
+	 * @var \DateTime
+	 */
+	#[ORM\Column(type: "datetimetz")]
+	private \DateTime $updatedAt;
 
 	/**
 	 * The board cells.
@@ -54,6 +69,26 @@ class Game implements \JsonSerializable
 	public function __construct()
 	{
 		$this->players = new ArrayCollection();
+	}
+
+	/**
+	 * Set the creation date at entity creation.
+	 * @return void
+	 */
+	#[ORM\PrePersist]
+	public function onPrePersist(): void
+	{
+		$this->createdAt = new \DateTime("now");
+	}
+
+	/**
+	 * Set the update date at entity update.
+	 * @return void
+	 */
+	#[ORM\PreUpdate]
+	public function onPreUpdate(): void
+	{
+		$this->updatedAt = new \DateTime("now");
 	}
 
 	/**

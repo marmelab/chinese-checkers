@@ -27,6 +27,8 @@ class GamesRepository extends ServiceEntityRepository
 			->select("games")
 			->from($this->getEntityName(), "games")
 			->where("(SELECT COUNT(players) FROM App\Entity\OnlinePlayer players WHERE players.game = games.uuid) = 2")
+			->orderBy("games.updatedAt", "DESC")
+			->addOrderBy("games.createdAt", "DESC")
 
 			->getQuery()->execute();
 	}
