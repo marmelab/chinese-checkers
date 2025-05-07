@@ -1,7 +1,8 @@
 import React from "react";
 import {Game} from "../../../model/game";
-import {CellContent} from "../../../model/cell";
+import {CellContent, inGreenTargetArea, inRedTargetArea} from "../../../model/cell";
 import {Pawn} from "./pawn";
+import {classes} from "../../../utils";
 
 /**
  * Game board component.
@@ -15,7 +16,7 @@ export function GameBoard({board}: {
 			<tbody>
 			{ // Show all rows of the game board.
 				board.map((row, rowIndex) => (
-					<GameBoardRow key={rowIndex} row={row} />
+					<GameBoardRow key={rowIndex} row={row} rowIndex={rowIndex} />
 				))
 			}
 			</tbody>
@@ -26,7 +27,8 @@ export function GameBoard({board}: {
 /**
  * Game board row of cells.
  */
-export function GameBoardRow({row}: {
+export function GameBoardRow({rowIndex, row}: {
+	rowIndex: number;
 	row: Game["board"][0];
 })
 {
@@ -34,7 +36,7 @@ export function GameBoardRow({row}: {
 		<tr>
 			{ // Show all cells of the row.
 				row.map((cell, cellIndex) => (
-					<GameBoardCell key={cellIndex} cell={cell} />
+					<GameBoardCell key={cellIndex} cell={cell} rowIndex={rowIndex} cellIndex={cellIndex} />
 				))
 			}
 		</tr>
@@ -44,12 +46,14 @@ export function GameBoardRow({row}: {
 /**
  * Game board cell.
  */
-export function GameBoardCell({cell}: {
+export function GameBoardCell({rowIndex, cellIndex, cell}: {
+	rowIndex: number;
+	cellIndex: number;
 	cell: CellContent;
 })
 {
 	return (
-		<td>
+		<td className={classes(inGreenTargetArea(rowIndex, cellIndex) && "green-target", inRedTargetArea(rowIndex, cellIndex) && "red-target")}>
 			<button type={"button"}>
 				{ // Show a pawn if there is one.
 					cell != CellContent.Empty && (
