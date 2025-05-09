@@ -1,4 +1,4 @@
-name: Go
+name: Check and deploy
 
 on: [push]
 
@@ -52,4 +52,49 @@ jobs:
         run: make install-e2e
       - name: Run the web app and run e2e tests
         run: make start-web-app && make test-e2e && make down
-        
+
+  deploy:
+    name: Deploy the app in production
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main'
+    needs: test
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: lts/*
+      - name: Enable corepack to use latest stable yarn
+        run: corepack enable
+
+      - name: Build mobile app
+        run: make build-mobile-app
+
+      - name: Compress mobile app package
+        run: tar czf mobile-app.tar.gz web/public/app
+
+      - name: Push the app package to the production server
+        uses: appleboy/scp-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          source: "mobile-app.tar.gz"
+          target: "./"
+
+      - name: Deploy the app on the production server
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.DEPLOY_HOST }}
+          username: ${{ secrets.DEPLOY_USERNAME }}
+          key: ${{ secrets.DEPLOY_KEY }}
+          script: |
+            # Prepare git repository.
+            cd chinese-checkers
+            git fetch
+            git checkout main
+            # Clean and deploy the new mobile app.
+            rm -rf web/public/app
+            tar xvf /home/ec2-user/mobile-app.tar.gz
+            # Restart the web application
+            make down && make start-web-app
