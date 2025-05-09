@@ -7,9 +7,13 @@ export function GamesList() {
 
 	return (
 		<>
-			{fetchedGames.data?.map((game) => (
-				<GameCard key={game.uuid} game={game} />
-			))}
+			{fetchedGames.data?.length > 0 ? (
+				fetchedGames.data?.map((game) => (
+					<GameCard key={game.uuid} game={game} />
+				))
+			) : (
+				<p className="center">No ongoing game.</p>
+			)}
 		</>
 	);
 }
