@@ -7,6 +7,10 @@ const pawnClassName: Partial<Record<CellContent, string>> = {
 	[CellContent.RedPawn]: "red",
 };
 
-export function Pawn({pawn}: {pawn: CellContent}) {
-	return <div className={clsx("pawn", pawnClassName[pawn])}></div>;
+export function Pawn({pawn, selected}: {pawn: CellContent; selected: boolean}) {
+	return (
+		<div
+			className={clsx("pawn", selected && "selected", pawnClassName[pawn])}
+		></div>
+	);
 }

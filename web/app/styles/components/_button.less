@@ -19,4 +19,17 @@ button, a[role="button"]
 	{
 		transform: scale(0.9);
 	}
+
+	&:disabled
+	{
+		border-color: var(--disabled-button-border);
+		background: var(--disabled-button);
+		opacity: 0.75;
+	}
+
+	&.cancel, &.remove, &.delete, &.red
+	{
+		border-color: var(--red-button-border);
+		background: var(--red-button);
+	}
 }

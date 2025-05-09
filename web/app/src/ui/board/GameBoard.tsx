@@ -44,6 +44,7 @@ export function GameBoard({
 					{board.map((row, rowIndex) => (
 						<GameBoardRow
 							key={rowIndex}
+							move={move}
 							row={row}
 							rowIndex={rowIndex}
 							onClick={onCellClick}

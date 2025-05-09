@@ -4,24 +4,12 @@ import {GameBoard} from "./GameBoard";
 import {MoveActionsBar} from "../move/MoveActionsBar";
 
 export interface CellIdentifier {
-	/**
-	 * Index of the cell row in the board.
-	 */
 	rowIndex: number;
-	/**
-	 * Index of the cell in the row.
-	 */
 	cellIndex: number;
 }
 
-/**
- * Move state type.
- */
 export type MoveState = CellIdentifier[];
 
-/**
- * A playable game board component.
- */
 export function PlayableGameBoard({game}: {game: Game}) {
 	const [move, setMove] = useState<MoveState>([]);
 
@@ -34,9 +22,6 @@ export function PlayableGameBoard({game}: {game: Game}) {
 		setMove([...move, {rowIndex, cellIndex}]);
 	};
 
-	/**
-	 * Find out if the move has started.
-	 */
 	const isMoveStarted = move.length > 0;
 
 	return (
@@ -59,7 +44,15 @@ export function PlayableGameBoard({game}: {game: Game}) {
 				}}
 			/>
 
-			{isMoveStarted && <MoveActionsBar />}
+			{isMoveStarted && (
+				<MoveActionsBar
+					move={move}
+					onCancel={() => {
+						setMove([]);
+					}}
+					onSubmit={() => {}}
+				/>
+			)}
 		</>
 	);
 }
