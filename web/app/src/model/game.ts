@@ -36,7 +36,9 @@ export function getGameRedPlayer(game: Game): OnlinePlayer {
  * @param game The game from which to get the current player.
  */
 export function getCurrentPlayer(game: Game): OnlinePlayer {
-	if (game.currentPlayer == GamePlayer.Green) return getGameGreenPlayer(game);
-	else if (game.currentPlayer == GamePlayer.Red) return getGameRedPlayer(game);
-	else throw new Error("Unknown current player.");
+	const player = game.players.find(
+		(player) => player.gamePlayer == game.currentPlayer,
+	);
+	if (!player) throw new Error("Unknown current player.");
+	return player;
 }
