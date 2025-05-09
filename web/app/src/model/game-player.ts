@@ -3,8 +3,7 @@ import {z} from "zod";
 /**
  * Game player team.
  */
-export enum GamePlayer
-{
+export enum GamePlayer {
 	Green = 1,
 	Red = 2,
 }

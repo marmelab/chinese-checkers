@@ -7,8 +7,7 @@ import {Link} from "react-router-dom";
  */
 export function GameCard({game}: {
 	game: Game;
-})
-{
+}) {
 	return (
 		<Link className={"game card"} to={`/app/game/${game.uuid}`}>
 			<div className={"green player"}>{getGameGreenPlayer(game).name}</div>

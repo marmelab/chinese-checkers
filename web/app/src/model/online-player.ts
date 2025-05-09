@@ -1,4 +1,4 @@
-import { z } from "zod";
+import {z} from "zod";
 import {GamePlayer} from "./game-player";
 
 export const zOnlinePlayer = z.object({

@@ -5,8 +5,7 @@ import {Link} from "react-router-dom";
 /**
  * Show a not found page.
  */
-export function NotFoundView()
-{
+export function NotFoundView() {
 	usePageTitle("Not found");
 
 	return (

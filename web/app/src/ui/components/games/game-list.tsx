@@ -7,20 +7,18 @@ import {Loader} from "../loader";
 /**
  * Fetch ongoing games.
  */
-function useOngoingGames()
-{
-	return useQuery({ queryKey: ["ongoingGames"], queryFn: getOngoingGames });
+function useOngoingGames() {
+	return useQuery({queryKey: ["ongoingGames"], queryFn: getOngoingGames});
 }
 
 /**
  * Games list component.
  */
-export function GameList()
-{
+export function GameList() {
 	const fetchedGames = useOngoingGames();
 
 	if (fetchedGames.isPending)
-		return <Loader />;
+		return <Loader/>;
 
 	if (fetchedGames.isError)
 		throw fetchedGames.error;
@@ -29,7 +27,7 @@ export function GameList()
 		<>
 			{ // Show all the fetched games.
 				fetchedGames.data?.map(game => (
-					<GameCard key={game.uuid} game={game} />
+					<GameCard key={game.uuid} game={game}/>
 				))
 			}
 		</>

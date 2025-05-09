@@ -13,8 +13,7 @@ import {LoaderView} from "../components/loader";
  * Get a game from its UUID.
  * @param uuid UUID of the game to get.
  */
-function useGame(uuid: string)
-{
+function useGame(uuid: string) {
 	return useQuery({
 		queryKey: ["game", uuid],
 		queryFn: () => getGame(uuid),
@@ -25,8 +24,7 @@ function useGame(uuid: string)
 /**
  * Game view component.
  */
-export function GameView()
-{
+export function GameView() {
 	usePageTitle("Game");
 
 	// Fetch the game with the UUID from the URL.
@@ -40,27 +38,27 @@ export function GameView()
 	}, []);
 
 	if (fetchedGame.isPending)
-		return <LoaderView />;
+		return <LoaderView/>;
 
 	if (fetchedGame.isError)
-		return <NotFoundView />;
+		return <NotFoundView/>;
 
 	return (
 		<main className={"game"}>
-			<PlayerTurn game={fetchedGame.data} />
-			<GameBoard board={fetchedGame.data.board} />
+			<PlayerTurn game={fetchedGame.data}/>
+			<GameBoard board={fetchedGame.data.board}/>
 		</main>
 	);
 }
 
 export function PlayerTurn({game}: {
 	game: Game;
-})
-{
+}) {
 	const currentPlayer = getCurrentPlayer(game);
 	return (
 		<p className={"player-turn"}>
-			<strong className={currentPlayer.gamePlayer == GamePlayer.Green ? "green" : "red"}>{currentPlayer.name}</strong> to play
+			<strong
+				className={currentPlayer.gamePlayer == GamePlayer.Green ? "green" : "red"}>{currentPlayer.name}</strong> to play
 		</p>
 	);
 }

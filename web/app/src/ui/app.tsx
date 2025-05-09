@@ -12,8 +12,7 @@ const appQueryClient = new QueryClient();
 /**
  * Main application component.
  */
-export function App()
-{
+export function App() {
 	return (
 		<QueryClientProvider client={appQueryClient}>
 			<IconContext value={{
@@ -22,7 +21,7 @@ export function App()
 				size: "1em",
 			}}>
 				<main className={"app"}>
-					<RouterProvider router={router} />
+					<RouterProvider router={router}/>
 				</main>
 			</IconContext>
 		</QueryClientProvider>

@@ -7,8 +7,7 @@ import {classes} from "../../../utils";
  */
 export function Pawn({pawn}: {
 	pawn: CellContent;
-})
-{
+}) {
 	// Find the class name of the provided pawn.
 	const className = pawn == CellContent.GreenPawn ? "green" : (pawn == CellContent.RedPawn ? "red" : undefined);
 

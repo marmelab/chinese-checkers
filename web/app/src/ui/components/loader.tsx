@@ -3,18 +3,16 @@ import React from "react";
 /**
  * Loader component.
  */
-export function Loader()
-{
+export function Loader() {
 	return (
 		<div className={"loader"}></div>
 	);
 }
 
-export function LoaderView()
-{
+export function LoaderView() {
 	return (
 		<main className={"loader"}>
-			<Loader />
+			<Loader/>
 		</main>
 	);
 }

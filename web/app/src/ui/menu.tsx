@@ -5,12 +5,11 @@ import {House} from "@phosphor-icons/react";
 /**
  * Main application menu.
  */
-export function Menu()
-{
+export function Menu() {
 	return (
 		<nav className={"menu"}>
 			<ul>
-				<li><NavLink to={"/app"} end><House /> Home</NavLink></li>
+				<li><NavLink to={"/app"} end><House/> Home</NavLink></li>
 			</ul>
 		</nav>
 	);

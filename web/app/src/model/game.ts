@@ -19,8 +19,7 @@ export type GameBoard = Game["board"];
  * Find the green player in players list of the game.
  * @param game
  */
-export function getGameGreenPlayer(game: Game): OnlinePlayer
-{
+export function getGameGreenPlayer(game: Game): OnlinePlayer {
 	return game.players.find(player => player.gamePlayer == GamePlayer.Green);
 }
 
@@ -28,8 +27,7 @@ export function getGameGreenPlayer(game: Game): OnlinePlayer
  * Find the red player in players list of the game.
  * @param game
  */
-export function getGameRedPlayer(game: Game): OnlinePlayer
-{
+export function getGameRedPlayer(game: Game): OnlinePlayer {
 	return game.players.find(player => player.gamePlayer == GamePlayer.Red);
 }
 
@@ -37,8 +35,7 @@ export function getGameRedPlayer(game: Game): OnlinePlayer
  * Get the current online player.
  * @param game The game from which to get the current player.
  */
-export function getCurrentPlayer(game: Game): OnlinePlayer
-{
+export function getCurrentPlayer(game: Game): OnlinePlayer {
 	if (game.currentPlayer == GamePlayer.Green)
 		return getGameGreenPlayer(game);
 	else if (game.currentPlayer == GamePlayer.Red)

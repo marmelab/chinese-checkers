@@ -6,5 +6,5 @@ import "../styles/chinese-checkers.less";
 
 document.addEventListener("DOMContentLoaded", () => {
 	const root = createRoot(document.body);
-	root.render(<App />);
+	root.render(<App/>);
 });

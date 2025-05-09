@@ -15,8 +15,7 @@ const useLayoutStore = create<{
 /**
  * Layout component.
  */
-export function Layout({children}: React.PropsWithChildren<{}>)
-{
+export function Layout({children}: React.PropsWithChildren<{}>) {
 	const title = useLayoutStore(state => state.title);
 
 	return (
@@ -25,9 +24,9 @@ export function Layout({children}: React.PropsWithChildren<{}>)
 				<h1>{title}</h1>
 			</header>
 
-			{children ?? <Outlet />}
+			{children ?? <Outlet/>}
 
-			<Menu />
+			<Menu/>
 		</>
 	);
 }
@@ -35,9 +34,8 @@ export function Layout({children}: React.PropsWithChildren<{}>)
 /**
  * Set the page title.
  */
-export function usePageTitle(title: string): void
-{
+export function usePageTitle(title: string): void {
 	useEffect(() => {
-		useLayoutStore.setState({ title });
+		useLayoutStore.setState({title});
 	}, [title]);
 }

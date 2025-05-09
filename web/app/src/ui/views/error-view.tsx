@@ -5,8 +5,7 @@ import {Link} from "react-router-dom";
 /**
  * Show an error page.
  */
-export function ErrorView()
-{
+export function ErrorView() {
 	usePageTitle("Error");
 
 	return (
