@@ -2,6 +2,9 @@ import React, {useCallback, useState} from "react";
 import {Game, isCellPlayable, isPawnPlayable} from "../../model/game";
 import {GameBoard} from "./GameBoard";
 import {MoveActionsBar} from "../move/MoveActionsBar";
+import {Modal} from "../kit/Modal";
+import {openModal} from "../kit/Modals";
+import {AlertModal} from "../kit/AlertModal";
 
 export interface CellIdentifier {
 	rowIndex: number;
@@ -34,12 +37,18 @@ export function PlayableGameBoard({game}: {game: Game}) {
 						// Starting the move: append the cell to the move if there is a pawn of the current player on the cell.
 						if (isPawnPlayable(game, rowIndex, cellIndex))
 							appendCellToMove(rowIndex, cellIndex);
-						else alert("You must play a pawn of your color.");
+						else
+							openModal(
+								<AlertModal>You must play a pawn of your color.</AlertModal>,
+							);
 					} else {
 						// Continuing the move: append the cell to the move if there is no pawn on the cell.
 						if (isCellPlayable(game, rowIndex, cellIndex))
 							appendCellToMove(rowIndex, cellIndex);
-						else alert("You must move your pawn on a free cell.");
+						else
+							openModal(
+								<AlertModal>You must move your pawn a free cell.</AlertModal>,
+							);
 					}
 				}}
 			/>
