@@ -11,10 +11,10 @@ export function NotFoundView()
 	usePageTitle("Not found");
 
 	return (
-		<main>
+		<main className={"not-found"}>
 			<p className={"center"}>Sorry, we couldn't find what you were looking for!</p>
 
-			<Link to={"/app"}>Go back to home</Link>
+			<Link role={"button"} to={"/app"}>Go back to home</Link>
 		</main>
 	);
 }
