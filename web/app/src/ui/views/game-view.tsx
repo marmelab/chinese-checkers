@@ -7,6 +7,7 @@ import {NotFoundView} from "./not-found-view";
 import {GameBoard} from "../components/games/game-board";
 import {Game, getCurrentPlayer} from "../../model/game";
 import {GamePlayer} from "../../model/game-player";
+import {LoaderView} from "../components/loader";
 
 /**
  * Get a game from its UUID.
@@ -38,8 +39,8 @@ export function GameView()
 		return () => clearInterval(interval);
 	}, []);
 
-	if (fetchedGame.isPending)
-		return <main><p>Loading...</p></main>; //TODO improve this.
+	if (true || fetchedGame.isPending)
+		return <LoaderView />;
 
 	if (fetchedGame.isError)
 		return <NotFoundView />;

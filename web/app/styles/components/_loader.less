@@ -1,0 +1,71 @@
+main.loader
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+:not(main).loader
+{
+	position: relative;
+	margin: 2em auto;
+	width: 5em;
+	height: 1em;
+
+	&:before, &:after
+	{
+		content: "";
+		position: absolute;
+		width: 1em;
+		height: 1em;
+		border-radius: 50%;
+		background: var(--lightgray);
+		box-shadow: 2em 0 var(--lightgray);
+		left: 0;
+		top: 0;
+		animation: ballMoveX 0.75s linear infinite;
+	}
+
+	&:after
+	{
+		box-shadow: none;
+		transform: translateX(4em) scale(1);
+		z-index: 2;
+		animation: trfLoader 0.75s linear infinite;
+	}
+}
+
+@keyframes trfLoader
+{
+	0%, 5%
+	{
+		transform: translateX(64px) scale(1);
+		background: var(--lightgray);
+	}
+	10%
+	{
+		transform: translateX(64px) scale(1);
+		background: var(--primary);
+	}
+	40%
+	{
+		transform: translateX(32px) scale(1.5);
+		background: var(--primary);
+	}
+	90%, 95%
+	{
+		transform: translateX(0px) scale(1);
+		background: var(--primary);
+	}
+	100%
+	{
+		transform: translateX(0px) scale(1);
+		background: var(--lightgray);
+	}
+}
+@keyframes ballMoveX
+{
+	0% , 10% { transform: translateX(0) }
+	90%, 100% { transform: translateX(2em) }
+}

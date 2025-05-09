@@ -2,6 +2,7 @@ import React from "react";
 import {useQuery} from "@tanstack/react-query";
 import {getOngoingGames} from "../../../api/games";
 import {GameCard} from "./game-card";
+import {Loader} from "../loader";
 
 /**
  * Fetch ongoing games.
@@ -19,7 +20,7 @@ export function GameList()
 	const fetchedGames = useOngoingGames();
 
 	if (fetchedGames.isPending)
-		return (<p>Loading...</p>); //TODO improve this
+		return <Loader />;
 
 	if (fetchedGames.isError)
 		throw fetchedGames.error;
