@@ -3,15 +3,20 @@ import {clsx} from "clsx";
 import {CellContent} from "../../../model/cell";
 
 /**
+ * Pawn class names map.
+ */
+const pawnClassName: Partial<Record<CellContent, string>> = {
+	[CellContent.GreenPawn]: "green",
+	[CellContent.RedPawn]: "red",
+};
+
+/**
  * Game pawn component.
  */
 export function Pawn({pawn}: {
 	pawn: CellContent;
 }) {
-	// Find the class name of the provided pawn.
-	const className = pawn == CellContent.GreenPawn ? "green" : (pawn == CellContent.RedPawn ? "red" : undefined);
-
 	return (
-		<div className={clsx("pawn", className)}></div>
+		<div className={clsx("pawn", pawnClassName[pawn])}></div>
 	)
 }
