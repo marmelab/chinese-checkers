@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\GamesRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -29,17 +30,17 @@ class Game implements \JsonSerializable
 
 	/**
 	 * Game creation date and time.
-	 * @var \DateTime
+	 * @var DateTime
 	 */
 	#[ORM\Column(type: "datetimetz")]
-	private \DateTime $createdAt;
+	private DateTime $createdAt;
 
 	/**
 	 * Game update date and time.
-	 * @var \DateTime
+	 * @var DateTime
 	 */
 	#[ORM\Column(type: "datetimetz")]
-	private \DateTime $updatedAt;
+	private DateTime $updatedAt;
 
 	/**
 	 * The board cells.
@@ -78,7 +79,8 @@ class Game implements \JsonSerializable
 	#[ORM\PrePersist]
 	public function onPrePersist(): void
 	{
-		$this->createdAt = new \DateTime("now");
+		$this->createdAt = new DateTime("now");
+		$this->updatedAt = new DateTime("now");
 	}
 
 	/**
@@ -88,7 +90,7 @@ class Game implements \JsonSerializable
 	#[ORM\PreUpdate]
 	public function onPreUpdate(): void
 	{
-		$this->updatedAt = new \DateTime("now");
+		$this->updatedAt = new DateTime("now");
 	}
 
 	/**
