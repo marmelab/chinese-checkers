@@ -18,7 +18,7 @@ export function GameView() {
 	}, []);
 
 	return (
-		<main className={"game"}>
+		<main className="game">
 			<PlayerTurn game={fetchedGame.data} />
 			<GameBoard board={fetchedGame.data.board} />
 		</main>
