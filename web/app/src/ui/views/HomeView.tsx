@@ -1,15 +1,17 @@
 import React from "react";
-import {usePageTitle} from "../Layout";
 import {GamesList} from "../games-list/GamesList";
 
 export function HomeView() {
-	usePageTitle("Home");
-
 	return (
-		<main>
-			<p className={"center"}>Find a game to spectate!</p>
+		<>
+			<header>
+				<h1>Home</h1>
+			</header>
+			<main>
+				<p className={"center"}>Find a game to spectate!</p>
 
-			<GamesList />
-		</main>
+				<GamesList />
+			</main>
+		</>
 	);
 }

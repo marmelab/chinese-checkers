@@ -1,5 +1,7 @@
 import React from "react";
 import {Link} from "react-router-dom";
+import "./GameCard.css";
+import "../kit/Card.css";
 import {Game, getGameGreenPlayer, getGameRedPlayer} from "../../model/game";
 
 export function GameCard({game}: {game: Game}) {

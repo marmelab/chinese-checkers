@@ -1,4 +1,5 @@
 import React from "react";
+import "./GameBoard.css";
 import {Game} from "../../model/game";
 import {GameBoardRow} from "./GameBoardRow";
 import {CellIdentifier, MoveState} from "./PlayableGameBoard";

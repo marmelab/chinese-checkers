@@ -35,6 +35,12 @@ table.game-board
 			border: none;
 			background: none;
 
+			&:disabled
+			{
+				border: none;
+				background: none;
+				opacity: 1;
+			}
 			&:not(:disabled):hover
 			{
 				background: var(--board-cell-clickable-hover);

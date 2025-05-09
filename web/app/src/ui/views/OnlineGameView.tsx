@@ -1,17 +1,11 @@
 import React, {useEffect} from "react";
 import {useParams} from "react-router-dom";
-import {usePageTitle} from "../Layout";
+import "./GameView.css";
 import {GameBoard} from "../board/GameBoard";
 import {useFetchGame} from "../../api/games";
 import {PlayerTurn} from "../board/PlayerTurn";
 
-/**
- * Game view component.
- */
 export function OnlineGameView() {
-	usePageTitle("Game");
-
-	// Fetch the game with the UUID from the URL.
 	const gameUuid = useParams().uuid;
 	const fetchedGame = useFetchGame(gameUuid);
 
@@ -22,9 +16,14 @@ export function OnlineGameView() {
 	}, []);
 
 	return (
-		<main className={"game"}>
-			<PlayerTurn game={fetchedGame.data} />
-			<GameBoard board={fetchedGame.data.board} />
-		</main>
+		<>
+			<header>
+				<h1>Game</h1>
+			</header>
+			<main className={"game"}>
+				<PlayerTurn game={fetchedGame.data} />
+				<GameBoard board={fetchedGame.data.board} />
+			</main>
+		</>
 	);
 }

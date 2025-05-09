@@ -1,6 +1,7 @@
 import React from "react";
-import {CellIdentifier} from "../board/PlayableGameBoard";
 import {CaretRight} from "@phosphor-icons/react";
+import "./MoveOverlay.css";
+import {CellIdentifier} from "../board/PlayableGameBoard";
 
 /**
  * Overlay height in px.

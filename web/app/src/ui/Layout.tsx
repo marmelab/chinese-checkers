@@ -1,36 +1,15 @@
-import React, {Suspense, useEffect} from "react";
-import {create} from "zustand";
+import React, {Suspense} from "react";
 import {Outlet} from "react-router-dom";
+import "./Header.css";
 import {Menu} from "./Menu";
 import {LoaderView} from "./kit/Loader";
 
-const useLayoutStore = create<{
-	title: string;
-}>(() => ({
-	title: "",
-}));
-
 export function Layout({children}: React.PropsWithChildren<{}>) {
-	const title = useLayoutStore((state) => state.title);
-
 	return (
 		<>
-			<header>
-				<h1>{title}</h1>
-			</header>
-
 			<Suspense fallback={<LoaderView />}>{children ?? <Outlet />}</Suspense>
 
 			<Menu />
 		</>
 	);
-}
-
-/**
- * Set the page title.
- */
-export function usePageTitle(title: string): void {
-	useEffect(() => {
-		useLayoutStore.setState({title});
-	}, [title]);
 }

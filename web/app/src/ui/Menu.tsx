@@ -1,6 +1,7 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
 import {GameController, House} from "@phosphor-icons/react";
+import "./Menu.css";
 
 export function Menu() {
 	return (

@@ -1,5 +1,6 @@
 import React from "react";
 import {CheckCircle, TrashSimple} from "@phosphor-icons/react";
+import "./MoveActionBar.css";
 import {MoveState} from "../board/PlayableGameBoard";
 
 export function MoveActionsBar({

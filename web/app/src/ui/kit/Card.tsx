@@ -1,5 +1,6 @@
 import React from "react";
 import {clsx} from "clsx";
+import "./Card.css";
 
 export function Card({
 	className,
