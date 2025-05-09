@@ -1,12 +1,14 @@
 import React from "react";
 import {Link} from "react-router-dom";
-import {Layout, usePageTitle} from "../Layout";
+import {Layout} from "../Layout";
 
 export function ErrorView() {
-	usePageTitle("Error");
-
 	return (
 		<Layout>
+			<header>
+				<h1>Error</h1>
+			</header>
+
 			<main className={"error"}>
 				<p className={"center"}>Sorry, something went seriously wrong!</p>
 

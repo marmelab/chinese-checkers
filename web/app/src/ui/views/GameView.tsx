@@ -1,13 +1,10 @@
 import React, {useEffect} from "react";
 import {useParams} from "react-router-dom";
-import {usePageTitle} from "../Layout";
 import {GameBoard} from "../board/GameBoard";
 import {useFetchGame} from "../../api/games";
 import {PlayerTurn} from "../board/PlayerTurn";
 
 export function GameView() {
-	usePageTitle("Game");
-
 	const gameUuid = useParams().uuid;
 	const fetchedGame = useFetchGame(gameUuid);
 
@@ -18,9 +15,14 @@ export function GameView() {
 	}, []);
 
 	return (
-		<main className="game">
-			<PlayerTurn game={fetchedGame.data} />
-			<GameBoard board={fetchedGame.data.board} />
-		</main>
+		<>
+			<header>
+				<h1>Game</h1>
+			</header>
+			<main className="game">
+				<PlayerTurn game={fetchedGame.data} />
+				<GameBoard board={fetchedGame.data.board} />
+			</main>
+		</>
 	);
 }
