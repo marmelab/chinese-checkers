@@ -6,7 +6,11 @@ import {useSuspenseQuery} from "@tanstack/react-query";
  * Get ongoing games.
  */
 export async function getOngoingGames(): Promise<Game[]> {
-	return z.array(zGame).parse(await (await fetch("/api/v1/games")).json());
+	return z.array(zGame).parse(
+		await (
+			await fetch("/api/v1/games")
+		).json()
+	);
 }
 
 /**
@@ -14,7 +18,11 @@ export async function getOngoingGames(): Promise<Game[]> {
  * @param uuid UUID of the game to get.
  */
 export async function getGame(uuid: string): Promise<Game> {
-	return zGame.parse(await (await fetch(`/api/v1/games/${uuid}`)).json());
+	return zGame.parse(
+		await (
+			await fetch(`/api/v1/games/${uuid}`)
+		).json()
+	);
 }
 
 /**
