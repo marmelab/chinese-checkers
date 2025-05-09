@@ -2,9 +2,6 @@ import React from "react";
 import {Game, getGameGreenPlayer, getGameRedPlayer} from "../../model/game";
 import {Link} from "react-router-dom";
 
-/**
- * Game card component.
- */
 export function GameCard({game}: {
 	game: Game;
 }) {

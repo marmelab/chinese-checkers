@@ -9,9 +9,6 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
  */
 const appQueryClient = new QueryClient();
 
-/**
- * Main application component.
- */
 export function App() {
 	return (
 		<QueryClientProvider client={appQueryClient}>

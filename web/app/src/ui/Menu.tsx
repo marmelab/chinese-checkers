@@ -2,9 +2,6 @@ import React from "react";
 import {NavLink} from "react-router-dom";
 import {House} from "@phosphor-icons/react";
 
-/**
- * Main application menu.
- */
 export function Menu() {
 	return (
 		<nav className={"menu"}>

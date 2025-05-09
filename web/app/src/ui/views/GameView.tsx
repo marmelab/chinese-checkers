@@ -5,13 +5,9 @@ import {GameBoard} from "../board/GameBoard";
 import {useFetchGame} from "../../api/games";
 import {PlayerTurn} from "../board/PlayerTurn";
 
-/**
- * Game view component.
- */
 export function GameView() {
 	usePageTitle("Game");
 
-	// Fetch the game with the UUID from the URL.
 	const gameUuid = useParams().uuid;
 	const fetchedGame = useFetchGame(gameUuid);
 

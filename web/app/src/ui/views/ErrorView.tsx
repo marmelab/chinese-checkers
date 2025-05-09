@@ -2,9 +2,6 @@ import React from "react";
 import {Layout, usePageTitle} from "../Layout";
 import {Link} from "react-router-dom";
 
-/**
- * Show an error page.
- */
 export function ErrorView() {
 	usePageTitle("Error");
 

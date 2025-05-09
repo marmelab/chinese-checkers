@@ -2,9 +2,6 @@ import React from "react";
 import {usePageTitle} from "../Layout";
 import {Link} from "react-router-dom";
 
-/**
- * Show a not found page.
- */
 export function NotFoundView() {
 	usePageTitle("Not found");
 

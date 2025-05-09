@@ -4,18 +4,12 @@ import {Outlet} from "react-router-dom";
 import {Menu} from "./Menu";
 import {LoaderView} from "./kit/Loader";
 
-/**
- * Layout data store.
- */
 const useLayoutStore = create<{
 	title: string;
 }>(() => ({
 	title: "",
 }));
 
-/**
- * Layout component.
- */
 export function Layout({children}: React.PropsWithChildren<{}>) {
 	const title = useLayoutStore(state => state.title);
 

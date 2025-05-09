@@ -1,9 +1,6 @@
 import React from "react";
 import {clsx} from "clsx";
 
-/**
- * A generic card component.
- */
 export function Card({
 											 className,
 											 ...props

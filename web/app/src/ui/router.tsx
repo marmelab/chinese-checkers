@@ -4,9 +4,6 @@ import {HomeView} from "./views/HomeView";
 import {GameView} from "./views/GameView";
 import {ErrorView} from "./views/ErrorView";
 
-/**
- * The main React router object.
- */
 export const router = createBrowserRouter([
 	{
 		path: "/app",

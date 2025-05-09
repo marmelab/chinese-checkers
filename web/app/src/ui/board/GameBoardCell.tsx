@@ -3,9 +3,6 @@ import {CellContent, inGreenTargetArea, inRedTargetArea} from "../../model/cell"
 import React from "react";
 import {Pawn} from "./Pawn";
 
-/**
- * Game board cell.
- */
 export function GameBoardCell({rowIndex, cellIndex, cell}: {
 	rowIndex: number;
 	cellIndex: number;
@@ -18,7 +15,7 @@ export function GameBoardCell({rowIndex, cellIndex, cell}: {
 				"red-target": inRedTargetArea(rowIndex, cellIndex),
 			})}>
 			<button type={"button"}>
-				{ // Show a pawn if there is one.
+				{
 					cell != CellContent.Empty && (
 						<Pawn pawn={cell}/>
 					)

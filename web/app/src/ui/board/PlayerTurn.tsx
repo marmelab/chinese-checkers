@@ -2,10 +2,6 @@ import React from "react";
 import {Game, getCurrentPlayer} from "../../model/game";
 import {GamePlayer} from "../../model/game-player";
 
-
-/**
- * Show the current player turn of a game.
- */
 export function PlayerTurn({game}: {
 	game: Game;
 }) {
