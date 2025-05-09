@@ -15,7 +15,7 @@ const useLayoutStore = create<{
 /**
  * Layout component.
  */
-export function Layout()
+export function Layout({children}: React.PropsWithChildren<{}>)
 {
 	const title = useLayoutStore(state => state.title);
 
@@ -25,7 +25,7 @@ export function Layout()
 				<h1>{title}</h1>
 			</header>
 
-			<Outlet />
+			{children ?? <Outlet />}
 
 			<Menu />
 		</>

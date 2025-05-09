@@ -1,6 +1,5 @@
 import React from "react";
 import {usePageTitle} from "../layout";
-import {GameList} from "../components/games/game-list";
 import {Link} from "react-router-dom";
 
 /**

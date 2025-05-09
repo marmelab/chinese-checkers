@@ -39,7 +39,7 @@ export function GameView()
 		return () => clearInterval(interval);
 	}, []);
 
-	if (true || fetchedGame.isPending)
+	if (fetchedGame.isPending)
 		return <LoaderView />;
 
 	if (fetchedGame.isError)
