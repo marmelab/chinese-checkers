@@ -1,5 +1,5 @@
 import React from "react";
-import {usePageTitle} from "../layout";
+import {usePageTitle} from "../Layout";
 import {Link} from "react-router-dom";
 
 /**

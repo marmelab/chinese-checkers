@@ -1,5 +1,5 @@
 import React from "react";
-import {Game, getGameGreenPlayer, getGameRedPlayer} from "../../../model/game";
+import {Game, getGameGreenPlayer, getGameRedPlayer} from "../../model/game";
 import {Link} from "react-router-dom";
 
 /**

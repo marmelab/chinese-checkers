@@ -1,8 +1,8 @@
 import React, {Suspense, useEffect} from "react";
 import {create} from "zustand";
 import {Outlet} from "react-router-dom";
-import {Menu} from "./menu";
-import {LoaderView} from "./components/loader";
+import {Menu} from "./Menu";
+import {LoaderView} from "./kit/Loader";
 
 /**
  * Layout data store.

@@ -1,6 +1,6 @@
 import React from "react";
 import {clsx} from "clsx";
-import {CellContent} from "../../../model/cell";
+import {CellContent} from "../../model/cell";
 
 /**
  * Pawn class names map.

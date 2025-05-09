@@ -1,11 +1,11 @@
 import React from "react";
-import {useFetchOngoingGames} from "../../../api/games";
-import {GameCard} from "./game-card";
+import {useFetchOngoingGames} from "../../api/games";
+import {GameCard} from "./GameCard";
 
 /**
  * Games list component.
  */
-export function GameList() {
+export function GamesList() {
 	const fetchedGames = useFetchOngoingGames();
 
 	return (

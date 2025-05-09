@@ -9,6 +9,9 @@ export function Loader() {
 	);
 }
 
+/**
+ * Loader view component.
+ */
 export function LoaderView() {
 	return (
 		<main className={"loader"}>

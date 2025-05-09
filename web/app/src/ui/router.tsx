@@ -1,8 +1,8 @@
 import {createBrowserRouter} from "react-router-dom";
-import {Layout} from "./layout";
-import {HomeView} from "./views/home-view";
-import {GameView} from "./views/game-view";
-import {ErrorView} from "./views/error-view";
+import {Layout} from "./Layout";
+import {HomeView} from "./views/HomeView";
+import {GameView} from "./views/GameView";
+import {ErrorView} from "./views/ErrorView";
 
 /**
  * The main React router object.
