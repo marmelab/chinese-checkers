@@ -27,8 +27,15 @@ const boardSize = 7;
  * @param rowIndex The row index.
  * @param columnIndex The column index.
  */
-export function inGreenTargetArea(rowIndex: number, columnIndex: number): boolean {
-	return targetAreaShape?.[boardSize - 1 - rowIndex]?.[boardSize - 1 - columnIndex] === 1;
+export function inGreenTargetArea(
+	rowIndex: number,
+	columnIndex: number,
+): boolean {
+	return (
+		targetAreaShape?.[boardSize - 1 - rowIndex]?.[
+			boardSize - 1 - columnIndex
+		] === 1
+	);
 }
 
 /**
@@ -36,6 +43,9 @@ export function inGreenTargetArea(rowIndex: number, columnIndex: number): boolea
  * @param rowIndex The row index.
  * @param columnIndex The column index.
  */
-export function inRedTargetArea(rowIndex: number, columnIndex: number): boolean {
+export function inRedTargetArea(
+	rowIndex: number,
+	columnIndex: number,
+): boolean {
 	return targetAreaShape?.[rowIndex]?.[columnIndex] === 1;
 }

@@ -7,9 +7,13 @@ export function NotFoundView() {
 
 	return (
 		<main className={"not-found"}>
-			<p className={"center"}>Sorry, we couldn't find what you were looking for!</p>
+			<p className={"center"}>
+				Sorry, we couldn't find what you were looking for!
+			</p>
 
-			<Link role={"button"} to={"/app"}>Go back to home</Link>
+			<Link role={"button"} to={"/app"}>
+				Go back to home
+			</Link>
 		</main>
 	);
 }

@@ -11,7 +11,7 @@ const useLayoutStore = create<{
 }));
 
 export function Layout({children}: React.PropsWithChildren<{}>) {
-	const title = useLayoutStore(state => state.title);
+	const title = useLayoutStore((state) => state.title);
 
 	return (
 		<>
@@ -19,11 +19,9 @@ export function Layout({children}: React.PropsWithChildren<{}>) {
 				<h1>{title}</h1>
 			</header>
 
-			<Suspense fallback={<LoaderView />}>
-				{children ?? <Outlet/>}
-			</Suspense>
+			<Suspense fallback={<LoaderView />}>{children ?? <Outlet />}</Suspense>
 
-			<Menu/>
+			<Menu />
 		</>
 	);
 }

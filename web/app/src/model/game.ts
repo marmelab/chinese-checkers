@@ -20,7 +20,7 @@ export type GameBoard = Game["board"];
  * @param game
  */
 export function getGameGreenPlayer(game: Game): OnlinePlayer {
-	return game.players.find(player => player.gamePlayer == GamePlayer.Green);
+	return game.players.find((player) => player.gamePlayer == GamePlayer.Green);
 }
 
 /**
@@ -28,7 +28,7 @@ export function getGameGreenPlayer(game: Game): OnlinePlayer {
  * @param game
  */
 export function getGameRedPlayer(game: Game): OnlinePlayer {
-	return game.players.find(player => player.gamePlayer == GamePlayer.Red);
+	return game.players.find((player) => player.gamePlayer == GamePlayer.Red);
 }
 
 /**
@@ -36,10 +36,7 @@ export function getGameRedPlayer(game: Game): OnlinePlayer {
  * @param game The game from which to get the current player.
  */
 export function getCurrentPlayer(game: Game): OnlinePlayer {
-	if (game.currentPlayer == GamePlayer.Green)
-		return getGameGreenPlayer(game);
-	else if (game.currentPlayer == GamePlayer.Red)
-		return getGameRedPlayer(game);
-	else
-		throw new Error("Unknown current player.");
+	if (game.currentPlayer == GamePlayer.Green) return getGameGreenPlayer(game);
+	else if (game.currentPlayer == GamePlayer.Red) return getGameRedPlayer(game);
+	else throw new Error("Unknown current player.");
 }

@@ -7,11 +7,9 @@ export function GamesList() {
 
 	return (
 		<>
-			{
-				fetchedGames.data?.map(game => (
-					<GameCard key={game.uuid} game={game}/>
-				))
-			}
+			{fetchedGames.data?.map((game) => (
+				<GameCard key={game.uuid} game={game} />
+			))}
 		</>
 	);
 }

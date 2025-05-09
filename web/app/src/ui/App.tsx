@@ -12,15 +12,17 @@ const appQueryClient = new QueryClient();
 export function App() {
 	return (
 		<QueryClientProvider client={appQueryClient}>
-			<IconContext value={{
-				weight: "bold",
-				className: "icon",
-				size: "1em",
-			}}>
+			<IconContext
+				value={{
+					weight: "bold",
+					className: "icon",
+					size: "1em",
+				}}
+			>
 				<main className={"app"}>
-					<RouterProvider router={router}/>
+					<RouterProvider router={router} />
 				</main>
 			</IconContext>
 		</QueryClientProvider>
-	)
+	);
 }

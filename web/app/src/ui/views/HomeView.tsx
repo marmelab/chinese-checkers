@@ -9,7 +9,7 @@ export function HomeView() {
 		<main>
 			<p className={"center"}>Find a game to spectate!</p>
 
-			<GamesList/>
+			<GamesList />
 		</main>
 	);
 }

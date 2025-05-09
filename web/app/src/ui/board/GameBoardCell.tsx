@@ -1,9 +1,17 @@
 import clsx from "clsx";
-import {CellContent, inGreenTargetArea, inRedTargetArea} from "../../model/cell";
+import {
+	CellContent,
+	inGreenTargetArea,
+	inRedTargetArea,
+} from "../../model/cell";
 import React from "react";
 import {Pawn} from "./Pawn";
 
-export function GameBoardCell({rowIndex, cellIndex, cell}: {
+export function GameBoardCell({
+	rowIndex,
+	cellIndex,
+	cell,
+}: {
 	rowIndex: number;
 	cellIndex: number;
 	cell: CellContent;
@@ -13,13 +21,10 @@ export function GameBoardCell({rowIndex, cellIndex, cell}: {
 			className={clsx({
 				"green-target": inGreenTargetArea(rowIndex, cellIndex),
 				"red-target": inRedTargetArea(rowIndex, cellIndex),
-			})}>
+			})}
+		>
 			<button type={"button"}>
-				{
-					cell != CellContent.Empty && (
-						<Pawn pawn={cell}/>
-					)
-				}
+				{cell != CellContent.Empty && <Pawn pawn={cell} />}
 			</button>
 		</td>
 	);

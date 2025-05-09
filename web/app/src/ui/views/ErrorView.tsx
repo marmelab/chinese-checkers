@@ -10,7 +10,9 @@ export function ErrorView() {
 			<main className={"error"}>
 				<p className={"center"}>Sorry, something went seriously wrong!</p>
 
-				<Link role={"button"} to={"/app"}>Go back to home</Link>
+				<Link role={"button"} to={"/app"}>
+					Go back to home
+				</Link>
 			</main>
 		</Layout>
 	);
