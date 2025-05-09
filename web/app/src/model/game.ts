@@ -1,7 +1,7 @@
 import {z} from "zod";
 import {OnlinePlayer, zOnlinePlayer} from "./online-player";
 import {GamePlayer, zGamePlayer} from "./game-player";
-import {zCellContent} from "./cell";
+import {CellContent, zCellContent} from "./cell";
 
 export const zGame = z.object({
 	uuid: z.string().uuid(),
@@ -41,4 +41,29 @@ export function getCurrentPlayer(game: Game): OnlinePlayer {
 	);
 	if (!player) throw new Error("Unknown current player.");
 	return player;
+}
+
+/**
+ * Find out if the provided pawn is playable by the current player.
+ */
+export function isPawnPlayable(
+	game: Game,
+	rowIndex: number,
+	cellIndex: number,
+): boolean {
+	return (
+		game.board?.[rowIndex]?.[cellIndex]?.valueOf() ===
+		game.currentPlayer.valueOf()
+	);
+}
+
+/**
+ * Find out if the provided cell is playable by the current player.
+ */
+export function isCellPlayable(
+	game: Game,
+	rowIndex: number,
+	cellIndex: number,
+): boolean {
+	return game.board?.[rowIndex]?.[cellIndex]?.valueOf() === 0;
 }

@@ -1,8 +1,9 @@
 import {createBrowserRouter} from "react-router-dom";
 import {Layout} from "./Layout";
-import {HomeView} from "./views/HomeView";
-import {GameView} from "./views/GameView";
 import {ErrorView} from "./views/ErrorView";
+import {HomeView} from "./views/HomeView";
+import {OnlineGameView} from "./views/OnlineGameView";
+import {LocalGameView} from "./views/LocalGameView";
 
 export const router = createBrowserRouter([
 	{
@@ -15,8 +16,12 @@ export const router = createBrowserRouter([
 				Component: HomeView,
 			},
 			{
+				path: "game/local",
+				Component: LocalGameView,
+			},
+			{
 				path: "game/:uuid",
-				Component: GameView,
+				Component: OnlineGameView,
 			},
 		],
 	},

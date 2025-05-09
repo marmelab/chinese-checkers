@@ -1,0 +1,40 @@
+.move-overlay
+{
+	position: absolute;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	height: 16px;
+	border-radius: 16px;
+
+	background: rgba(0, 0, 0, 0.2);
+
+	transform-origin: center;
+	z-index: 1;
+
+	> .icon
+	{
+		margin: 0;
+		animation: moving-caret 1s infinite;
+	}
+}
+
+@keyframes moving-caret
+{
+	0%
+	{
+		opacity: 0;
+		transform: translateX(-100%);
+	}
+	50%
+	{
+		opacity: 1;
+	}
+	100%
+	{
+		opacity: 0;
+		transform: translateX(100%);
+	}
+}

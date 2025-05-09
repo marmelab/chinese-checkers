@@ -9,3 +9,10 @@ export enum GamePlayer {
 }
 
 export const zGamePlayer = z.nativeEnum(GamePlayer);
+
+/**
+ * Get a random game player.
+ */
+export function randomGamePlayer(): GamePlayer {
+	return Math.round(Math.random()) + 1;
+}

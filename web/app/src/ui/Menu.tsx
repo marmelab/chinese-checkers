@@ -1,6 +1,6 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
-import {House} from "@phosphor-icons/react";
+import {GameController, House} from "@phosphor-icons/react";
 
 export function Menu() {
 	return (
@@ -9,6 +9,11 @@ export function Menu() {
 				<li>
 					<NavLink to={"/app"} end>
 						<House /> Home
+					</NavLink>
+				</li>
+				<li>
+					<NavLink to={"/app/game/local"} end>
+						<GameController /> Play
 					</NavLink>
 				</li>
 			</ul>

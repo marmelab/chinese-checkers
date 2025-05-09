@@ -1,6 +1,8 @@
 
 button, a[role="button"]
 {
+	transition: transform 0.2s ease;
+
 	display: block;
 
 	margin: 0.5em auto;
@@ -12,4 +14,9 @@ button, a[role="button"]
 	background: var(--primary);
 	color: var(--background);
 	text-decoration: none;
+
+	&:active
+	{
+		transform: scale(0.9);
+	}
 }

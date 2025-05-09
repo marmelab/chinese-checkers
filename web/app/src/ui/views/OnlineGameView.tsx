@@ -5,9 +5,13 @@ import {GameBoard} from "../board/GameBoard";
 import {useFetchGame} from "../../api/games";
 import {PlayerTurn} from "../board/PlayerTurn";
 
-export function GameView() {
+/**
+ * Game view component.
+ */
+export function OnlineGameView() {
 	usePageTitle("Game");
 
+	// Fetch the game with the UUID from the URL.
 	const gameUuid = useParams().uuid;
 	const fetchedGame = useFetchGame(gameUuid);
 
@@ -18,7 +22,7 @@ export function GameView() {
 	}, []);
 
 	return (
-		<main className="game">
+		<main className={"game"}>
 			<PlayerTurn game={fetchedGame.data} />
 			<GameBoard board={fetchedGame.data.board} />
 		</main>
