@@ -1,7 +1,8 @@
-import React, {useEffect} from "react";
+import React, {Suspense, useEffect} from "react";
 import {create} from "zustand";
 import {Outlet} from "react-router-dom";
 import {Menu} from "./menu";
+import {LoaderView} from "./components/loader";
 
 /**
  * Layout data store.
@@ -24,7 +25,9 @@ export function Layout({children}: React.PropsWithChildren<{}>) {
 				<h1>{title}</h1>
 			</header>
 
-			{children ?? <Outlet/>}
+			<Suspense fallback={<LoaderView />}>
+				{children ?? <Outlet/>}
+			</Suspense>
 
 			<Menu/>
 		</>
