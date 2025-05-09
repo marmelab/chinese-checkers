@@ -1,5 +1,5 @@
 import React from "react";
-import {classes} from "../../utils";
+import {clsx} from "clsx";
 
 /**
  * A generic card component.
@@ -9,6 +9,6 @@ export function Card({
 											 ...props
 										 }: React.DetailedHTMLProps<React.HTMLAttributes<HTMLDivElement>, HTMLDivElement>) {
 	return (
-		<div className={classes("card", className)} {...props} />
+		<div className={clsx("card", className)} {...props} />
 	)
 }

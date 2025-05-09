@@ -1,6 +1,6 @@
 import React from "react";
+import {clsx} from "clsx";
 import {CellContent} from "../../../model/cell";
-import {classes} from "../../../utils";
 
 /**
  * Game pawn component.
@@ -12,6 +12,6 @@ export function Pawn({pawn}: {
 	const className = pawn == CellContent.GreenPawn ? "green" : (pawn == CellContent.RedPawn ? "red" : undefined);
 
 	return (
-		<div className={classes("pawn", className)}></div>
+		<div className={clsx("pawn", className)}></div>
 	)
 }

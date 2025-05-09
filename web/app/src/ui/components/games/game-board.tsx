@@ -1,8 +1,8 @@
 import React from "react";
+import {clsx} from "clsx";
 import {Game} from "../../../model/game";
 import {CellContent, inGreenTargetArea, inRedTargetArea} from "../../../model/cell";
 import {Pawn} from "./pawn";
-import {classes} from "../../../utils";
 
 /**
  * Game board component.
@@ -51,7 +51,10 @@ export function GameBoardCell({rowIndex, cellIndex, cell}: {
 }) {
 	return (
 		<td
-			className={classes(inGreenTargetArea(rowIndex, cellIndex) && "green-target", inRedTargetArea(rowIndex, cellIndex) && "red-target")}>
+			className={clsx({
+				"green-target": inGreenTargetArea(rowIndex, cellIndex),
+				"red-target": inRedTargetArea(rowIndex, cellIndex),
+			})}>
 			<button type={"button"}>
 				{ // Show a pawn if there is one.
 					cell != CellContent.Empty && (
