@@ -1,5 +1,6 @@
 import React from "react";
 import {NavLink} from "react-router-dom";
+import "./Menu.css";
 import {House} from "@phosphor-icons/react";
 
 export function Menu() {

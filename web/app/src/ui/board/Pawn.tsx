@@ -1,5 +1,6 @@
 import React from "react";
 import {clsx} from "clsx";
+import "./Pawn.css";
 import {CellContent} from "../../model/cell";
 
 const pawnClassName: Partial<Record<CellContent, string>> = {

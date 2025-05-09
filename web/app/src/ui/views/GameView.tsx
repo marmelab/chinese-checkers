@@ -1,5 +1,6 @@
 import React, {useEffect} from "react";
 import {useParams} from "react-router-dom";
+import "./GameView.css";
 import {GameBoard} from "../board/GameBoard";
 import {useFetchGame} from "../../api/games";
 import {PlayerTurn} from "../board/PlayerTurn";

@@ -20,3 +20,12 @@ a
 {
 	color: var(--primary);
 }
+
+p
+{
+	&.center
+	{
+		text-align: center;
+	}
+}
+
