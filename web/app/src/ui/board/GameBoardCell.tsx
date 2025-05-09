@@ -1,10 +1,10 @@
+import React from "react";
 import clsx from "clsx";
 import {
 	CellContent,
 	inGreenTargetArea,
 	inRedTargetArea,
 } from "../../model/cell";
-import React from "react";
 import {Pawn} from "./Pawn";
 
 export function GameBoardCell({

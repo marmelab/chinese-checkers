@@ -1,8 +1,8 @@
 import React from "react";
 import {RouterProvider} from "react-router-dom";
-import {router} from "./router";
 import {IconContext} from "@phosphor-icons/react";
 import {QueryClient, QueryClientProvider} from "@tanstack/react-query";
+import {router} from "./router";
 
 /**
  * Application global query client instance.
