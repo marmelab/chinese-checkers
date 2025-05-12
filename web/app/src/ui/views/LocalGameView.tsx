@@ -13,8 +13,8 @@ export function LocalGameView() {
 				<h1>Local Game</h1>
 			</header>
 			<main className={"game"}>
-				<PlayerTurn game={localGame.game} />
 				<PlayableGameBoard game={localGame.game} onChange={setLocalGame} />
+				<PlayerTurn game={localGame.game} />
 			</main>
 		</>
 	);
