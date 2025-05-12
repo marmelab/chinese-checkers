@@ -55,6 +55,14 @@ export function PlayableGameBoard({
 			return;
 		}
 
+		// If the clicked cell is already in the move, remove all cells after it.
+		for (const [index, cell] of move.entries()) {
+			if (cell.rowIndex == rowIndex && cell.cellIndex == cellIndex) {
+				setMove(move.toSpliced(index, move.length - index));
+				return;
+			}
+		}
+
 		if (!isCellPlayable(game, rowIndex, cellIndex)) {
 			openModal(<AlertModal>You must move your pawn a free cell.</AlertModal>);
 			return;
