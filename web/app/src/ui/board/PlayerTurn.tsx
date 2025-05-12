@@ -7,14 +7,14 @@ export function PlayerTurn({ game }: { game: Game }) {
 	const currentPlayer = getCurrentPlayer(game);
 	return (
 		<p className="player-turn">
+			Current player:{" "}
 			<strong
 				className={
 					currentPlayer.gamePlayer == GamePlayer.Green ? "green" : "red"
 				}
 			>
 				{currentPlayer.name}
-			</strong>{" "}
-			to play
+			</strong>
 		</p>
 	);
 }

@@ -4,6 +4,7 @@ import "./GameView.css";
 import { GameBoard } from "../board/GameBoard";
 import { useFetchGame } from "../../api/games";
 import { PlayerTurn } from "../board/PlayerTurn";
+import { getGameGreenPlayer, getGameRedPlayer } from "../../model/game";
 
 export function OnlineGameView() {
 	const gameUuid = useParams().uuid;
@@ -18,11 +19,14 @@ export function OnlineGameView() {
 	return (
 		<>
 			<header>
-				<h1>Game</h1>
+				<h1>
+					{getGameGreenPlayer(fetchedGame.data)?.name ?? "Green"} VS{" "}
+					{getGameRedPlayer(fetchedGame.data)?.name ?? "Red"}
+				</h1>
 			</header>
 			<main className="game">
-				<PlayerTurn game={fetchedGame.data} />
 				<GameBoard board={fetchedGame.data.board} />
+				<PlayerTurn game={fetchedGame.data} />
 			</main>
 		</>
 	);
