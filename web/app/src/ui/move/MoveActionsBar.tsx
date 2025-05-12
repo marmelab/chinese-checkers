@@ -17,7 +17,7 @@ export function MoveActionsBar({
 	const isSubmittable = move?.length >= 2;
 
 	return (
-		<div className={"move-actions-bar"}>
+		<div className="move-actions-bar">
 			<button className="cancel" onClick={onCancel}>
 				<TrashSimple /> Cancel
 			</button>

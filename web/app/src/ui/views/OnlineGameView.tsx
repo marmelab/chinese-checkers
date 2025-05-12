@@ -20,7 +20,7 @@ export function OnlineGameView() {
 			<header>
 				<h1>Game</h1>
 			</header>
-			<main className={"game"}>
+			<main className="game">
 				<PlayerTurn game={fetchedGame.data} />
 				<GameBoard board={fetchedGame.data.board} />
 			</main>

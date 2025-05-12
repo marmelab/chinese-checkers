@@ -5,15 +5,15 @@ import "./Menu.css";
 
 export function Menu() {
 	return (
-		<nav className={"menu"}>
+		<nav className="menu">
 			<ul>
 				<li>
-					<NavLink to={"/app"} end>
+					<NavLink to="/app" end>
 						<House /> Home
 					</NavLink>
 				</li>
 				<li>
-					<NavLink to={"/app/game/local"} end>
+					<NavLink to="/app/game/local" end>
 						<GameController /> Play
 					</NavLink>
 				</li>

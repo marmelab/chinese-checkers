@@ -54,7 +54,7 @@ export function MoveOverlay({
 				}
 			}}
 		>
-			<CaretRight size={"0.8em"} />
+			<CaretRight size="0.8em" />
 		</div>
 	);
 }

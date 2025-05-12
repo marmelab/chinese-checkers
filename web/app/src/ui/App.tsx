@@ -26,7 +26,7 @@ export function App() {
 					size: "1em",
 				}}
 			>
-				<main className={"app"}>
+				<main className="app">
 					<RouterProvider router={router} />
 				</main>
 				<Modals />

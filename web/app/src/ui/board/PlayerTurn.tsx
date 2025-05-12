@@ -6,7 +6,7 @@ import { GamePlayer } from "../../model/game-player";
 export function PlayerTurn({ game }: { game: Game }) {
 	const currentPlayer = getCurrentPlayer(game);
 	return (
-		<p className={"player-turn"}>
+		<p className="player-turn">
 			<strong
 				className={
 					currentPlayer.gamePlayer == GamePlayer.Green ? "green" : "red"
