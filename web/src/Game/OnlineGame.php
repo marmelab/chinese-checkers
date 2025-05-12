@@ -38,6 +38,27 @@ class OnlineGame
 	}
 
 	/**
+	 * Find a unique game join code.
+	 * @return string Generated game join code.
+	 */
+	public function newGameJoinCode(): string
+	{
+		do
+		{ // Generate a new random code until we find a unique one.
+			$joinCode = strtoupper(
+				substr(bin2hex(openssl_random_pseudo_bytes(16)), 0, 6)
+			);
+
+			$existingGame = $this->entityManager->getRepository(Game::class)->findOneBy([
+				"joinCode" => $joinCode,
+			]);
+		}
+		while (!empty($existingGame));
+
+		return $joinCode;
+	}
+
+	/**
 	 * Initialize a new online game.
 	 * @param string $playerName The green player name.
 	 * @return Game
@@ -45,6 +66,7 @@ class OnlineGame
 	public function newGame(string $playerName): Game
 	{
 		$game = $this->gameState->getDefaultGame();
+		$game->setJoinCode($this->newGameJoinCode());
 
 		$this->entityManager->persist($game);
 		$this->entityManager->flush();
