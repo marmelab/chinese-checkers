@@ -1,16 +1,13 @@
-import {create} from "zustand";
-import {Game} from "../model/game";
-import {persist} from "zustand/middleware";
-import {GamePlayer, randomGamePlayer} from "../model/game-player";
-import {v4 as uuidv4} from "uuid";
+import { create } from "zustand";
+import { Game } from "../model/game";
+import { persist } from "zustand/middleware";
+import { GamePlayer, randomGamePlayer } from "../model/game-player";
+import { v4 as uuidv4 } from "uuid";
 
 interface LocalGame {
 	game: Game;
 }
 
-/**
- * Get the default game state.
- */
 export function getDefaultGame(): Game {
 	return {
 		uuid: uuidv4(),

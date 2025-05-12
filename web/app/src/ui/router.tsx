@@ -1,9 +1,9 @@
-import {createBrowserRouter} from "react-router-dom";
-import {Layout} from "./Layout";
-import {ErrorView} from "./views/ErrorView";
-import {HomeView} from "./views/HomeView";
-import {OnlineGameView} from "./views/OnlineGameView";
-import {LocalGameView} from "./views/LocalGameView";
+import { createBrowserRouter } from "react-router-dom";
+import { Layout } from "./Layout";
+import { ErrorView } from "./views/ErrorView";
+import { HomeView } from "./views/HomeView";
+import { OnlineGameView } from "./views/OnlineGameView";
+import { LocalGameView } from "./views/LocalGameView";
 
 export const router = createBrowserRouter([
 	{

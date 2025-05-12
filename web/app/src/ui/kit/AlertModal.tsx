@@ -1,10 +1,10 @@
 import React from "react";
-import {Warning} from "@phosphor-icons/react";
+import { Warning } from "@phosphor-icons/react";
 import "./AlertModal.css";
-import {Modal} from "./Modal";
-import {useModalClose} from "./Modals";
+import { Modal } from "./Modal";
+import { useModalClose } from "./Modals";
 
-export function AlertModal({children}: {children: string}) {
+export function AlertModal({ children }: { children: string }) {
 	const close = useModalClose();
 
 	return (

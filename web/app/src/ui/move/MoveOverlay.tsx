@@ -1,7 +1,7 @@
 import React from "react";
-import {CaretRight} from "@phosphor-icons/react";
+import { CaretRight } from "@phosphor-icons/react";
 import "./MoveOverlay.css";
-import {CellIdentifier} from "../board/PlayableGameBoard";
+import { CellIdentifier } from "../board/PlayableGameBoard";
 
 /**
  * Overlay height in px.
@@ -20,7 +20,7 @@ export function MoveOverlay({
 }) {
 	return (
 		<div
-			className={"move-overlay"}
+			className="move-overlay"
 			ref={(element) => {
 				if (element) {
 					const fromPosition = document

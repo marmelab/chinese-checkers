@@ -1,9 +1,9 @@
 import React from "react";
 import "./GameBoard.css";
-import {Game} from "../../model/game";
-import {GameBoardRow} from "./GameBoardRow";
-import {CellIdentifier, MoveState} from "./PlayableGameBoard";
-import {MoveOverlay} from "../move/MoveOverlay";
+import { Game } from "../../model/game";
+import { GameBoardRow } from "./GameBoardRow";
+import { CellIdentifier, MoveState } from "./PlayableGameBoard";
+import { MoveOverlay } from "../move/MoveOverlay";
 
 export function GameBoard({
 	board,
@@ -40,7 +40,7 @@ export function GameBoard({
 
 	return (
 		<>
-			<table className={"game-board"}>
+			<table className="game-board">
 				<tbody>
 					{board.map((row, rowIndex) => (
 						<GameBoardRow

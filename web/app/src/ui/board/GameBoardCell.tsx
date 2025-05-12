@@ -5,8 +5,8 @@ import {
 	inGreenTargetArea,
 	inRedTargetArea,
 } from "../../model/cell";
-import {Pawn} from "./Pawn";
-import {MoveState} from "./PlayableGameBoard";
+import { Pawn } from "./Pawn";
+import { MoveState } from "./PlayableGameBoard";
 
 export function GameBoardCell({
 	move,
@@ -34,7 +34,7 @@ export function GameBoardCell({
 			})}
 		>
 			<button
-				type={"button"}
+				type="button"
 				disabled={!onClick}
 				onClick={() => onClick?.(rowIndex, cellIndex)}
 			>

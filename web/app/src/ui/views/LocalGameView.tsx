@@ -1,8 +1,8 @@
 import React from "react";
 import "./GameView.css";
-import {PlayerTurn} from "../board/PlayerTurn";
-import {setLocalGame, useLocalGameStore} from "../../storage/local-game";
-import {PlayableGameBoard} from "../board/PlayableGameBoard";
+import { PlayerTurn } from "../board/PlayerTurn";
+import { setLocalGame, useLocalGameStore } from "../../storage/local-game";
+import { PlayableGameBoard } from "../board/PlayableGameBoard";
 
 export function LocalGameView() {
 	const localGame = useLocalGameStore();

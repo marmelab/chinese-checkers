@@ -1,8 +1,3 @@
-/**
- * Fetch API response.
- * @param input
- * @param init
- */
 export async function fetchApi(
 	input: string | URL | Request,
 	init?: RequestInit,
@@ -18,9 +13,6 @@ export class ApiError extends Error {
 		super("Invalid API call.");
 	}
 
-	/**
-	 * Try to get the API error message.
-	 */
 	async getApiMessage(): Promise<string | null> {
 		return (await this.response.json())?.error ?? null;
 	}

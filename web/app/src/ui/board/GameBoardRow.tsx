@@ -1,7 +1,7 @@
-import {Game} from "../../model/game";
+import { Game } from "../../model/game";
 import React from "react";
-import {GameBoardCell} from "./GameBoardCell";
-import {MoveState} from "./PlayableGameBoard";
+import { GameBoardCell } from "./GameBoardCell";
+import { MoveState } from "./PlayableGameBoard";
 
 export function GameBoardRow({
 	move,

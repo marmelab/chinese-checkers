@@ -1,5 +1,5 @@
-import React, {useContext} from "react";
-import {create} from "zustand";
+import React, { useContext } from "react";
+import { create } from "zustand";
 import "./Modals.css";
 
 const useModalsStore = create<{
@@ -32,7 +32,7 @@ export function closeModal(index: number): void {
  * Get the modal close function of the current modal.
  */
 export function useModalClose(): () => void {
-	const {index} = useContext(ModalContext);
+	const { index } = useContext(ModalContext);
 	return () => {
 		closeModal(index);
 	};
@@ -53,7 +53,7 @@ export function Modals() {
 			onClick={(event) => {
 				if (event.currentTarget == event.target) {
 					// Close all modals.
-					useModalsStore.setState({modals: []});
+					useModalsStore.setState({ modals: [] });
 				}
 			}}
 		>
