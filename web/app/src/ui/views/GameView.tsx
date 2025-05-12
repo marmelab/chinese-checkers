@@ -18,11 +18,14 @@ export function GameView() {
 	return (
 		<>
 			<header>
-				<h1>Game</h1>
+				<h1>
+					{fetchedGame.data.players[0]?.name} VS{" "}
+					{fetchedGame.data.players[1]?.name}
+				</h1>
 			</header>
 			<main className="game">
-				<PlayerTurn game={fetchedGame.data} />
 				<GameBoard board={fetchedGame.data.board} />
+				<PlayerTurn game={fetchedGame.data} />
 			</main>
 		</>
 	);
