@@ -28,6 +28,24 @@ export function PlayableGameBoard({
 		setMove([...move, { rowIndex, cellIndex }]);
 	};
 
+	const handleCellClick = (rowIndex: number, cellIndex: number) => {
+		if (!isMoveStarted) {
+			if (!isPawnPlayable(game, rowIndex, cellIndex)) {
+				openModal(<AlertModal>You must play a pawn of your color.</AlertModal>);
+				return;
+			}
+
+			appendCellToMove(rowIndex, cellIndex);
+			return;
+		}
+
+		if (!isCellPlayable(game, rowIndex, cellIndex)) {
+			openModal(<AlertModal>You must move your pawn a free cell.</AlertModal>);
+			return;
+		}
+		appendCellToMove(rowIndex, cellIndex);
+	};
+
 	const submitMove = async () => {
 		setMove([]);
 		try {
@@ -52,34 +70,12 @@ export function PlayableGameBoard({
 
 	return (
 		<>
-			<GameBoard
-				board={game.board}
-				move={move}
-				onCellClick={(rowIndex, cellIndex) => {
-					if (!isMoveStarted) {
-						if (isPawnPlayable(game, rowIndex, cellIndex))
-							appendCellToMove(rowIndex, cellIndex);
-						else
-							openModal(
-								<AlertModal>You must play a pawn of your color.</AlertModal>,
-							);
-					} else {
-						if (isCellPlayable(game, rowIndex, cellIndex))
-							appendCellToMove(rowIndex, cellIndex);
-						else
-							openModal(
-								<AlertModal>You must move your pawn a free cell.</AlertModal>,
-							);
-					}
-				}}
-			/>
+			<GameBoard board={game.board} move={move} onCellClick={handleCellClick} />
 
 			{isMoveStarted && (
 				<MoveActionsBar
 					move={move}
-					onCancel={() => {
-						setMove([]);
-					}}
+					onCancel={() => setMove([])}
 					onSubmit={submitMove}
 				/>
 			)}
