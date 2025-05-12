@@ -4,6 +4,7 @@ import "./GameView.css";
 import {GameBoard} from "../board/GameBoard";
 import {useFetchGame} from "../../api/games";
 import {PlayerTurn} from "../board/PlayerTurn";
+import {getGameGreenPlayer, getGameRedPlayer} from "../../model/game";
 
 export function GameView() {
 	const gameUuid = useParams().uuid;
@@ -19,8 +20,8 @@ export function GameView() {
 		<>
 			<header>
 				<h1>
-					{fetchedGame.data.players[0]?.name} VS{" "}
-					{fetchedGame.data.players[1]?.name}
+					{getGameGreenPlayer(fetchedGame.data)?.name ?? "Green"} VS{" "}
+					{getGameRedPlayer(fetchedGame.data)?.name ?? "Red"}
 				</h1>
 			</header>
 			<main className="game">
