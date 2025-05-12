@@ -1,0 +1,8 @@
+.card
+{
+	margin: 1em;
+	padding: 1em 0.5em;
+	border-radius: 1em;
+	box-shadow: 0 0 0.5em 0 rgba(0, 0, 0, 0.15);
+	border: solid var(--lightgray) thin;
+}

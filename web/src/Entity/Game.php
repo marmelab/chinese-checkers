@@ -2,15 +2,19 @@
 
 namespace App\Entity;
 
+use App\Repository\GamesRepository;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
 /**
  * Game board state.
  */
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: GamesRepository::class)]
 #[ORM\Table("games")]
+#[ORM\HasLifecycleCallbacks]
 class Game implements \JsonSerializable
 {
 	/**
@@ -21,13 +25,29 @@ class Game implements \JsonSerializable
 	#[ORM\GeneratedValue("CUSTOM")]
 	#[ORM\CustomIdGenerator("doctrine.uuid_generator")]
 	#[ORM\Column(type: "uuid")]
+	#[Groups(["game:read"])]
 	private string $uuid;
+
+	/**
+	 * Game creation date and time.
+	 * @var DateTime
+	 */
+	#[ORM\Column(type: "datetimetz")]
+	private DateTime $createdAt;
+
+	/**
+	 * Game update date and time.
+	 * @var DateTime
+	 */
+	#[ORM\Column(type: "datetimetz")]
+	private DateTime $updatedAt;
 
 	/**
 	 * The board cells.
 	 * @var int[][]
 	 */
 	#[ORM\Column(type: "json", options: ["jsonb" => true])]
+	#[Groups(["game:read"])]
 	private array $board;
 
 	/**
@@ -35,19 +55,42 @@ class Game implements \JsonSerializable
 	 * @var GamePlayer
 	 */
 	#[ORM\Column(type: "smallint", enumType: GamePlayer::class)]
+	#[Groups(["game:read"])]
 	private GamePlayer $currentPlayer;
 
 	/**
 	 * Related online players.
 	 * @var Collection<int, OnlinePlayer>
 	 */
-	#[ORM\OneToMany(targetEntity: OnlinePlayer::class, mappedBy: "game")]
+	#[ORM\OneToMany(targetEntity: OnlinePlayer::class, mappedBy: "game", fetch: "EAGER")]
 	#[ORM\JoinColumn(referencedColumnName: "uuid")]
+	#[Groups(["game:read"])]
 	private Collection $players;
 
 	public function __construct()
 	{
 		$this->players = new ArrayCollection();
+	}
+
+	/**
+	 * Set the creation date at entity creation.
+	 * @return void
+	 */
+	#[ORM\PrePersist]
+	public function onPrePersist(): void
+	{
+		$this->createdAt = new DateTime("now");
+		$this->updatedAt = new DateTime("now");
+	}
+
+	/**
+	 * Set the update date at entity update.
+	 * @return void
+	 */
+	#[ORM\PreUpdate]
+	public function onPreUpdate(): void
+	{
+		$this->updatedAt = new DateTime("now");
 	}
 
 	/**

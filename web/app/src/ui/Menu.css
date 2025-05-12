@@ -1,0 +1,53 @@
+nav.menu
+{
+	position: fixed;
+	left: 0;
+	bottom: 0;
+
+	width: 100%;
+
+	border-top: solid var(--gray) thin;
+	background: var(--background);
+
+	ul
+	{
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+
+		margin: auto;
+		padding: 0;
+		list-style: none;
+
+		> li
+		{
+			margin: 0;
+			padding: 0;
+			width: fit-content;
+
+			> a
+			{
+				transition: all 0.2s ease;
+				display: block;
+
+				padding: 1em;
+				width: fit-content;
+
+				border-top: solid transparent medium;
+				color: var(--foreground);
+
+				text-decoration: none;
+
+				&.active, &:hover
+				{
+					color: var(--primary);
+				}
+				&.active
+				{
+					border-color: var(--primary);
+				}
+			}
+		}
+	}
+}

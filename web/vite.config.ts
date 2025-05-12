@@ -5,7 +5,7 @@ import path from "node:path";
 // https://vitejs.dev/config/
 
 export default defineConfig(({mode}: ConfigEnv): UserConfig => {
-	return ({
+	return {
 		base: "/app",
 
 		server: {
@@ -20,9 +20,6 @@ export default defineConfig(({mode}: ConfigEnv): UserConfig => {
 			minify: mode == "production" ? "esbuild" : false,
 		},
 
-		plugins: [
-			react(),
-		]
-	});
+		plugins: [react()],
+	};
 });
-

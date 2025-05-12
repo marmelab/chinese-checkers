@@ -1,0 +1,13 @@
+main.game
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+
+	.player-turn
+	{
+		margin-top: -5em;
+		margin-bottom: 5em;
+	}
+}

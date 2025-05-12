@@ -50,14 +50,25 @@
 
 	@phpRoute {
 		not path /.well-known/mercure*
-		not path /app
-		not path /app/*
+		not path /app*
 		not file {path}
 	}
 	rewrite @phpRoute index.php
 
 	@frontController path index.php
 	php @frontController
+
+	@mobileApp {
+		path /app/*
+		not file {path}
+	}
+
+	handle @mobileApp {
+		rewrite * /app/index.html
+		file_server {
+			hide *.php
+		}
+	}
 
 	file_server {
 		hide *.php

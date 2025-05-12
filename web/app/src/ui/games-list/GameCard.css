@@ -1,0 +1,34 @@
+.game.card
+{
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 0.25em;
+
+	color: unset;
+	text-decoration: none;
+
+	.player
+	{
+		flex: 1;
+
+		font-weight: 600;
+		vertical-align: middle;
+
+		&.green { color: var(--green); text-align: right; }
+		&.red { color: var(--red); }
+	}
+
+	.vs
+	{
+		margin: auto 0.25em;
+
+		color: var(--vs);
+		text-shadow: 0 0 0.1em var(--vs-border);
+		font-size: 1.5em;
+		font-weight: 800;
+
+		vertical-align: middle;
+	}
+}

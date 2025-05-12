@@ -158,4 +158,7 @@ and set the application secret using the provided command.
 openssl rand -hex 64
 ```
 
+Build the mobile app with `make build-mobile-app`.
+You'll need to run it again if anything has changed in the mobile app.
+
 You can then start the application with `make start-web-app`.

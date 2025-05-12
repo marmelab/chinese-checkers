@@ -1,0 +1,22 @@
+:root
+{
+	--background: #FFFFFF;
+	--foreground: #141414;
+	--gray: #A9A9A9;
+	--lightgray: #BFBFBF;
+
+
+	--primary: #0062C3;
+	--primary-darker: #0054A8;
+
+	--green: #1C820F;
+	--red: #C30000;
+
+	--vs-border: #BF620B;
+	--vs: #E7770E;
+
+	--board-border: #545454;
+	--board-background: #F4F4F4;
+	--board-green-background: rgba(29, 130, 16, 0.25);
+	--board-red-background: rgba(194, 0, 0, 0.25);
+}
