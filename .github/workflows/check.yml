@@ -56,7 +56,7 @@ jobs:
   deploy:
     name: Deploy the app in production
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/deploy'
     needs: test
 
     steps:
@@ -92,7 +92,7 @@ jobs:
             # Prepare git repository.
             cd chinese-checkers
             git fetch
-            git checkout main
+            git checkout deploy
             git pull
             # Clean and deploy the new mobile app.
             rm -rf web/public/app
