@@ -58,7 +58,6 @@ body
 body > main, body > aside
 {
 	display: block;
-	vertical-align: middle;
 	text-align: center;
 }
 body > aside
