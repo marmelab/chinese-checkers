@@ -188,6 +188,7 @@ class GameSession
 			{ // Update and save the game in database.
 				$game->setBoard($updatedGameState->getBoard());
 				$game->setCurrentPlayer($updatedGameState->getCurrentPlayer());
+				$game->setWinner($this->gameApi->getWinner($updatedGameState));
 
 				$this->entityManager->persist($game);
 				$this->entityManager->flush();

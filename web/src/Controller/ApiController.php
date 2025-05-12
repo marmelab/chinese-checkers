@@ -29,7 +29,7 @@ class ApiController extends AbstractController
 	public function getOngoingGames(): Response
 	{
 		return $this->json(
-			$this->entityManager->getRepository(Game::class)->findAllFullGames(),
+			$this->entityManager->getRepository(Game::class)->findAllOngoingGames(),
 			context: [
 				"groups" => "game:read",
 			],

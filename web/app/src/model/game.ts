@@ -8,6 +8,7 @@ export const zGame = z.object({
 
 	board: z.array(z.array(zCellContent)),
 	currentPlayer: zGamePlayer,
+	winner: zGamePlayer.nullish(),
 
 	players: z.array(zOnlinePlayer),
 });
