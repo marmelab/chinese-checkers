@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Game, isCellPlayable, isPawnPlayable } from "../../model/game";
 import { GameBoard } from "./GameBoard";
 import { MoveActionsBar } from "../move/MoveActionsBar";
-import { openModal } from "../kit/Modals";
-import { AlertModal } from "../kit/AlertModal";
 import { executeMove } from "../../api/games";
 import { getCellName } from "../../model/cell";
 import { ApiError } from "../../api/api";
+import { openToast } from "../kit/Toasts";
+import { ErrorToast } from "../kit/ErrorToast";
 
 export interface CellIdentifier {
 	rowIndex: number;
@@ -37,7 +37,7 @@ export function PlayableGameBoard({
 				);
 			} catch (error) {
 				if (error instanceof ApiError) {
-					openModal(<AlertModal>{await error.getApiMessage()}</AlertModal>);
+					openToast(<ErrorToast>{await error.getApiMessage()}</ErrorToast>);
 					setMove(move);
 				} else throw error;
 			}
@@ -47,7 +47,7 @@ export function PlayableGameBoard({
 	const handleCellClick = (rowIndex: number, cellIndex: number) => {
 		if (!isMoveStarted) {
 			if (!isPawnPlayable(game, rowIndex, cellIndex)) {
-				openModal(<AlertModal>You must play a pawn of your color.</AlertModal>);
+				openToast(<ErrorToast>You must play a pawn of your color.</ErrorToast>);
 				return;
 			}
 
@@ -64,7 +64,7 @@ export function PlayableGameBoard({
 		}
 
 		if (!isCellPlayable(game, rowIndex, cellIndex)) {
-			openModal(<AlertModal>You must move your pawn a free cell.</AlertModal>);
+			openToast(<ErrorToast>You must move your pawn a free cell.</ErrorToast>);
 			return;
 		}
 		appendCellToMove(rowIndex, cellIndex);
@@ -85,7 +85,7 @@ export function PlayableGameBoard({
 			});
 		} catch (error) {
 			if (error instanceof ApiError) {
-				openModal(<AlertModal>{await error.getApiMessage()}</AlertModal>);
+				openToast(<ErrorToast>{await error.getApiMessage()}</ErrorToast>);
 			} else throw error;
 		}
 	};
