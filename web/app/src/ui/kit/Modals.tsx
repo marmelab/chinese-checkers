@@ -1,7 +1,6 @@
 import React, {useContext} from "react";
 import {create} from "zustand";
 import "./Modals.css";
-import {Modal} from "./Modal";
 
 const useModalsStore = create<{
 	modals: React.ReactElement[];
@@ -49,7 +48,15 @@ export function Modals() {
 	if (modals.length <= 0) return null;
 
 	return (
-		<div className="modals">
+		<div
+			className="modals"
+			onClick={(event) => {
+				if (event.currentTarget == event.target) {
+					// Close all modals.
+					useModalsStore.setState({modals: []});
+				}
+			}}
+		>
 			{modals.map((modal, index) => (
 				<ModalContext.Provider
 					key={index}
