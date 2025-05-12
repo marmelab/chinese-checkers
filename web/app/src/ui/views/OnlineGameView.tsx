@@ -10,6 +10,7 @@ import {
 	getGameRedPlayer,
 	zGame,
 } from "../../model/game";
+import { ErrorView } from "./ErrorView";
 
 export function OnlineGameView() {
 	const gameUuid = useParams().uuid;
@@ -32,6 +33,8 @@ export function OnlineGameView() {
 	}, []);
 
 	const game = updatedGame ?? fetchedGame?.data;
+
+	if (!game) return <ErrorView />;
 
 	return (
 		<>
