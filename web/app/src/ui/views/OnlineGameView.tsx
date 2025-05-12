@@ -11,47 +11,23 @@ import {
 	zGame,
 } from "../../model/game";
 
-/**
- * In milliseconds.
- */
-const EVENT_SOURCE_FAILURE_RETRY_TIME = 1000;
-
-function startEventSource(
-	gameUuid: string,
-	setEventSource: (eventSource: EventSource) => void,
-	onGameState: (game: Game) => void,
-) {
-	const eventSource = new EventSource(`/.well-known/mercure?topic=${gameUuid}`);
-
-	eventSource.addEventListener("message", (event) => {
-		onGameState(zGame.parse(JSON.parse(event.data)));
-	});
-	eventSource.addEventListener("error", () => {
-		window.setTimeout(
-			() => startEventSource(gameUuid, setEventSource, onGameState),
-			EVENT_SOURCE_FAILURE_RETRY_TIME,
-		);
-	});
-
-	setEventSource(eventSource);
-}
-
 export function OnlineGameView() {
 	const gameUuid = useParams().uuid;
 	const fetchedGame = useFetchGame(gameUuid);
 
-	const eventSourceRef = useRef<EventSource | null>(null);
 	const [updatedGame, setUpdatedGame] = useState<Game | null>(null);
 
 	useEffect(() => {
-		startEventSource(
-			gameUuid,
-			(eventSource) => (eventSourceRef.current = eventSource),
-			setUpdatedGame,
+		const eventSource = new EventSource(
+			`/.well-known/mercure?topic=${gameUuid}`,
 		);
 
+		eventSource.addEventListener("message", (event) => {
+			setUpdatedGame(zGame.parse(JSON.parse(event.data)));
+		});
+
 		return () => {
-			eventSourceRef.current.close();
+			eventSource.close();
 		};
 	}, []);
 
