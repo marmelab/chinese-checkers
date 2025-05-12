@@ -6,7 +6,7 @@ import {CellIdentifier} from "../board/PlayableGameBoard";
 /**
  * Overlay height in px.
  */
-const overlayHeight = 16;
+const OVERLAY_HEIGHT = 16;
 
 /**
  * An overlay to show a simple move between two cells.
@@ -47,7 +47,7 @@ export function MoveOverlay({
 
 						// Center of the overlay.
 						const cx = (x1 + x2) / 2 - distance / 2;
-						const cy = (y1 + y2) / 2 - overlayHeight / 2;
+						const cy = (y1 + y2) / 2 - OVERLAY_HEIGHT / 2;
 
 						element.style = `top: ${cy}px; left: ${cx}px; width: ${distance}px; transform: rotate(${angle}deg);`;
 					}
