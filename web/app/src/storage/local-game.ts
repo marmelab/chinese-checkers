@@ -52,3 +52,9 @@ export const useLocalGameStore = create<LocalGame>()(
 		},
 	),
 );
+
+export function setLocalGame(game: Game): void {
+	useLocalGameStore.setState({
+		game,
+	});
+}

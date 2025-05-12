@@ -49,3 +49,12 @@ export function inRedTargetArea(
 ): boolean {
 	return targetAreaShape?.[rowIndex]?.[columnIndex] === 1;
 }
+
+/**
+ * Get the name of the provided cell.
+ */
+export function getCellName(rowIndex: number, columnIndex: number): string {
+	return (
+		String.fromCharCode("a".charCodeAt(0) + rowIndex) + `${columnIndex + 1}`
+	);
+}

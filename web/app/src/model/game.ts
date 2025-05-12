@@ -4,7 +4,7 @@ import {GamePlayer, zGamePlayer} from "./game-player";
 import {CellContent, zCellContent} from "./cell";
 
 export const zGame = z.object({
-	uuid: z.string().uuid(),
+	uuid: z.string().uuid().optional(),
 
 	board: z.array(z.array(zCellContent)),
 	currentPlayer: zGamePlayer,

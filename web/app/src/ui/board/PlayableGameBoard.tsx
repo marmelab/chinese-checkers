@@ -5,6 +5,8 @@ import {MoveActionsBar} from "../move/MoveActionsBar";
 import {Modal} from "../kit/Modal";
 import {openModal} from "../kit/Modals";
 import {AlertModal} from "../kit/AlertModal";
+import {executeMove} from "../../api/games";
+import {getCellName} from "../../model/cell";
 
 export interface CellIdentifier {
 	rowIndex: number;
@@ -13,7 +15,13 @@ export interface CellIdentifier {
 
 export type MoveState = CellIdentifier[];
 
-export function PlayableGameBoard({game}: {game: Game}) {
+export function PlayableGameBoard({
+	game,
+	onChange,
+}: {
+	game: Game;
+	onChange: (game: Game) => void;
+}) {
 	const [move, setMove] = useState<MoveState>([]);
 
 	/**
@@ -23,6 +31,27 @@ export function PlayableGameBoard({game}: {game: Game}) {
 	 */
 	const appendCellToMove = (rowIndex: number, cellIndex: number) => {
 		setMove([...move, {rowIndex, cellIndex}]);
+	};
+
+	/**
+	 * Try to execute the current move to update the game board state.
+	 */
+	const submitMove = async () => {
+		try {
+			setMove([]);
+			const updatedGame = await executeMove(
+				game,
+				move.map((cell) => getCellName(cell.rowIndex, cell.cellIndex)),
+			);
+
+			onChange({
+				...game,
+				board: updatedGame.board,
+				currentPlayer: updatedGame.currentPlayer,
+			});
+		} catch (error) {
+			console.log(error);
+		}
 	};
 
 	const isMoveStarted = move.length > 0;
@@ -59,7 +88,7 @@ export function PlayableGameBoard({game}: {game: Game}) {
 					onCancel={() => {
 						setMove([]);
 					}}
-					onSubmit={() => {}}
+					onSubmit={submitMove}
 				/>
 			)}
 		</>

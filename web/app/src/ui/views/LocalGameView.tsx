@@ -1,7 +1,7 @@
 import React from "react";
 import "./GameView.css";
 import {PlayerTurn} from "../board/PlayerTurn";
-import {useLocalGameStore} from "../../storage/local-game";
+import {setLocalGame, useLocalGameStore} from "../../storage/local-game";
 import {PlayableGameBoard} from "../board/PlayableGameBoard";
 
 export function LocalGameView() {
@@ -14,7 +14,7 @@ export function LocalGameView() {
 			</header>
 			<main className={"game"}>
 				<PlayerTurn game={localGame.game} />
-				<PlayableGameBoard game={localGame.game} />
+				<PlayableGameBoard game={localGame.game} onChange={setLocalGame} />
 			</main>
 		</>
 	);
