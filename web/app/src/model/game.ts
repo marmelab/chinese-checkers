@@ -35,6 +35,13 @@ export function getCurrentPlayer(game: Game): OnlinePlayer {
 	return player;
 }
 
+export function getWinnerPlayer(game: Game): OnlinePlayer | null {
+	const player = game.players.find(
+		(player) => player.gamePlayer == game.winner,
+	);
+	return player ?? null;
+}
+
 export function isPawnPlayable(
 	game: Game,
 	rowIndex: number,

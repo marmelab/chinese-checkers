@@ -1,19 +1,22 @@
 import React from "react";
 import "./PlayerTurn.css";
-import { Game, getCurrentPlayer } from "../../model/game";
+import { Game, getCurrentPlayer, getWinnerPlayer } from "../../model/game";
 import { GamePlayer } from "../../model/game-player";
 
 export function PlayerTurn({ game }: { game: Game }) {
 	const currentPlayer = getCurrentPlayer(game);
+	const winnerPlayer = getWinnerPlayer(game);
 	return (
 		<p className="player-turn">
-			Current player:{" "}
+			{winnerPlayer ? "Winner" : "Current player"}:{" "}
 			<strong
 				className={
-					currentPlayer.gamePlayer == GamePlayer.Green ? "green" : "red"
+					(winnerPlayer ?? currentPlayer).gamePlayer == GamePlayer.Green
+						? "green"
+						: "red"
 				}
 			>
-				{currentPlayer.name}
+				{(winnerPlayer ?? currentPlayer).name}
 			</strong>
 		</p>
 	);
