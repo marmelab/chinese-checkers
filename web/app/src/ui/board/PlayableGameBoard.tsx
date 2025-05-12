@@ -24,8 +24,24 @@ export function PlayableGameBoard({
 }) {
 	const [move, setMove] = useState<MoveState>([]);
 
-	const appendCellToMove = (rowIndex: number, cellIndex: number) => {
-		setMove([...move, { rowIndex, cellIndex }]);
+	const appendCellToMove = async (rowIndex: number, cellIndex: number) => {
+		const newMove = [...move, { rowIndex, cellIndex }];
+		setMove(newMove); // Optimistic update.
+
+		if (newMove.length >= 2) {
+			// Check new move validity.
+			try {
+				await executeMove(
+					game,
+					newMove.map((cell) => getCellName(cell.rowIndex, cell.cellIndex)),
+				);
+			} catch (error) {
+				if (error instanceof ApiError) {
+					openModal(<AlertModal>{await error.getApiMessage()}</AlertModal>);
+					setMove(move);
+				} else throw error;
+			}
+		}
 	};
 
 	const handleCellClick = (rowIndex: number, cellIndex: number) => {
