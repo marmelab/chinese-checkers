@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from "zod";
 
 /**
  * Game player team.
@@ -9,3 +9,7 @@ export enum GamePlayer {
 }
 
 export const zGamePlayer = z.nativeEnum(GamePlayer);
+
+export function randomGamePlayer(): GamePlayer {
+	return Math.round(Math.random()) + 1;
+}

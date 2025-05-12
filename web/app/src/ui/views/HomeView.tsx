@@ -1,5 +1,5 @@
 import React from "react";
-import {GamesList} from "../games-list/GamesList";
+import { GamesList } from "../games-list/GamesList";
 
 export function HomeView() {
 	return (

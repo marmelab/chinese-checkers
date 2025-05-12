@@ -1,0 +1,11 @@
+.alert.modal
+{
+	.alert.icon
+	{
+		display: block;
+		margin: auto;
+		font-size: 2em;
+
+		color: var(--warning);
+	}
+}

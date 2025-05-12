@@ -10,6 +10,9 @@
 
 	background: var(--board-border);
 
+	box-shadow: inset 1em 0 0.75em 0 rgba(255, 255, 255, 0.2), inset -0.75em 0 0.75em 0 rgba(0, 0, 0, 0.15), 0.1em 0.1em 0.2em rgba(0, 0, 0, 0.33);
+	transform: translate(-0.05em, -0.05em);
+
 	&.red
 	{ background: var(--red); }
 	&.green
@@ -21,6 +24,12 @@
 		transform: scale(0.75);
 	}
 
-	box-shadow: inset 1em 0 0.75em 0 rgba(255, 255, 255, 0.2), inset -0.75em 0 0.75em 0 rgba(0, 0, 0, 0.15), 0.1em 0.1em 0.2em rgba(0, 0, 0, 0.33);
-	transform: translate(-0.05em, -0.05em);
+	&.selected
+	{
+		outline: solid var(--board-border) 2px;
+		outline-offset: 2px;
+
+		&.red { outline-color: var(--red); }
+		&.green { outline-color: var(--green); }
+	}
 }

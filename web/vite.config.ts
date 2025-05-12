@@ -1,10 +1,10 @@
-import {ConfigEnv, defineConfig, UserConfig} from "vite";
+import { ConfigEnv, defineConfig, UserConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "node:path";
 
 // https://vitejs.dev/config/
 
-export default defineConfig(({mode}: ConfigEnv): UserConfig => {
+export default defineConfig(({ mode }: ConfigEnv): UserConfig => {
 	return {
 		base: "/app",
 

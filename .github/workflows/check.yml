@@ -93,6 +93,7 @@ jobs:
             cd chinese-checkers
             git fetch
             git checkout main
+            git reset --hard origin/main
             # Clean and deploy the new mobile app.
             rm -rf web/public/app
             tar xvf /home/ec2-user/mobile-app.tar.gz

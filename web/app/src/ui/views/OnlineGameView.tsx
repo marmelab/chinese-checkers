@@ -1,12 +1,12 @@
-import React, {useEffect} from "react";
-import {useParams} from "react-router-dom";
+import React, { useEffect } from "react";
+import { useParams } from "react-router-dom";
 import "./GameView.css";
-import {GameBoard} from "../board/GameBoard";
-import {useFetchGame} from "../../api/games";
-import {PlayerTurn} from "../board/PlayerTurn";
-import {getGameGreenPlayer, getGameRedPlayer} from "../../model/game";
+import { GameBoard } from "../board/GameBoard";
+import { useFetchGame } from "../../api/games";
+import { PlayerTurn } from "../board/PlayerTurn";
+import { getGameGreenPlayer, getGameRedPlayer } from "../../model/game";
 
-export function GameView() {
+export function OnlineGameView() {
 	const gameUuid = useParams().uuid;
 	const fetchedGame = useFetchGame(gameUuid);
 

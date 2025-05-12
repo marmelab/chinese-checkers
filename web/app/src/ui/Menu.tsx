@@ -1,15 +1,20 @@
 import React from "react";
-import {NavLink} from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import { GameController, House } from "@phosphor-icons/react";
 import "./Menu.css";
-import {House} from "@phosphor-icons/react";
 
 export function Menu() {
 	return (
-		<nav className={"menu"}>
+		<nav className="menu">
 			<ul>
 				<li>
-					<NavLink to={"/app"} end>
+					<NavLink to="/app" end>
 						<House /> Home
+					</NavLink>
+				</li>
+				<li>
+					<NavLink to="/app/game/local" end>
+						<GameController /> Play
 					</NavLink>
 				</li>
 			</ul>

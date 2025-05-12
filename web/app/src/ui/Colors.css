@@ -1,9 +1,13 @@
 :root
 {
 	--background: #FFFFFF;
+	--background-darker: #F4F4F4;
+
 	--foreground: #141414;
+
 	--gray: #A9A9A9;
-	--lightgray: #BFBFBF;
+	--light-gray: #BFBFBF;
+	--dark-gray: #545454;
 
 
 	--primary: #0062C3;
@@ -11,12 +15,23 @@
 
 	--green: #1C820F;
 	--red: #C30000;
+	--orange: #BF620B;
 
-	--vs-border: #BF620B;
+	--vs-border: var(--orange);
 	--vs: #E7770E;
 
-	--board-border: #545454;
-	--board-background: #F4F4F4;
+	--warning: var(--orange);
+
+	--disabled-button: var(--dark-gray);
+	--disabled-button-border: #404040;
+
+	--red-button: var(--red);
+	--red-button-border: #AD0000;
+
+	--board-border: var(--dark-gray);
+	--board-background: var(--background-darker);
 	--board-green-background: rgba(29, 130, 16, 0.25);
 	--board-red-background: rgba(194, 0, 0, 0.25);
+
+	--board-cell-clickable-hover: rgba(0, 0, 0, 0.1);
 }

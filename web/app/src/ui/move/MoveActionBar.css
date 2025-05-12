@@ -1,0 +1,37 @@
+.move-actions-bar
+{
+	position: fixed;
+	bottom: 5em;
+
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: center;
+	gap: 1em;
+
+	padding: 1em;
+	border-radius: 0.5em;
+
+	background: var(--foreground);
+
+	button
+	{
+		margin: 0;
+	}
+
+	animation: fade-in 0.3s;
+}
+
+@keyframes fade-in
+{
+	from
+	{
+		opacity: 0;
+		transform: translateY(-0.5em);
+	}
+	to
+	{
+		opacity: 1;
+		transform: translateY(0);
+	}
+}
