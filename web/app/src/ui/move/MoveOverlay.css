@@ -12,6 +12,7 @@
 	background: rgba(0, 0, 0, 0.2);
 
 	transform-origin: center;
+	pointer-events: none;
 	z-index: 1;
 
 	> .icon

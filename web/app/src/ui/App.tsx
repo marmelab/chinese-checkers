@@ -10,6 +10,7 @@ import "./Button.css";
 import "./Icons.css";
 import { router } from "./router";
 import { Modals } from "./kit/Modals";
+import { Toasts } from "./kit/Toasts";
 
 /**
  * Application global query client instance.
@@ -30,6 +31,7 @@ export function App() {
 					<RouterProvider router={router} />
 				</main>
 				<Modals />
+				<Toasts />
 			</IconContext>
 		</QueryClientProvider>
 	);
