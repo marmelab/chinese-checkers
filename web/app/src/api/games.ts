@@ -2,12 +2,13 @@ import {z} from "zod";
 import {Game, zGame} from "../model/game";
 import {useSuspenseQuery} from "@tanstack/react-query";
 import {CellIdentifier, MoveState} from "../ui/board/PlayableGameBoard";
+import {fetchApi} from "./api";
 
 /**
  * Get ongoing games.
  */
 export async function getOngoingGames(): Promise<Game[]> {
-	return z.array(zGame).parse(await (await fetch("/api/v1/games")).json());
+	return z.array(zGame).parse(await fetchApi("/api/v1/games"));
 }
 
 /**
@@ -15,7 +16,7 @@ export async function getOngoingGames(): Promise<Game[]> {
  * @param uuid UUID of the game to get.
  */
 export async function getGame(uuid: string): Promise<Game> {
-	return zGame.parse(await (await fetch(`/api/v1/games/${uuid}`)).json());
+	return zGame.parse(await fetchApi(`/api/v1/games/${uuid}`));
 }
 
 /**
@@ -25,15 +26,13 @@ export async function getGame(uuid: string): Promise<Game> {
  */
 export async function executeMove(game: Game, move: string[]): Promise<Game> {
 	return zGame.parse(
-		await (
-			await fetch("/api/v1/games/move", {
-				method: "POST",
-				body: JSON.stringify({
-					game: game,
-					move: move,
-				}),
-			})
-		).json(),
+		await fetchApi("/api/v1/games/move", {
+			method: "POST",
+			body: JSON.stringify({
+				game: game,
+				move: move,
+			}),
+		}),
 	);
 }
 

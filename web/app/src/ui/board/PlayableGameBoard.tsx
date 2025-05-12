@@ -7,6 +7,7 @@ import {openModal} from "../kit/Modals";
 import {AlertModal} from "../kit/AlertModal";
 import {executeMove} from "../../api/games";
 import {getCellName} from "../../model/cell";
+import {ApiError} from "../../api/api";
 
 export interface CellIdentifier {
 	rowIndex: number;
@@ -37,20 +38,21 @@ export function PlayableGameBoard({
 	 * Try to execute the current move to update the game board state.
 	 */
 	const submitMove = async () => {
+		setMove([]);
 		try {
-			setMove([]);
 			const updatedGame = await executeMove(
 				game,
 				move.map((cell) => getCellName(cell.rowIndex, cell.cellIndex)),
 			);
-
 			onChange({
 				...game,
 				board: updatedGame.board,
 				currentPlayer: updatedGame.currentPlayer,
 			});
 		} catch (error) {
-			console.log(error);
+			if (error instanceof ApiError) {
+				openModal(<AlertModal>{await error.getApiMessage()}</AlertModal>);
+			} else throw error;
 		}
 	};
 

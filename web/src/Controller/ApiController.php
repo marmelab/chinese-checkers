@@ -76,7 +76,7 @@ class ApiController extends AbstractController
 		{
 			return $this->json([
 				"error" => $exception->getMessage(),
-			]);
+			], 400);
 		}
 	}
 }
