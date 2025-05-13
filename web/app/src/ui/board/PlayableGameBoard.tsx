@@ -5,8 +5,7 @@ import { MoveActionsBar } from "../move/MoveActionsBar";
 import { executeMove } from "../../api/games";
 import { getCellName } from "../../model/cell";
 import { ApiError } from "../../api/api";
-import { openToast } from "../kit/Toasts";
-import { ErrorToast } from "../kit/ErrorToast";
+import { toast } from "react-toastify";
 
 export interface CellIdentifier {
 	rowIndex: number;
@@ -14,6 +13,10 @@ export interface CellIdentifier {
 }
 
 export type MoveState = CellIdentifier[];
+
+export function formatErrorMessage(errorMessage: string): string {
+	return `${errorMessage[0].toUpperCase()}${errorMessage.slice(1)}.`;
+}
 
 export function PlayableGameBoard({
 	game,
@@ -37,7 +40,7 @@ export function PlayableGameBoard({
 				);
 			} catch (error) {
 				if (error instanceof ApiError) {
-					openToast(<ErrorToast>{await error.getApiMessage()}</ErrorToast>);
+					toast.error(formatErrorMessage(await error.getApiMessage()));
 					setMove(move);
 				} else throw error;
 			}
@@ -47,7 +50,7 @@ export function PlayableGameBoard({
 	const handleCellClick = (rowIndex: number, cellIndex: number) => {
 		if (!isMoveStarted) {
 			if (!isPawnPlayable(game, rowIndex, cellIndex)) {
-				openToast(<ErrorToast>You must play a pawn of your color.</ErrorToast>);
+				toast.error("You must play a pawn of your color.");
 				return;
 			}
 
@@ -55,16 +58,21 @@ export function PlayableGameBoard({
 			return;
 		}
 
+		if (move?.[0].rowIndex == rowIndex && move?.[0].cellIndex == cellIndex) {
+			setMove([]);
+			return;
+		}
+
 		// If the clicked cell is already in the move, remove all cells after it.
 		for (const [index, cell] of move.entries()) {
 			if (cell.rowIndex == rowIndex && cell.cellIndex == cellIndex) {
-				setMove(move.toSpliced(index, move.length - index));
+				setMove(move.toSpliced(index + 1, move.length - index));
 				return;
 			}
 		}
 
 		if (!isCellPlayable(game, rowIndex, cellIndex)) {
-			openToast(<ErrorToast>You must move your pawn a free cell.</ErrorToast>);
+			toast.error("You must move your pawn a free cell.");
 			return;
 		}
 		appendCellToMove(rowIndex, cellIndex);
@@ -85,7 +93,7 @@ export function PlayableGameBoard({
 			});
 		} catch (error) {
 			if (error instanceof ApiError) {
-				openToast(<ErrorToast>{await error.getApiMessage()}</ErrorToast>);
+				toast.error(formatErrorMessage(await error.getApiMessage()));
 			} else throw error;
 		}
 	};
