@@ -91,6 +91,7 @@ export function PlayableGameBoard({
 				...game,
 				board: updatedGame.board,
 				currentPlayer: updatedGame.currentPlayer,
+				winner: updatedGame.winner,
 			});
 		} catch (error) {
 			if (error instanceof ApiError) {
