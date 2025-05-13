@@ -24,12 +24,22 @@ export function GamesList() {
 			{fetchedGames.data?.length > 0 ? (
 				<>
 					<h2>My games</h2>
-					{myGames?.map((game) => <GameCard key={game.uuid} game={game} />)}
+					{myGames?.length > 0 ? (
+						myGames?.map((game) => <GameCard key={game.uuid} game={game} />)
+					) : (
+						<p className="center">
+							You are not part of any game. Create one and invite your friends!
+						</p>
+					)}
 
 					<h2>Games to spectate</h2>
-					{spectatorGames?.map((game) => (
-						<GameCard key={game.uuid} game={game} />
-					))}
+					{spectatorGames?.length > 0 ? (
+						spectatorGames?.map((game) => (
+							<GameCard key={game.uuid} game={game} />
+						))
+					) : (
+						<p className="center">No ongoing game to spectate.</p>
+					)}
 				</>
 			) : (
 				<p className="center">No ongoing game.</p>
