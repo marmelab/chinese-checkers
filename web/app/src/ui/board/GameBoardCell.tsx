@@ -7,6 +7,7 @@ import {
 } from "../../model/cell";
 import { Pawn } from "./Pawn";
 import { MoveState } from "./PlayableGameBoard";
+import { X } from "@phosphor-icons/react";
 
 export function GameBoardCell({
 	move,
@@ -25,6 +26,10 @@ export function GameBoardCell({
 	const isMoveStart =
 		move?.[0]?.rowIndex == rowIndex && move?.[0]?.cellIndex == cellIndex;
 
+	const isPartOfTheMove = !!move.find(
+		(cell) => cell.rowIndex == rowIndex && cell.cellIndex == cellIndex,
+	);
+
 	return (
 		<td
 			id={`cell-${rowIndex}-${cellIndex}`}
@@ -42,6 +47,8 @@ export function GameBoardCell({
 					<Pawn pawn={cell} selected={isMoveStart} />
 				)}
 			</button>
+
+			{isPartOfTheMove && <X className="remove-move-part icon" />}
 		</td>
 	);
 }
