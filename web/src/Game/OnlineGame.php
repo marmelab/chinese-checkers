@@ -122,6 +122,26 @@ class OnlineGame
 	}
 
 	/**
+	 * Update and save the game in database.
+	 * @param Game $toUpdate
+	 * @param Game $updatedGameState
+	 * @return void
+	 */
+	public function updateGame(Game $toUpdate, Game $updatedGameState): void
+	{
+		$toUpdate->setBoard($updatedGameState->getBoard());
+		$toUpdate->setCurrentPlayer($updatedGameState->getCurrentPlayer());
+		$toUpdate->setWinner($updatedGameState->getWinner());
+
+		$this->entityManager->persist($toUpdate);
+		$this->entityManager->flush();
+
+		$this->mercure->publish(new Update($toUpdate->getUuid(),
+			$this->serializer->serialize($toUpdate, "json", [ "groups" => ["game:read"] ])
+		));
+	}
+
+	/**
 	 * Join a game as the provided player.
 	 * @param Game $game The game to join.
 	 * @param GamePlayer $player The player ID (color) to be.
@@ -178,7 +198,8 @@ class OnlineGame
 				...$this->getOnlineGamesCookie(),
 				...$this->getUpdatedOnlineGames(),
 			]))
-			->withSecure();
+			->withSecure()
+			->withHttpOnly(false);
 
 		$this->clearUpdatedOnlineGames();
 

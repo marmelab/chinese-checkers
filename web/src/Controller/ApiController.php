@@ -124,4 +124,32 @@ class ApiController extends AbstractController
 			], 400);
 		}
 	}
+
+	#[Route("/api/v1/games/{gameUuid}/move", methods: "POST", format: "json")]
+	public function executeOnlineGameMove(string $gameUuid, Request $request, OnlineGame $onlineGame, GameApi $gameApi): Response
+	{
+		if (empty($game = $onlineGame->findGame($gameUuid)))
+			throw $this->createNotFoundException();
+
+		if ($game->getCurrentOnlinePlayer()->getUuid() != $onlineGame->getPlayerUuid($game))
+			return $this->json([
+				"error" => "you are not the current player"
+			]);
+
+		$body = json_decode($request->getContent());
+
+		try
+		{
+			$updatedGameState = $gameApi->move($game, $body?->move ?? []);
+			$updatedGameState->setWinner($gameApi->getWinner($updatedGameState));
+			$onlineGame->updateGame($game, $updatedGameState);
+			return $this->json($game, context: [ "groups" => "game:read" ]);
+		}
+		catch (GameApiException $exception)
+		{
+			return $this->json([
+				"error" => $exception->getMessage(),
+			], 400);
+		}
+	}
 }

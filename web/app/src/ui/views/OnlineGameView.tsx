@@ -7,12 +7,15 @@ import { useFetchGame } from "../../api/games";
 import { PlayerTurn } from "../board/PlayerTurn";
 import {
 	Game,
+	getCurrentPlayer,
 	getGameGreenPlayer,
 	getGameRedPlayer,
 	isGameStarted,
 	zGame,
 } from "../../model/game";
 import { ErrorView } from "./ErrorView";
+import { getOnlineGamePlayerId } from "../../storage/online-game";
+import { PlayableGameBoard } from "../board/PlayableGameBoard";
 
 export function OnlineGameView() {
 	const gameUuid = useParams().uuid;
@@ -56,6 +59,8 @@ export function OnlineGameView() {
 			</>
 		);
 
+	const onlineGamePlayerId = getOnlineGamePlayerId(game.uuid);
+
 	return (
 		<>
 			<header>
@@ -65,7 +70,12 @@ export function OnlineGameView() {
 				</h1>
 			</header>
 			<main className="online game">
-				<GameBoard board={game.board} />
+				{onlineGamePlayerId &&
+				getCurrentPlayer(game).uuid == onlineGamePlayerId ? (
+					<PlayableGameBoard game={game} onChange={setUpdatedGame} online />
+				) : (
+					<GameBoard board={game.board} />
+				)}
 				<PlayerTurn game={game} />
 			</main>
 		</>

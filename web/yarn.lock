@@ -708,6 +708,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@types/js-cookie@npm:^3":
+  version: 3.0.6
+  resolution: "@types/js-cookie@npm:3.0.6"
+  checksum: 10c0/173afaf5ea9d86c22395b9d2a00b6adb0006dcfef165d6dcb0395cdc32f5a5dcf9c3c60f97194119963a15849b8f85121e1ae730b03e40bc0c29b84396ba22f9
+  languageName: node
+  linkType: hard
+
 "@types/node@npm:^22.15.3":
   version: 22.15.3
   resolution: "@types/node@npm:22.15.3"
@@ -858,11 +865,13 @@ __metadata:
     "@phosphor-icons/react": "npm:^2.1.7"
     "@playwright/test": "npm:^1.52.0"
     "@tanstack/react-query": "npm:^5.75.5"
+    "@types/js-cookie": "npm:^3"
     "@types/node": "npm:^22.15.3"
     "@types/react": "npm:^19.1.3"
     "@types/react-dom": "npm:^19.1.3"
     "@vitejs/plugin-react": "npm:^4.4.1"
     clsx: "npm:^2.1.1"
+    js-cookie: "npm:^3.0.5"
     prettier: "npm:^3.5.3"
     react: "npm:^19.1.0"
     react-dom: "npm:^19.1.0"
@@ -1291,6 +1300,13 @@ __metadata:
     "@pkgjs/parseargs":
       optional: true
   checksum: 10c0/6acc10d139eaefdbe04d2f679e6191b3abf073f111edf10b1de5302c97ec93fffeb2fdd8681ed17f16268aa9dd4f8c588ed9d1d3bffbbfa6e8bf897cbb3149b9
+  languageName: node
+  linkType: hard
+
+"js-cookie@npm:^3.0.5":
+  version: 3.0.5
+  resolution: "js-cookie@npm:3.0.5"
+  checksum: 10c0/04a0e560407b4489daac3a63e231d35f4e86f78bff9d792011391b49c59f721b513411cd75714c418049c8dc9750b20fcddad1ca5a2ca616c3aca4874cce5b3a
   languageName: node
   linkType: hard
 

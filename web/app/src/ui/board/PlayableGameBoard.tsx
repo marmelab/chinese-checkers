@@ -21,11 +21,14 @@ export function formatErrorMessage(errorMessage: string): string {
 export function PlayableGameBoard({
 	game,
 	onChange,
+	online,
 }: {
 	game: Game;
 	onChange: (game: Game) => void;
+	online?: boolean;
 }) {
 	const [move, setMove] = useState<MoveState>([]);
+	online = !!online;
 
 	const appendCellToMove = async (rowIndex: number, cellIndex: number) => {
 		const newMove = [...move, { rowIndex, cellIndex }];
@@ -37,6 +40,8 @@ export function PlayableGameBoard({
 				await executeMove(
 					game,
 					newMove.map((cell) => getCellName(cell.rowIndex, cell.cellIndex)),
+					// Never online as it's a simulated move.
+					false,
 				);
 			} catch (error) {
 				if (error instanceof ApiError) {
@@ -79,6 +84,7 @@ export function PlayableGameBoard({
 			const updatedGame = await executeMove(
 				game,
 				move.map((cell) => getCellName(cell.rowIndex, cell.cellIndex)),
+				online,
 			);
 
 			onChange({

@@ -195,16 +195,7 @@ class GameSession
 				$this->requestStack->getCurrentRequest()->getSession()->set(self::UPDATED_GAME_STATE_ATTRIBUTE_NAME, $updatedGameState);
 			else
 			{ // Update and save the game in database.
-				$game->setBoard($updatedGameState->getBoard());
-				$game->setCurrentPlayer($updatedGameState->getCurrentPlayer());
-				$game->setWinner($updatedGameState->getWinner());
-
-				$this->entityManager->persist($game);
-				$this->entityManager->flush();
-
-				$this->mercure->publish(new Update($gameId,
-					$this->serializer->serialize($game, "json", [ "groups" => ["game:read"] ])
-				));
+				$this->onlineGame->updateGame($game, $updatedGameState);
 			}
 		}
 		finally
