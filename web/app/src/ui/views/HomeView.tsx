@@ -8,8 +8,6 @@ export function HomeView() {
 				<h1>Home</h1>
 			</header>
 			<main>
-				<p className={"center"}>Find a game to spectate!</p>
-
 				<GamesList />
 			</main>
 		</>
