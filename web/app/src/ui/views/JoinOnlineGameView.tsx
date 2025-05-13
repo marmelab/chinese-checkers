@@ -34,7 +34,10 @@ export function JoinOnlineGameView() {
 							const game = await joinGame(gameCode, playerName);
 							navigate(`/app/game/${game.uuid}`);
 						} catch (error) {
-							if (!(error instanceof ApiError)) throw error;
+							if (!(error instanceof ApiError)) {
+								toast.error("Unknown error.");
+								return;
+							}
 
 							const errorMessage = await error.getApiMessage();
 							if (errorMessage == INVALID_JOIN_CODE_ERROR) {

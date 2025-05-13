@@ -6,6 +6,7 @@ import { MoveActionsBar } from "../move/MoveActionsBar";
 import { executeMove } from "../../api/games";
 import { getCellName } from "../../model/cell";
 import { ApiError, formatErrorMessage } from "../../api/api";
+import { handleCallbackError } from "../CallbackErrorHandler";
 
 export interface CellIdentifier {
 	rowIndex: number;
@@ -90,9 +91,7 @@ export function PlayableGameBoard({
 				winner: updatedGame.winner,
 			});
 		} catch (error) {
-			if (error instanceof ApiError) {
-				toast.error(formatErrorMessage(await error.getApiMessage()));
-			} else throw error;
+			handleCallbackError(error);
 		}
 	};
 
