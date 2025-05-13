@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Serializer\SerializerInterface;
 
 class GameSessionTest extends KernelTestCase
 {
@@ -33,7 +35,15 @@ class GameSessionTest extends KernelTestCase
 		$requestStack = new RequestStack();
 		$requestStack->push($request = new Request());
 		$request->setSession(new Session(new MockArraySessionStorage()));
-		$this->gameSession = new GameSession($requestStack, new GameState($requestStack, new BoardUtilities()), static::getContainer()->get(GameApi::class), static::getContainer()->get(OnlineGame::class), static::getContainer()->get(EntityManagerInterface::class));
+		$this->gameSession = new GameSession(
+			$requestStack,
+			new GameState($requestStack, new BoardUtilities()),
+			static::getContainer()->get(GameApi::class),
+			static::getContainer()->get(OnlineGame::class),
+			static::getContainer()->get(EntityManagerInterface::class),
+			static::getContainer()->get(HubInterface::class),
+			static::getContainer()->get(SerializerInterface::class),
+		);
 	}
 
 	/**

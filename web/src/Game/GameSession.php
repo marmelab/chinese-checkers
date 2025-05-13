@@ -7,6 +7,9 @@ use App\Entity\Cell;
 use App\Exceptions\GameApiException;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
+use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
@@ -33,6 +36,8 @@ class GameSession
 	 * @param GameApi $gameApi Game API service.
 	 * @param OnlineGame $onlineGame Online game service.
 	 * @param EntityManagerInterface $entityManager Entity manager service.
+	 * @param HubInterface $mercure Mercure hub service.
+	 * @param SerializerInterface $serializer Serialization service.
 	 */
 	public function __construct(
 		private readonly RequestStack           $requestStack,
@@ -40,6 +45,8 @@ class GameSession
 		private readonly GameApi                $gameApi,
 		private readonly OnlineGame             $onlineGame,
 		private readonly EntityManagerInterface $entityManager,
+		private readonly HubInterface           $mercure,
+		private readonly SerializerInterface    $serializer,
 	) {}
 
 	/**
@@ -194,6 +201,10 @@ class GameSession
 
 				$this->entityManager->persist($game);
 				$this->entityManager->flush();
+
+				$this->mercure->publish(new Update($gameId,
+					$this->serializer->serialize($game, "json", [ "groups" => ["game:read"] ])
+				));
 			}
 		}
 		finally
