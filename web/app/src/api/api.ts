@@ -17,3 +17,7 @@ export class ApiError extends Error {
 		return (await this.response.json())?.error ?? null;
 	}
 }
+
+export function formatErrorMessage(errorMessage: string): string {
+	return `${errorMessage[0].toUpperCase()}${errorMessage.slice(1)}.`;
+}
