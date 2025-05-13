@@ -62,14 +62,20 @@ class ApiController extends AbstractController
 	 * @throws TransportExceptionInterface
 	 */
 	#[Route("/api/v1/games/move", methods: "POST", format: "json")]
-	public function executeMove(Request $request, GameApi $gameApi): Response
+	public function executeLocalGameMove(Request $request, GameApi $gameApi): Response
 	{
 		$body = json_decode($request->getContent());
-		$game = Game::initFromRaw($body->game);
+		$game = Game::initFromRaw($body?->game);
+
+		if (empty($game))
+			return $this->json([
+				"error" => "missing game state",
+			], 400);
 
 		try
 		{
-			$game = $gameApi->move($game, $body->move);
+			$game = $gameApi->move($game, $body?->move ?? []);
+			$game->setWinner($gameApi->getWinner($game));
 			return $this->json($game, context: [ "groups" => "game:read" ]);
 		}
 		catch (GameApiException $exception)
