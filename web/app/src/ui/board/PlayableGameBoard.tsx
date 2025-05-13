@@ -58,10 +58,15 @@ export function PlayableGameBoard({
 			return;
 		}
 
+		if (move?.[0].rowIndex == rowIndex && move?.[0].cellIndex == cellIndex) {
+			setMove([]);
+			return;
+		}
+
 		// If the clicked cell is already in the move, remove all cells after it.
 		for (const [index, cell] of move.entries()) {
 			if (cell.rowIndex == rowIndex && cell.cellIndex == cellIndex) {
-				setMove(move.toSpliced(index, move.length - index));
+				setMove(move.toSpliced(index + 1, move.length - index));
 				return;
 			}
 		}
