@@ -3,9 +3,7 @@ table.game-board
 	margin: 0;
 	border-collapse: collapse;
 
-	transform: rotate(45deg);
-
-	font-size: 0.9em;
+	font-size: 1.1em;
 
 	td
 	{
