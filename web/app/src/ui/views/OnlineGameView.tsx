@@ -76,7 +76,7 @@ export function OnlineGameView() {
 				) : (
 					<GameBoard board={game.board} />
 				)}
-				<PlayerTurn game={game} />
+				<PlayerTurn game={game} playerId={onlineGamePlayerId} />
 			</main>
 		</>
 	);
