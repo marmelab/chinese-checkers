@@ -181,6 +181,8 @@ class GameSession
 			// Use the move API to update the game board.
 			$updatedGameState = $this->gameApi->move($game, $this->getMoveList());
 
+			$updatedGameState->setWinner($this->gameApi->getWinner($updatedGameState));
+
 			if ($gameId == "local")
 				// Save the game in session for cookie update.
 				$this->requestStack->getCurrentRequest()->getSession()->set(self::UPDATED_GAME_STATE_ATTRIBUTE_NAME, $updatedGameState);
@@ -188,6 +190,7 @@ class GameSession
 			{ // Update and save the game in database.
 				$game->setBoard($updatedGameState->getBoard());
 				$game->setCurrentPlayer($updatedGameState->getCurrentPlayer());
+				$game->setWinner($updatedGameState->getWinner());
 
 				$this->entityManager->persist($game);
 				$this->entityManager->flush();

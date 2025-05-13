@@ -59,6 +59,14 @@ class Game implements \JsonSerializable
 	private GamePlayer $currentPlayer;
 
 	/**
+	 * The winner.
+	 * @var GamePlayer|null
+	 */
+	#[ORM\Column(type: "smallint", nullable: true, enumType: GamePlayer::class)]
+	#[Groups(["game:read"])]
+	private GamePlayer|null $winner = null;
+
+	/**
 	 * Related online players.
 	 * @var Collection<int, OnlinePlayer>
 	 */
@@ -149,6 +157,16 @@ class Game implements \JsonSerializable
 	public function setCurrentPlayer(GamePlayer $currentPlayer): void
 	{
 		$this->currentPlayer = $currentPlayer;
+	}
+
+	public function getWinner(): ?GamePlayer
+	{
+		return $this->winner;
+	}
+
+	public function setWinner(?GamePlayer $winner): void
+	{
+		$this->winner = $winner;
 	}
 
 	/**

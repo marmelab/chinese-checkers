@@ -17,16 +17,17 @@ class GamesRepository extends ServiceEntityRepository
 	}
 
 	/**
-	 * Find all full (2 players) games.
+	 * Find all ongoing (2 players, not finished) games.
 	 * @return Game[]
 	 */
-	public function findAllFullGames(): array
+	public function findAllOngoingGames(): array
 	{
 		return $this->getEntityManager()->createQueryBuilder()
 
 			->select("games")
 			->from($this->getEntityName(), "games")
 			->where("(SELECT COUNT(players) FROM App\Entity\OnlinePlayer players WHERE players.game = games.uuid) = 2")
+			->andWhere("games.winner IS NULL")
 			->orderBy("games.updatedAt", "DESC")
 			->addOrderBy("games.createdAt", "DESC")
 

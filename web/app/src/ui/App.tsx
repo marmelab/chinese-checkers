@@ -8,8 +8,9 @@ import "./Common.css";
 import "./App.css";
 import "./Button.css";
 import "./Icons.css";
+import "./Toastify.css";
 import { router } from "./router";
-import { Modals } from "./kit/Modals";
+import { ToastContainer } from "react-toastify";
 
 /**
  * Application global query client instance.
@@ -29,7 +30,7 @@ export function App() {
 				<main className="app">
 					<RouterProvider router={router} />
 				</main>
-				<Modals />
+				<ToastContainer />
 			</IconContext>
 		</QueryClientProvider>
 	);

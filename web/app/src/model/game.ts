@@ -8,6 +8,7 @@ export const zGame = z.object({
 
 	board: z.array(z.array(zCellContent)),
 	currentPlayer: zGamePlayer,
+	winner: zGamePlayer.nullish(),
 
 	players: z.array(zOnlinePlayer),
 });
@@ -32,6 +33,13 @@ export function getCurrentPlayer(game: Game): OnlinePlayer {
 	);
 	if (!player) throw new Error("Unknown current player.");
 	return player;
+}
+
+export function getWinnerPlayer(game: Game): OnlinePlayer | null {
+	const player = game.players.find(
+		(player) => player.gamePlayer == game.winner,
+	);
+	return player ?? null;
 }
 
 export function isPawnPlayable(
