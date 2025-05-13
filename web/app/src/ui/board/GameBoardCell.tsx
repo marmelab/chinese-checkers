@@ -26,7 +26,7 @@ export function GameBoardCell({
 	const isMoveStart =
 		move?.[0]?.rowIndex == rowIndex && move?.[0]?.cellIndex == cellIndex;
 
-	const isPartOfTheMove = !!move.find(
+	const isPartOfTheMove = !!move?.find(
 		(cell) => cell.rowIndex == rowIndex && cell.cellIndex == cellIndex,
 	);
 
