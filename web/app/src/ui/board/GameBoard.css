@@ -60,8 +60,6 @@ table.game-board
 			background: rgba(0, 0, 0, 0.2);
 			color: rgba(0, 0, 0, 0.5);
 
-			transform: rotate(-45deg);
-
 			font-size: 0.9em;
 
 			pointer-events: none;
