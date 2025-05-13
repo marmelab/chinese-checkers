@@ -13,7 +13,7 @@ export function Menu() {
 					</NavLink>
 				</li>
 				<li>
-					<NavLink to="/app/game/local" end>
+					<NavLink to="/app/game/local/new">
 						<GameController /> Play
 					</NavLink>
 				</li>

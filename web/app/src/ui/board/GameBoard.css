@@ -9,6 +9,7 @@ table.game-board
 
 	td
 	{
+		position: relative;
 		padding: 0;
 
 		border: solid var(--board-border) thin;
@@ -45,6 +46,27 @@ table.game-board
 			{
 				background: var(--board-cell-clickable-hover);
 			}
+		}
+
+		.remove-move-part.icon
+		{
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			margin: auto;
+			padding: 0.2em;
+			border-radius: 1em;
+
+			background: rgba(0, 0, 0, 0.2);
+			color: rgba(0, 0, 0, 0.5);
+
+			transform: rotate(-45deg);
+
+			font-size: 0.9em;
+
+			pointer-events: none;
 		}
 	}
 }

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Cell;
 use App\Exceptions\GameApiException;
 use App\Game\GameSession;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,10 +30,11 @@ class MoveController extends AbstractController
 	/**
 	 * Continue moving a pawn on the board.
 	 * @param Request $request The request.
+	 * @param LoggerInterface $logger
 	 * @return Response
 	 */
 	#[Route("/move", name: "move", methods: "POST")]
-	public function move(Request $request): Response
+	public function move(Request $request, LoggerInterface $logger): Response
 	{
 		// Read the cell from form data, and check its validity.
 		$cell = new Cell($request->get("cell"));
@@ -52,6 +54,7 @@ class MoveController extends AbstractController
 		}
 		catch (Throwable $exception)
 		{ // Caught any other exception: show an internal error.
+			$logger->error($exception);
 			$this->addFlash("error", "internal error");
 		}
 
@@ -65,10 +68,11 @@ class MoveController extends AbstractController
 	/**
 	 * End the current turn.
 	 * @param Request $request The request.
+	 * @param LoggerInterface $logger
 	 * @return Response
 	 */
 	#[Route("/move/end", name: "move_end", methods: "POST")]
-	public function end(Request $request): Response
+	public function end(Request $request, LoggerInterface $logger): Response
 	{
 		try
 		{
@@ -80,6 +84,7 @@ class MoveController extends AbstractController
 		}
 		catch (Throwable $exception)
 		{ // Caught any other exception: show an internal error.
+			$logger->error($exception);
 			$this->addFlash("error", "internal error");
 		}
 

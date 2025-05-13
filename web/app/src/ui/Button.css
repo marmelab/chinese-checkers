@@ -32,4 +32,9 @@ button, a[role="button"]
 		border-color: var(--red-button-border);
 		background: var(--red-button);
 	}
+
+	.icon
+	{
+		margin-right: 0.25em;
+	}
 }
