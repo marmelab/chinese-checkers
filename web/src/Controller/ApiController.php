@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Game;
 use App\Exceptions\GameApiException;
 use App\Game\GameApi;
+use App\Game\OnlineGame;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -48,6 +49,23 @@ class ApiController extends AbstractController
 
 		if (empty($game)) throw $this->createNotFoundException();
 
+		return $this->json($game, context: [ "groups" => "game:read" ]);
+	}
+
+	/**
+	 * @param Request $request
+	 * @param OnlineGame $onlineGame
+	 * @return Response
+	 */
+	#[Route("/api/v1/games/new", methods: "POST", format: "json")]
+	public function newGame(Request $request, OnlineGame $onlineGame): Response
+	{
+		$body = json_decode($request->getContent());
+
+		if (empty($body->playerName))
+			return $this->json([ "error" => "you must a player name to create a game" ], 400);
+
+		$game = $onlineGame->newGame($body->playerName);
 		return $this->json($game, context: [ "groups" => "game:read" ]);
 	}
 

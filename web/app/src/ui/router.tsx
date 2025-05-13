@@ -4,6 +4,7 @@ import { ErrorView } from "./views/ErrorView";
 import { HomeView } from "./views/HomeView";
 import { OnlineGameView } from "./views/OnlineGameView";
 import { LocalGameView } from "./views/LocalGameView";
+import { NewOnlineGameView } from "./views/NewOnlineGameView";
 
 export const router = createBrowserRouter([
 	{
@@ -18,6 +19,10 @@ export const router = createBrowserRouter([
 			{
 				path: "game/local",
 				Component: LocalGameView,
+			},
+			{
+				path: "game/new",
+				Component: NewOnlineGameView,
 			},
 			{
 				path: "game/:uuid",

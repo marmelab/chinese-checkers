@@ -31,6 +31,17 @@ export async function executeMove(game: Game, move: string[]): Promise<Game> {
 	);
 }
 
+export async function newGame(playerName: string): Promise<Game> {
+	return zGame.parse(
+		await fetchApi("/api/v1/games/new", {
+			method: "POST",
+			body: JSON.stringify({
+				playerName: playerName,
+			}),
+		}),
+	);
+}
+
 export function useFetchOngoingGames() {
 	return useSuspenseQuery({
 		queryKey: ["ongoingGames"],

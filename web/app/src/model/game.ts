@@ -5,6 +5,7 @@ import { CellContent, zCellContent } from "./cell";
 
 export const zGame = z.object({
 	uuid: z.string().uuid().optional(),
+	joinCode: z.string().nullish(),
 
 	board: z.array(z.array(zCellContent)),
 	currentPlayer: zGamePlayer,
@@ -24,9 +25,6 @@ export function getGameRedPlayer(game: Game): OnlinePlayer {
 	return game.players.find((player) => player.gamePlayer == GamePlayer.Red);
 }
 
-/**
- * Get the current online player.
- */
 export function getCurrentPlayer(game: Game): OnlinePlayer {
 	const player = game.players.find(
 		(player) => player.gamePlayer == game.currentPlayer,
@@ -40,6 +38,10 @@ export function getWinnerPlayer(game: Game): OnlinePlayer | null {
 		(player) => player.gamePlayer == game.winner,
 	);
 	return player ?? null;
+}
+
+export function isGameStarted(game: Game): boolean {
+	return game.players.length >= 2;
 }
 
 export function isPawnPlayable(

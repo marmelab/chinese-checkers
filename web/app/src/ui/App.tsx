@@ -8,6 +8,7 @@ import "./Common.css";
 import "./App.css";
 import "./Button.css";
 import "./Icons.css";
+import "./Forms.css";
 import { router } from "./router";
 import { Modals } from "./kit/Modals";
 import { Toasts } from "./kit/Toasts";
