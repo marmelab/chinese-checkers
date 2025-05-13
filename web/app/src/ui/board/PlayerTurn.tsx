@@ -27,7 +27,8 @@ export function PlayerTurn({
 				</strong>
 			</p>
 			<p className="center">
-				{playerId &&
+				{!winnerPlayer &&
+					playerId &&
 					(currentPlayer.uuid == playerId
 						? "Move a pawn!"
 						: "Wait for your opponent to move a pawn.")}
