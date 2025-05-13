@@ -10,9 +10,9 @@ button, a[role="button"]
 	width: fit-content;
 	border-radius: 0.33em;
 
-	border: solid var(--primary-darker) medium;
-	background: var(--primary);
-	color: var(--background);
+	border: solid var(--light-gray) 2px;
+	background: var(--background-darker);
+	color: unset;
 	text-decoration: none;
 
 	&:active
@@ -31,6 +31,14 @@ button, a[role="button"]
 	{
 		border-color: var(--red-button-border);
 		background: var(--red-button);
+		color: var(--background);
+	}
+
+	&.blue, &.submit
+	{
+		border-color: var(--primary-darker);
+		background-color: var(--primary);
+		color: var(--background);
 	}
 
 	.icon
