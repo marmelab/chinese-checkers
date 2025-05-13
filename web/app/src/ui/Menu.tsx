@@ -13,12 +13,12 @@ export function Menu() {
 					</NavLink>
 				</li>
 				<li>
-					<NavLink to={"/app/game/new"} end>
+					<NavLink to={"/app/game/online/new"} end>
 						<Planet /> Online
 					</NavLink>
 				</li>
 				<li>
-					<NavLink to="/app/game/local" end>
+					<NavLink to="/app/game/local/new">
 						<GameController /> Local
 					</NavLink>
 				</li>

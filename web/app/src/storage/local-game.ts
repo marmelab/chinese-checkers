@@ -55,3 +55,9 @@ export function setLocalGame(game: Game): void {
 		game,
 	});
 }
+
+export function resetLocalGame(): void {
+	useLocalGameStore.setState({
+		game: getDefaultGame(),
+	});
+}
