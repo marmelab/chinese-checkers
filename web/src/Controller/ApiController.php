@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Game;
+use App\Entity\GamePlayer;
 use App\Exceptions\GameApiException;
 use App\Game\GameApi;
 use App\Game\OnlineGame;
@@ -62,10 +63,36 @@ class ApiController extends AbstractController
 	{
 		$body = json_decode($request->getContent());
 
-		if (empty($body->playerName))
-			return $this->json([ "error" => "you must a player name to create a game" ], 400);
+		if (empty($body?->playerName))
+			return $this->json([ "error" => "you must set a player name to create a game" ], 400);
 
 		$game = $onlineGame->newGame($body->playerName);
+		return $this->json($game, context: [ "groups" => "game:read" ]);
+	}
+
+	/**
+	 * @param Request $request
+	 * @param OnlineGame $onlineGame
+	 * @return Response
+	 */
+	#[Route("/api/v1/games/join", methods: "POST", format: "json")]
+	public function joinGame(Request $request, OnlineGame $onlineGame): Response
+	{
+		$body = json_decode($request->getContent());
+
+		if (empty($body?->gameCode))
+			return $this->json([ "error" => "you must provide the code of the game to join" ], 400);
+		if (empty($body?->playerName))
+			return $this->json([ "error" => "you must set a player name to join a game" ], 400);
+
+		if (empty($game = $this->entityManager->getRepository(Game::class)->findOneBy([ "joinCode" => strtoupper(trim($body->gameCode)) ])))
+			return $this->json([ "error" => "no game for provided code" ], 404);
+
+		if ($game->getPlayers()->count() >= 2)
+			return $this->json([ "error" => "the game with ID {$game->getUuid()} is already full, please join another one" ], 400);
+
+		$onlineGame->joinAsPlayer($game, GamePlayer::Red, $body->playerName);
+
 		return $this->json($game, context: [ "groups" => "game:read" ]);
 	}
 

@@ -42,6 +42,21 @@ export async function newGame(playerName: string): Promise<Game> {
 	);
 }
 
+export async function joinGame(
+	gameCode: string,
+	playerName: string,
+): Promise<Game> {
+	return zGame.parse(
+		await fetchApi("/api/v1/games/join", {
+			method: "POST",
+			body: JSON.stringify({
+				gameCode: gameCode,
+				playerName: playerName,
+			}),
+		}),
+	);
+}
+
 export function useFetchOngoingGames() {
 	return useSuspenseQuery({
 		queryKey: ["ongoingGames"],

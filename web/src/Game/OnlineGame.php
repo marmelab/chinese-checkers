@@ -6,8 +6,12 @@ use App\Entity\Game;
 use App\Entity\GamePlayer;
 use App\Entity\OnlinePlayer;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Exception\ORMException;
 use Symfony\Component\HttpFoundation\Cookie;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Mercure\HubInterface;
+use Symfony\Component\Mercure\Update;
+use Symfony\Component\Serializer\SerializerInterface;
 
 /**
  * Online game service.
@@ -28,11 +32,15 @@ class OnlineGame
 	 * @param RequestStack $requestStack The request stack service.
 	 * @param GameState $gameState Game state service.
 	 * @param EntityManagerInterface $entityManager Entity manager service.
+	 * @param HubInterface $mercure Mercure hub service.
+	 * @param SerializerInterface $serializer Serialization service.
 	 */
 	public function __construct(
 		private RequestStack $requestStack,
 		private GameState $gameState,
 		private EntityManagerInterface $entityManager,
+		private readonly HubInterface           $mercure,
+		private readonly SerializerInterface    $serializer,
 	)
 	{
 	}
@@ -83,6 +91,7 @@ class OnlineGame
 	 * @param GamePlayer $gamePlayer The game player ID of the new player.
 	 * @param string $playerName The player name.
 	 * @return OnlinePlayer The created online player.
+	 * @throws ORMException
 	 */
 	public function newOnlinePlayer(Game $game, GamePlayer $gamePlayer, string $playerName): OnlinePlayer
 	{
@@ -93,6 +102,11 @@ class OnlineGame
 
 		$this->entityManager->persist($onlinePlayer);
 		$this->entityManager->flush();
+
+		$this->entityManager->refresh($game);
+		$this->mercure->publish(new Update($game->getUuid(),
+			$this->serializer->serialize($game, "json", [ "groups" => ["game:read"] ])
+		));
 
 		return $onlinePlayer;
 	}

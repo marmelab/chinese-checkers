@@ -13,7 +13,7 @@ export function Menu() {
 					</NavLink>
 				</li>
 				<li>
-					<NavLink to={"/app/game/online/new"} end>
+					<NavLink to={"/app/game/online"}>
 						<Planet /> Online
 					</NavLink>
 				</li>
