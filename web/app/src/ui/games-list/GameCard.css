@@ -18,7 +18,7 @@
 		vertical-align: middle;
 
 		&.green { color: var(--green); text-align: right; }
-		&.red { color: var(--red); }
+		&.red { color: var(--red); text-align: left; }
 	}
 
 	.vs

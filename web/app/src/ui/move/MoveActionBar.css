@@ -18,6 +18,7 @@
 	{
 		margin: 0;
 		padding: 0.66em;
+		width: fit-content;
 	}
 
 	animation: fade-in 0.3s;
