@@ -9,6 +9,11 @@ label
 		display: block;
 		width: 100%;
 	}
+
+	span.error
+	{
+		color: var(--red);
+	}
 }
 
 input

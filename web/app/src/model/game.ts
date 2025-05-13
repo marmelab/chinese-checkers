@@ -40,6 +40,10 @@ export function getWinnerPlayer(game: Game): OnlinePlayer | null {
 	return player ?? null;
 }
 
+export function hasPlayer(game: Game, playerUuid: string): boolean {
+	return game.players.some((player) => player.uuid == playerUuid);
+}
+
 export function isGameStarted(game: Game): boolean {
 	return game.players.length >= 2;
 }
