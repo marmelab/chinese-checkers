@@ -10,12 +10,14 @@ import {
 	getCurrentPlayer,
 	getGameGreenPlayer,
 	getGameRedPlayer,
+	getWinnerPlayer,
 	isGameStarted,
 	zGame,
 } from "../../model/game";
 import { ErrorView } from "./ErrorView";
 import { getOnlineGamePlayerId } from "../../storage/online-game";
 import { PlayableGameBoard } from "../board/PlayableGameBoard";
+import { confetti } from "@tsparticles/confetti";
 
 export function OnlineGameView() {
 	const gameUuid = useParams().uuid;
@@ -39,6 +41,17 @@ export function OnlineGameView() {
 
 	const game = updatedGame ?? fetchedGame?.data;
 
+	const onlineGamePlayerId = getOnlineGamePlayerId(game?.uuid);
+
+	useEffect(() => {
+		if (game?.winner && getWinnerPlayer(game)?.uuid == onlineGamePlayerId)
+			confetti({
+				particleCount: 100,
+				spread: 70,
+				origin: { y: 0.6 },
+			});
+	}, [game, onlineGamePlayerId]);
+
 	if (!game) return <ErrorView />;
 
 	if (!isGameStarted(game))
@@ -58,8 +71,6 @@ export function OnlineGameView() {
 				</main>
 			</>
 		);
-
-	const onlineGamePlayerId = getOnlineGamePlayerId(game.uuid);
 
 	return (
 		<>
