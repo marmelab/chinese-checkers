@@ -1,3 +1,9 @@
 _security_logout:
   resource: security.route_loader.logout
   type: service
+  # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: "auto"
+  providers:
+    users_in_memory: { memory: null }
+  
