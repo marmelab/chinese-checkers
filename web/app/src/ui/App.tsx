@@ -8,6 +8,7 @@ import "./Common.css";
 import "./App.css";
 import "./Button.css";
 import "./Icons.css";
+import "./Forms.css";
 import "./Toastify.css";
 import { router } from "./router";
 import { ToastContainer } from "react-toastify";

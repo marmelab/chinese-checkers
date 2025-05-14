@@ -9,6 +9,6 @@ main.game
 
 	.player-turn
 	{
-		margin: 5em auto -5em;
+		margin: 5em auto 0;
 	}
 }

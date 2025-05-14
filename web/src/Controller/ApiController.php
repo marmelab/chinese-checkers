@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Game;
+use App\Entity\GamePlayer;
 use App\Exceptions\GameApiException;
 use App\Game\GameApi;
+use App\Game\OnlineGame;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -52,6 +54,49 @@ class ApiController extends AbstractController
 	}
 
 	/**
+	 * @param Request $request
+	 * @param OnlineGame $onlineGame
+	 * @return Response
+	 */
+	#[Route("/api/v1/games/new", methods: "POST", format: "json")]
+	public function newGame(Request $request, OnlineGame $onlineGame): Response
+	{
+		$body = json_decode($request->getContent());
+
+		if (empty($body?->playerName))
+			return $this->json([ "error" => "you must set a player name to create a game" ], 400);
+
+		$game = $onlineGame->newGame($body->playerName);
+		return $this->json($game, context: [ "groups" => "game:read" ]);
+	}
+
+	/**
+	 * @param Request $request
+	 * @param OnlineGame $onlineGame
+	 * @return Response
+	 */
+	#[Route("/api/v1/games/join", methods: "POST", format: "json")]
+	public function joinGame(Request $request, OnlineGame $onlineGame): Response
+	{
+		$body = json_decode($request->getContent());
+
+		if (empty($body?->gameCode))
+			return $this->json([ "error" => "you must provide the code of the game to join" ], 400);
+		if (empty($body?->playerName))
+			return $this->json([ "error" => "you must set a player name to join a game" ], 400);
+
+		if (empty($game = $this->entityManager->getRepository(Game::class)->findOneBy([ "joinCode" => strtoupper(trim($body->gameCode)) ])))
+			return $this->json([ "error" => "no game for provided code" ], 404);
+
+		if ($game->getPlayers()->count() >= 2)
+			return $this->json([ "error" => "the game is already full, please join another one" ], 400);
+
+		$onlineGame->joinAsPlayer($game, GamePlayer::Red, $body->playerName);
+
+		return $this->json($game, context: [ "groups" => "game:read" ]);
+	}
+
+	/**
 	 * Execute the provided move for a game state using the game engine and return the updated game state.
 	 * @param Request $request The request.
 	 * @param GameApi $gameApi Game API service.
@@ -76,6 +121,34 @@ class ApiController extends AbstractController
 		{
 			$game = $gameApi->move($game, $body?->move ?? []);
 			$game->setWinner($gameApi->getWinner($game));
+			return $this->json($game, context: [ "groups" => "game:read" ]);
+		}
+		catch (GameApiException $exception)
+		{
+			return $this->json([
+				"error" => $exception->getMessage(),
+			], 400);
+		}
+	}
+
+	#[Route("/api/v1/games/{gameUuid}/move", methods: "POST", format: "json")]
+	public function executeOnlineGameMove(string $gameUuid, Request $request, OnlineGame $onlineGame, GameApi $gameApi): Response
+	{
+		if (empty($game = $onlineGame->findGame($gameUuid)))
+			throw $this->createNotFoundException();
+
+		if ($game->getCurrentOnlinePlayer()->getUuid() != $onlineGame->getPlayerUuid($game))
+			return $this->json([
+				"error" => "you are not the current player"
+			]);
+
+		$body = json_decode($request->getContent());
+
+		try
+		{
+			$updatedGameState = $gameApi->move($game, $body?->move ?? []);
+			$updatedGameState->setWinner($gameApi->getWinner($updatedGameState));
+			$onlineGame->updateGame($game, $updatedGameState);
 			return $this->json($game, context: [ "groups" => "game:read" ]);
 		}
 		catch (GameApiException $exception)

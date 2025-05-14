@@ -43,6 +43,13 @@ class Game implements \JsonSerializable
 	private DateTime $updatedAt;
 
 	/**
+	 * Unique join code.
+	 * @var string|null
+	 */
+	#[ORM\Column(type: "string", unique: true, nullable: true)]
+	private string|null $joinCode = null;
+
+	/**
 	 * The board cells.
 	 * @var int[][]
 	 */
@@ -108,6 +115,25 @@ class Game implements \JsonSerializable
 	public function getUuid(): string
 	{
 		return $this->uuid;
+	}
+
+	/**
+	 * Set the unique join code of the game.
+	 * @param string $joinCode
+	 * @return void
+	 */
+	public function setJoinCode(string $joinCode): void
+	{
+		$this->joinCode = $joinCode;
+	}
+
+	/**
+	 * Get the unique join code of the game.
+	 * @return string|null
+	 */
+	public function getJoinCode(): string|null
+	{
+		return $this->joinCode;
 	}
 
 	/**

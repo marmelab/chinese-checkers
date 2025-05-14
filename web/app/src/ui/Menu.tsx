@@ -1,6 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { GameController, House } from "@phosphor-icons/react";
+import { GameController, House, Planet } from "@phosphor-icons/react";
 import "./Menu.css";
 
 export function Menu() {
@@ -13,8 +13,13 @@ export function Menu() {
 					</NavLink>
 				</li>
 				<li>
+					<NavLink to={"/app/game/online"}>
+						<Planet /> Online
+					</NavLink>
+				</li>
+				<li>
 					<NavLink to="/app/game/local/new">
-						<GameController /> Play
+						<GameController /> Local
 					</NavLink>
 				</li>
 			</ul>

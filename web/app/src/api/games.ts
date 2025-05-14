@@ -18,14 +18,45 @@ export async function getGame(uuid: string): Promise<Game> {
 /**
  * @param game Game state for the move.
  * @param move The move to execute (all visited cell names).
+ * @param online
  */
-export async function executeMove(game: Game, move: string[]): Promise<Game> {
+export async function executeMove(
+	game: Game,
+	move: string[],
+	online: boolean,
+): Promise<Game> {
 	return zGame.parse(
-		await fetchApi("/api/v1/games/move", {
+		await fetchApi(`/api/v1/games/${online ? `${game.uuid}/` : ""}move`, {
 			method: "POST",
 			body: JSON.stringify({
 				game: game,
 				move: move,
+			}),
+		}),
+	);
+}
+
+export async function newGame(playerName: string): Promise<Game> {
+	return zGame.parse(
+		await fetchApi("/api/v1/games/new", {
+			method: "POST",
+			body: JSON.stringify({
+				playerName: playerName,
+			}),
+		}),
+	);
+}
+
+export async function joinGame(
+	gameCode: string,
+	playerName: string,
+): Promise<Game> {
+	return zGame.parse(
+		await fetchApi("/api/v1/games/join", {
+			method: "POST",
+			body: JSON.stringify({
+				gameCode: gameCode,
+				playerName: playerName,
 			}),
 		}),
 	);

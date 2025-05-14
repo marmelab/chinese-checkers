@@ -1,0 +1,36 @@
+
+label
+{
+	display: block;
+	margin: 1em;
+
+	> input
+	{
+		display: block;
+		width: 100%;
+	}
+
+	span.error
+	{
+		color: var(--red);
+	}
+}
+
+input
+{
+	transition: outline 0.2s ease;
+
+	margin: 0.33em auto;
+	padding: 0.5em;
+	box-sizing: border-box;
+	border-radius: 0.33em;
+
+	border: solid var(--gray) thin;
+	outline: solid transparent 2px;
+	outline-offset: 2px;
+
+	&:focus
+	{
+		outline-color: var(--primary);
+	}
+}

@@ -48,6 +48,13 @@ jobs:
           node-version: lts/*
       - name: Enable corepack to use latest stable yarn
         run: corepack enable
+      - name: Cache playwright dependencies
+        uses: actions/cache@v3
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
       - name: Install playwright dependencies
         run: make install-e2e
       - name: Run the web app and run e2e tests

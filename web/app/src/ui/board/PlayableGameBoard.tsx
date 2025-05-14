@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { Game, isCellPlayable, isPawnPlayable } from "../../model/game";
 import { GameBoard } from "./GameBoard";
 import { MoveActionsBar } from "../move/MoveActionsBar";
 import { executeMove } from "../../api/games";
 import { getCellName } from "../../model/cell";
-import { ApiError } from "../../api/api";
-import { toast } from "react-toastify";
+import { ApiError, formatErrorMessage } from "../../api/api";
+import { handleCallbackError } from "../CallbackErrorHandler";
 
 export interface CellIdentifier {
 	rowIndex: number;
@@ -14,18 +15,17 @@ export interface CellIdentifier {
 
 export type MoveState = CellIdentifier[];
 
-export function formatErrorMessage(errorMessage: string): string {
-	return `${errorMessage[0].toUpperCase()}${errorMessage.slice(1)}.`;
-}
-
 export function PlayableGameBoard({
 	game,
 	onChange,
+	online,
 }: {
 	game: Game;
 	onChange: (game: Game) => void;
+	online?: boolean;
 }) {
 	const [move, setMove] = useState<MoveState>([]);
+	online = !!online;
 
 	const appendCellToMove = async (rowIndex: number, cellIndex: number) => {
 		const newMove = [...move, { rowIndex, cellIndex }];
@@ -37,6 +37,8 @@ export function PlayableGameBoard({
 				await executeMove(
 					game,
 					newMove.map((cell) => getCellName(cell.rowIndex, cell.cellIndex)),
+					// Never online as it's a simulated move.
+					false,
 				);
 			} catch (error) {
 				if (error instanceof ApiError) {
@@ -79,6 +81,7 @@ export function PlayableGameBoard({
 			const updatedGame = await executeMove(
 				game,
 				move.map((cell) => getCellName(cell.rowIndex, cell.cellIndex)),
+				online,
 			);
 
 			onChange({
@@ -88,9 +91,7 @@ export function PlayableGameBoard({
 				winner: updatedGame.winner,
 			});
 		} catch (error) {
-			if (error instanceof ApiError) {
-				toast.error(formatErrorMessage(await error.getApiMessage()));
-			} else throw error;
+			handleCallbackError(error);
 		}
 	};
 
