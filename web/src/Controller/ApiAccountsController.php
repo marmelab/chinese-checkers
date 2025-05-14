@@ -2,8 +2,8 @@
 
 namespace App\Controller;
 
-use App\Accounts\UsersManager;
-use App\Dto\NewUser;
+use App\Accounts\AccountsManager;
+use App\Dto\NewAccount;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,16 +16,16 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class ApiAccountsController extends AbstractController
 {
 	#[Route("/api/v1/accounts", methods: "POST", format: "json")]
-	public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, UsersManager $usersManager): JsonResponse
+	public function create(Request $request, SerializerInterface $serializer, ValidatorInterface $validator, AccountsManager $accountsManager): JsonResponse
 	{
-		$newUser = $serializer->deserialize($request->getContent(), NewUser::class, "json");
+		$newAccount = $serializer->deserialize($request->getContent(), NewAccount::class, "json");
 
-		if (($errors = $validator->validate($newUser))->count() > 0)
+		if (($errors = $validator->validate($newAccount))->count() > 0)
 			return $this->json($errors, Response::HTTP_BAD_REQUEST);
 
 		try
 		{
-			return $this->json($usersManager->create($newUser));
+			return $this->json($accountsManager->create($newAccount));
 		}
 		catch (UniqueConstraintViolationException $exception)
 		{

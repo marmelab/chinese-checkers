@@ -2,7 +2,7 @@
 
 namespace App\Repository;
 
-use App\Entity\User;
+use App\Entity\Account;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bridge\Doctrine\Security\User\UserLoaderInterface;
@@ -12,13 +12,13 @@ use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
- * @extends ServiceEntityRepository<User>
+ * @extends ServiceEntityRepository<Account>
  */
-class UsersRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, UserLoaderInterface
+class AccountsRepository extends ServiceEntityRepository implements PasswordUpgraderInterface, UserLoaderInterface
 {
 	public function __construct(ManagerRegistry $registry)
 	{
-		parent::__construct($registry, User::class);
+		parent::__construct($registry, Account::class);
 	}
 
 	/**
@@ -26,7 +26,7 @@ class UsersRepository extends ServiceEntityRepository implements PasswordUpgrade
 	 */
 	public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
 	{
-		if (!$user instanceof User)
+		if (!$user instanceof Account)
 		{
 			throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
 		}

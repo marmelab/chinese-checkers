@@ -2,7 +2,7 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
+use App\Entity\Account;
 use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException;
 use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -14,15 +14,15 @@ use Symfony\Component\Security\Http\Attribute\CurrentUser;
 final class ApiAuthenticationController extends AbstractController
 {
 	/**
-	 * @param User|null $user
+	 * @param Account|null $account
 	 * @param JWTManager $jwtManager
 	 * @return JsonResponse
 	 * @throws JWTEncodeFailureException
 	 */
 	#[Route("/api/v1/authentication", name: "api_authentication", methods: ["POST"])]
-	public function index(#[CurrentUser] ?User $user, JWTManager $jwtManager): JsonResponse
+	public function index(#[CurrentUser] ?Account $account, JWTManager $jwtManager): JsonResponse
 	{
-		if (empty($user))
+		if (empty($account))
 		{
 			return $this->json([
 				"message" => "invalid credentials",
@@ -30,7 +30,7 @@ final class ApiAuthenticationController extends AbstractController
 		}
 
 		return $this->json([
-			"token" => $jwtManager->create($user),
+			"token" => $jwtManager->create($account),
 		]);
 	}
 
