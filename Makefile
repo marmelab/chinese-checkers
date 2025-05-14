@@ -27,7 +27,7 @@ GO_PACKAGE=github.com/marmelab/chinese-checkers
 
 # Misc
 .DEFAULT_GOAL = help
-.PHONY        : help install build-cli build-api start-cli deps lint vet check clean up start-web-app start-web-app-dev down logs sh bash test install-e2e test-e2e build-mobile-app start-mobile-app-dev composer vendor composer-install composer-install-dev sf cc
+.PHONY        : help install build-cli build-api start-cli deps lint vet check clean up start-web-app start-web-app-dev down logs sh bash test install-e2e test-e2e build-mobile-app start-mobile-app-dev composer vendor composer-install composer-install-dev sf cc generate-jwt-keys
 
 ## —— Chinese Checkers ♟️ ——————————————————————————————————————————————————————
 help: ## Outputs this help screen.
@@ -69,8 +69,8 @@ up: ## Start web app in detached mode.
 up-production: ## Start web app in detached mode for production.
 	@$(DOCKER_COMP) -f $(DOCKER_COMPOSE_WEB_MAIN) -f $(DOCKER_COMPOSE_WEB_PROD) up --detach
 
-start-web-app: install build-api composer-install up-production ## Build and start the web application for production.
-start-web-app-dev: install build-api composer-install-dev up ## Build and start the web application in dev mode.
+start-web-app: install build-api composer-install generate-jwt-keys up-production ## Build and start the web application for production.
+start-web-app-dev: install build-api composer-install-dev generate-jwt-keys up ## Build and start the web application in dev mode.
 
 down: ## Stop web app.
 	@$(DOCKER_COMP) down --remove-orphans
@@ -126,3 +126,6 @@ sf: ## List all Symfony commands or pass the parameter "c=" to run a given comma
 
 cc: c=c:c ## Clear the cache.
 cc: sf
+
+generate-jwt-keys: ## Generate keypair for JWT.
+	@$(SYMFONY) lexik:jwt:generate-keypair --skip-if-exists
