@@ -1,19 +1,22 @@
 
-button, a[role="button"]
+button, [role="button"]
 {
 	transition: transform 0.2s ease;
 
 	display: block;
 
-	margin: 0.5em auto;
+	margin: 0.5em 1em;
 	padding: 0.75em 1em;
-	width: fit-content;
+	width: calc(100% - 2em);
+	align-self: stretch;
+	box-sizing: border-box;
 	border-radius: 0.33em;
 
-	border: solid var(--primary-darker) medium;
-	background: var(--primary);
-	color: var(--background);
+	border: solid var(--light-gray) 2px;
+	background: var(--background-darker);
+	color: unset;
 	text-decoration: none;
+	text-align: center;
 
 	&:active
 	{
@@ -31,6 +34,14 @@ button, a[role="button"]
 	{
 		border-color: var(--red-button-border);
 		background: var(--red-button);
+		color: var(--background);
+	}
+
+	&.blue, &.submit
+	{
+		border-color: var(--primary-darker);
+		background-color: var(--primary);
+		color: var(--background);
 	}
 
 	.icon

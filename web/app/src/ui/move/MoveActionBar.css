@@ -7,9 +7,9 @@
 	flex-direction: row;
 	align-items: center;
 	justify-content: center;
-	gap: 1em;
+	gap: 0.66em;
 
-	padding: 1em;
+	padding: 0.66em;
 	border-radius: 0.5em;
 
 	background: var(--foreground);
@@ -17,6 +17,8 @@
 	button
 	{
 		margin: 0;
+		padding: 0.66em;
+		width: fit-content;
 	}
 
 	animation: fade-in 0.3s;

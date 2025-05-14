@@ -1,4 +1,10 @@
 .Toastify__toast-container
 {
 	padding: 1em;
+
+	button.Toastify__close-button
+	{
+		margin: 0.5em;
+		width: fit-content;
+	}
 }
