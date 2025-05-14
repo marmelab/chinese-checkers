@@ -65,8 +65,11 @@ export function OnlineGameView() {
 		<>
 			<header>
 				<h1>
-					{getGameGreenPlayer(game)?.name ?? "Green"} VS{" "}
-					{getGameRedPlayer(game)?.name ?? "Red"}
+					<span className="green">
+						{getGameGreenPlayer(game)?.name ?? "Green"}
+					</span>{" "}
+					VS{" "}
+					<span className="red">{getGameRedPlayer(game)?.name ?? "Red"}</span>
 				</h1>
 			</header>
 			<main className="online game">
