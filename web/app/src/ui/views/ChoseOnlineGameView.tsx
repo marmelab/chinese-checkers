@@ -1,10 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { ArrowFatLinesRight, PlusCircle } from "@phosphor-icons/react";
+import { AuthenticationRequired } from "../accounts/AuthenticationRequired";
 
 export function ChoseOnlineGameView() {
 	return (
-		<>
+		<AuthenticationRequired>
 			<header>
 				<h1>Online Game</h1>
 			</header>
@@ -20,6 +21,6 @@ export function ChoseOnlineGameView() {
 					Join an online game
 				</Link>
 			</main>
-		</>
+		</AuthenticationRequired>
 	);
 }

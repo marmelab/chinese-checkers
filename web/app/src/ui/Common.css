@@ -24,6 +24,8 @@ a
 
 p
 {
+	margin: 1em;
+
 	&.center
 	{
 		text-align: center;
@@ -47,4 +49,13 @@ p
 h1, h2
 {
 	text-align: center;
+}
+
+hr
+{
+	margin: 2em 1em;
+	height: 1px;
+
+	border: none;
+	background: var(--gray);
 }

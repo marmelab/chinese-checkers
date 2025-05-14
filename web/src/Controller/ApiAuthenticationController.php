@@ -2,9 +2,8 @@
 
 namespace App\Controller;
 
+use App\Accounts\AccountsManager;
 use App\Entity\Account;
-use Lexik\Bundle\JWTAuthenticationBundle\Exception\JWTEncodeFailureException;
-use Lexik\Bundle\JWTAuthenticationBundle\Services\JWTManager;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
@@ -15,37 +14,41 @@ final class ApiAuthenticationController extends AbstractController
 {
 	/**
 	 * @param Account|null $account
-	 * @param JWTManager $jwtManager
+	 * @param AccountsManager $accountsManager
 	 * @return JsonResponse
-	 * @throws JWTEncodeFailureException
 	 */
 	#[Route("/api/v1/authentication", name: "api_authentication", methods: ["POST"])]
-	public function index(#[CurrentUser] ?Account $account, JWTManager $jwtManager): JsonResponse
+	public function index(#[CurrentUser] ?Account $account, AccountsManager $accountsManager): JsonResponse
 	{
 		if (empty($account))
 		{
 			return $this->json([
-				"message" => "invalid credentials",
+				"error" => "Invalid credentials.",
 			], Response::HTTP_UNAUTHORIZED);
 		}
 
-		return $this->json([
-			"token" => $jwtManager->create($account),
+		$response = new JsonResponse();
+		$response->setData([
+			"token" => $accountsManager->getAuthenticationToken($this->getUser()),
 		]);
+		$response->headers->setCookie($accountsManager->getAuthenticationCookie($this->getUser()));
+		return $response;
 	}
 
 	/**
-	 * @param JWTManager $jwtManager
+	 * @param AccountsManager $accountsManager
 	 * @return JsonResponse
-	 * @throws JWTEncodeFailureException
 	 */
 	#[Route("/api/v1/authentication/refresh", name: "api_authentication_refresh", methods: "GET")]
-	public function refresh(JWTManager $jwtManager): JsonResponse
+	public function refresh(AccountsManager $accountsManager): JsonResponse
 	{
 		$this->denyAccessUnlessGranted("ROLE_USER");
 
-		return $this->json([
-			"token" => $jwtManager->create($this->getUser()),
+		$response = new JsonResponse();
+		$response->setData([
+			"token" => $accountsManager->getAuthenticationToken($this->getUser()),
 		]);
+		$response->headers->setCookie($accountsManager->getAuthenticationCookie($this->getUser()));
+		return $response;
 	}
 }
