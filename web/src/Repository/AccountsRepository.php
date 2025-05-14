@@ -22,27 +22,27 @@ class AccountsRepository extends ServiceEntityRepository implements PasswordUpgr
 	}
 
 	/**
-	 * Used to upgrade (rehash) the user's password automatically over time.
+	 * Used to upgrade (rehash) the account's password automatically over time.
 	 */
-	public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+	public function upgradePassword(PasswordAuthenticatedUserInterface $account, string $newHashedPassword): void
 	{
-		if (!$user instanceof Account)
+		if (!$account instanceof Account)
 		{
-			throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
+			throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $account::class));
 		}
 
-		$user->setPassword($newHashedPassword);
-		$this->getEntityManager()->persist($user);
+		$account->setPassword($newHashedPassword);
+		$this->getEntityManager()->persist($account);
 		$this->getEntityManager()->flush();
 	}
 
 	public function loadUserByIdentifier(string $usernameOrEmail): ?UserInterface
 	{
 		return $this->getEntityManager()->createQuery(
-			"SELECT users
-			FROM App\Entity\User users
-			WHERE users.name = :query
-			OR users.email = :query
+			"SELECT accounts
+			FROM App\Entity\Account accounts
+			WHERE accounts.name = :query
+			OR accounts.email = :query
 			"
 		)
 			->setParameter("query", $usernameOrEmail)

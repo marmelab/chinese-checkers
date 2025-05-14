@@ -10,7 +10,7 @@ use Symfony\Component\Serializer\Attribute\Ignore;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: AccountsRepository::class)]
-#[ORM\Table(name: '`users`')]
+#[ORM\Table(name: '`accounts`')]
 #[ORM\UniqueConstraint(name: "UNIQ_IDENTIFIER_NAME", fields: ["name"])]
 #[ORM\UniqueConstraint(name: "UNIQ_IDENTIFIER_EMAIL", fields: ["email"])]
 class Account implements UserInterface, PasswordAuthenticatedUserInterface

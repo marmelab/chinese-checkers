@@ -11,21 +11,21 @@ final class Version20250514081713 extends AbstractMigration
 {
 	public function getDescription(): string
 	{
-		return "Add users.";
+		return "Add accounts.";
 	}
 
 	public function up(Schema $schema): void
 	{
 		$this->addSql(<<<'SQL'
-            CREATE TABLE "users" (id SERIAL NOT NULL, name VARCHAR(180) NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id))
+            CREATE TABLE "accounts" (id SERIAL NOT NULL, name VARCHAR(180) NOT NULL, email VARCHAR(180) NOT NULL, roles JSON NOT NULL, password VARCHAR(255) NOT NULL, PRIMARY KEY(id))
         SQL
 		);
 		$this->addSql(<<<'SQL'
-            CREATE UNIQUE INDEX UNIQ_IDENTIFIER_NAME ON "users" (name)
+            CREATE UNIQUE INDEX UNIQ_IDENTIFIER_NAME ON "accounts" (name)
         SQL
 		);
 		$this->addSql(<<<'SQL'
-            CREATE UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL ON "users" (email)
+            CREATE UNIQUE INDEX UNIQ_IDENTIFIER_EMAIL ON "accounts" (email)
         SQL
 		);
 	}
@@ -33,7 +33,7 @@ final class Version20250514081713 extends AbstractMigration
 	public function down(Schema $schema): void
 	{
 		$this->addSql(<<<'SQL'
-            DROP TABLE "users"
+            DROP TABLE "accounts"
         SQL
 		);
 	}
