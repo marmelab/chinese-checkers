@@ -5,8 +5,11 @@ import { UserPlus } from "@phosphor-icons/react";
 import { LoginForm } from "./LoginForm";
 
 export function AuthenticationRequired({
+	message,
 	children,
-}: React.PropsWithChildren<{}>) {
+}: React.PropsWithChildren<{
+	message?: string;
+}>) {
 	const authState = getAuthenticationState();
 
 	if (!authState)
@@ -17,9 +20,7 @@ export function AuthenticationRequired({
 				</header>
 
 				<main className="error">
-					<p className="center">
-						To view this page, you must be authenticated to an account.
-					</p>
+					{message && <p className="center">{message}</p>}
 
 					<LoginForm />
 
