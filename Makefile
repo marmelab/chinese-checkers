@@ -69,7 +69,7 @@ up: ## Start web app in detached mode.
 up-production: ## Start web app in detached mode for production.
 	@$(DOCKER_COMP) -f $(DOCKER_COMPOSE_WEB_MAIN) -f $(DOCKER_COMPOSE_WEB_PROD) up --detach
 
-start-web-app: install build-api composer-install generate-jwt-keys up-production ## Build and start the web application for production.
+start-web-app: install build-api composer-install cc generate-jwt-keys up-production ## Build and start the web application for production.
 start-web-app-dev: install build-api composer-install-dev generate-jwt-keys up ## Build and start the web application in dev mode.
 
 down: ## Stop web app.
