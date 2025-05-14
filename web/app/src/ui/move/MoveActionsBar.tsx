@@ -21,7 +21,7 @@ export function MoveActionsBar({
 			<button className="cancel" onClick={onCancel}>
 				<TrashSimple /> Cancel
 			</button>
-			<button disabled={!isSubmittable} onClick={onSubmit}>
+			<button className="submit" disabled={!isSubmittable} onClick={onSubmit}>
 				<CheckCircle /> Submit
 			</button>
 		</div>
