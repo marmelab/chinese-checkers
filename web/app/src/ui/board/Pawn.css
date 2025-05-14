@@ -3,14 +3,14 @@
 	display: block;
 
 	margin: auto;
-	width: 1.66em;
-	height: 1.66em;
-	border-radius: 1.66em;
+	width: 8vw;
+	height: 8vw;
+	border-radius: 8vw;
 	box-sizing: border-box;
 
 	background: var(--board-border);
 
-	box-shadow: inset 1em 0 0.75em 0 rgba(255, 255, 255, 0.2), inset -0.75em 0 0.75em 0 rgba(0, 0, 0, 0.15), 0.1em 0.1em 0.2em rgba(0, 0, 0, 0.33);
+	box-shadow: inset 1em 0 0.75em 0 rgba(255, 255, 255, 0.2), inset -0.75em 0 0.75em 0 rgba(0, 0, 0, 0.15), 0 0.1em 0.2em rgba(0, 0, 0, 0.33);
 
 	&.red
 	{ background: var(--red); }

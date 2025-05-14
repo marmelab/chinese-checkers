@@ -1,11 +1,12 @@
 import React, { useState } from "react";
+import { toast } from "react-toastify";
 import { Game, isCellPlayable, isPawnPlayable } from "../../model/game";
 import { GameBoard } from "./GameBoard";
 import { MoveActionsBar } from "../move/MoveActionsBar";
 import { executeMove } from "../../api/games";
 import { getCellName } from "../../model/cell";
-import { ApiError } from "../../api/api";
-import { toast } from "react-toastify";
+import { ApiError, formatErrorMessage } from "../../api/api";
+import { handleCallbackError } from "../CallbackErrorHandler";
 
 export interface CellIdentifier {
 	rowIndex: number;
@@ -13,10 +14,6 @@ export interface CellIdentifier {
 }
 
 export type MoveState = CellIdentifier[];
-
-export function formatErrorMessage(errorMessage: string): string {
-	return `${errorMessage[0].toUpperCase()}${errorMessage.slice(1)}.`;
-}
 
 export function PlayableGameBoard({
 	game,
@@ -94,9 +91,7 @@ export function PlayableGameBoard({
 				winner: updatedGame.winner,
 			});
 		} catch (error) {
-			if (error instanceof ApiError) {
-				toast.error(formatErrorMessage(await error.getApiMessage()));
-			} else throw error;
+			handleCallbackError(error);
 		}
 	};
 

@@ -89,7 +89,7 @@ class ApiController extends AbstractController
 			return $this->json([ "error" => "no game for provided code" ], 404);
 
 		if ($game->getPlayers()->count() >= 2)
-			return $this->json([ "error" => "the game with ID {$game->getUuid()} is already full, please join another one" ], 400);
+			return $this->json([ "error" => "the game is already full, please join another one" ], 400);
 
 		$onlineGame->joinAsPlayer($game, GamePlayer::Red, $body->playerName);
 

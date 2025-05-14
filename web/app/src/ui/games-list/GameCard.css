@@ -1,4 +1,4 @@
-.game.card
+[role="button"].game
 {
 	display: flex;
 	flex-direction: row;
@@ -7,7 +7,8 @@
 	gap: 0.25em;
 
 	color: unset;
-	text-decoration: none;
+	margin: 1em;
+	width: auto;
 
 	.player
 	{
@@ -17,7 +18,7 @@
 		vertical-align: middle;
 
 		&.green { color: var(--green); text-align: right; }
-		&.red { color: var(--red); }
+		&.red { color: var(--red); text-align: left; }
 	}
 
 	.vs
@@ -25,8 +26,7 @@
 		margin: auto 0.25em;
 
 		color: var(--vs);
-		text-shadow: 0 0 0.1em var(--vs-border);
-		font-size: 1.5em;
+		font-size: 1.33em;
 		font-weight: 800;
 
 		vertical-align: middle;

@@ -2,6 +2,9 @@ import React, { useState } from "react";
 import { Check } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import { newGame } from "../../api/games";
+import { ApiError, formatErrorMessage } from "../../api/api";
+import { toast } from "react-toastify";
+import { handleCallbackError } from "../CallbackErrorHandler";
 
 export function NewOnlineGameView() {
 	const navigate = useNavigate();
@@ -19,8 +22,12 @@ export function NewOnlineGameView() {
 				<form
 					onSubmit={async (event) => {
 						event.preventDefault();
-						const game = await newGame(playerName);
-						navigate(`/app/game/${game.uuid}`);
+						try {
+							const game = await newGame(playerName);
+							navigate(`/app/game/${game.uuid}`);
+						} catch (error) {
+							handleCallbackError(error);
+						}
 					}}
 				>
 					<label htmlFor="player-name">

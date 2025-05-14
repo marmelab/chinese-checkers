@@ -1,3 +1,11 @@
+header h1
+{
+	.green
+	{ color: var(--green); }
+	.red
+	{ color: var(--red); }
+}
+
 main.game
 {
 	display: flex;
@@ -5,10 +13,10 @@ main.game
 	align-items: center;
 	justify-content: flex-start;
 
-	margin-top: 6em;
+	margin-top: 3em;
 
 	.player-turn
 	{
-		margin: 5em auto 0;
+		margin: 2.5em auto 0;
 	}
 }
