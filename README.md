@@ -89,6 +89,7 @@ Clone the repository, then:
      —— Symfony 🎵 ———————————————————————————————————————————————————————————————
     sf                             List all Symfony commands or pass the parameter "c=" to run a given command, example: make sf c=about.
     cc                             Clear the cache.
+    generate-jwt-keys              Generate keypair for JWT.
     ```
 
     _(See Makefile Targets below or run `make help` for all commands)_

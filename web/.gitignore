@@ -29,3 +29,7 @@ node_modules/
 # Yarn and mobile app
 /.yarn/
 /public/app/
+
+###> lexik/jwt-authentication-bundle ###
+/config/jwt/*.pem
+###< lexik/jwt-authentication-bundle ###
