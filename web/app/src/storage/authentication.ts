@@ -18,3 +18,7 @@ export function getAuthenticationState(): AuthenticationState | null {
 		return null;
 	}
 }
+
+export function clearAuthenticationState(): void {
+	Cookies.set("authentication", null);
+}

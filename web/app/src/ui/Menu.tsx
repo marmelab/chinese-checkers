@@ -1,9 +1,12 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
-import { GameController, House, Planet } from "@phosphor-icons/react";
+import { GameController, House, SignIn, User } from "@phosphor-icons/react";
 import "./Menu.css";
+import { getAuthenticationState } from "../storage/authentication";
 
 export function Menu() {
+	const isAuthenticated = !!getAuthenticationState();
+
 	return (
 		<nav className="menu">
 			<ul>
@@ -13,13 +16,21 @@ export function Menu() {
 					</NavLink>
 				</li>
 				<li>
-					<NavLink to={"/app/game/online"}>
-						<Planet /> Online
+					<NavLink to="/app/play">
+						<GameController /> Play
 					</NavLink>
 				</li>
 				<li>
-					<NavLink to="/app/game/local/new">
-						<GameController /> Local
+					<NavLink to={"/app/account"}>
+						{isAuthenticated ? (
+							<>
+								<User /> Account
+							</>
+						) : (
+							<>
+								<SignIn /> Log in
+							</>
+						)}
 					</NavLink>
 				</li>
 			</ul>
