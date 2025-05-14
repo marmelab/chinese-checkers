@@ -3,9 +3,9 @@
 	display: block;
 
 	margin: auto;
-	width: 1.66em;
-	height: 1.66em;
-	border-radius: 1.66em;
+	width: 8vw;
+	height: 8vw;
+	border-radius: 8vw;
 	box-sizing: border-box;
 
 	background: var(--board-border);

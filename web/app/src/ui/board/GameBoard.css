@@ -26,8 +26,8 @@ table.game-board
 		button
 		{
 			margin: auto;
-			width: 2.5em;
-			height: 2.5em;
+			width: 12.5vw;
+			height: 12.5vw;
 			padding: 0;
 			border-radius: 0;
 
