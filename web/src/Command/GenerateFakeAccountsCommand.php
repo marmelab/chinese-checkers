@@ -45,7 +45,7 @@ class GenerateFakeAccountsCommand extends Command
 
 		$io->info("Generating $count accounts...");
 
-		foreach (range(0, $count) as $i)
+		foreach (range(1, $count) as $i)
 		{
 			$fakeAccount = new Account();
 			$fakeAccount->setName($faker->name());

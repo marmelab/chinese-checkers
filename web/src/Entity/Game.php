@@ -77,7 +77,7 @@ class Game implements \JsonSerializable
 	 * Related online players.
 	 * @var Collection<int, OnlinePlayer>
 	 */
-	#[ORM\OneToMany(targetEntity: OnlinePlayer::class, mappedBy: "game", fetch: "EAGER")]
+	#[ORM\OneToMany(targetEntity: OnlinePlayer::class, mappedBy: "game", cascade: ["persist"], fetch: "EAGER")]
 	#[ORM\JoinColumn(referencedColumnName: "uuid")]
 	#[Groups(["game:read"])]
 	private Collection $players;
