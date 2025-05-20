@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { SignIn } from "@phosphor-icons/react";
-import { handleCallbackError } from "../CallbackErrorHandler";
+import { handleCallbackError } from "../handleCallbackError";
 import { useNavigate } from "react-router-dom";
 import { authenticate } from "../../api/accounts";
 

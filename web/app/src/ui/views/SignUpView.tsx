@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { UserPlus } from "@phosphor-icons/react";
 import { createAccount } from "../../api/accounts";
-import { handleCallbackError } from "../CallbackErrorHandler";
+import { handleCallbackError } from "../handleCallbackError";
 import { useNavigate } from "react-router-dom";
 
 export function SignUpView() {

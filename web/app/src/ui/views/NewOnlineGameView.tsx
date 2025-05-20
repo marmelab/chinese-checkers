@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { newGame } from "../../api/games";
 import { ApiError, formatErrorMessage } from "../../api/api";
 import { toast } from "react-toastify";
-import { handleCallbackError } from "../CallbackErrorHandler";
+import { handleCallbackError } from "../handleCallbackError";
 import { AuthenticationRequired } from "../accounts/AuthenticationRequired";
 
 export function NewOnlineGameView() {

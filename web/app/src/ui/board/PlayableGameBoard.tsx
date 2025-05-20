@@ -6,7 +6,7 @@ import { MoveActionsBar } from "../move/MoveActionsBar";
 import { executeMove } from "../../api/games";
 import { getCellName } from "../../model/cell";
 import { ApiError, formatErrorMessage } from "../../api/api";
-import { handleCallbackError } from "../CallbackErrorHandler";
+import { handleCallbackError } from "../handleCallbackError";
 
 export interface CellIdentifier {
 	rowIndex: number;
