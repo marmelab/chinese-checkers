@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { SignIn } from "@phosphor-icons/react";
-import { handleCallbackError } from "../handleCallbackError";
+import { showErrorToast } from "../showErrorToast";
 import { useNavigate } from "react-router-dom";
-import { authenticate } from "../../api/accounts";
+import { authenticate, InvalidCredentialsError } from "../../api/accounts";
 
 export function LoginForm({ redirectTo }: { redirectTo?: string }) {
 	const navigate = useNavigate();
@@ -20,11 +20,11 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
 					await authenticate(username, password);
 					navigate((redirectTo ?? 0) as any);
 				} catch (error) {
-					handleCallbackError(error, {
-						"Invalid credentials.": () => {
-							setError("Invalid credentials.");
-						},
-					});
+					if (error instanceof InvalidCredentialsError) {
+						setError("Invalid credentials.");
+					} else {
+						showErrorToast(error);
+					}
 					setPassword("");
 				}
 			}}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { UserPlus } from "@phosphor-icons/react";
 import { createAccount } from "../../api/accounts";
-import { handleCallbackError } from "../handleCallbackError";
+import { showErrorToast } from "../showErrorToast";
 import { useNavigate } from "react-router-dom";
 
 export function SignUpView() {
@@ -27,7 +27,7 @@ export function SignUpView() {
 							await createAccount(name, email, password);
 							navigate("/app/registered");
 						} catch (error) {
-							handleCallbackError(error);
+							showErrorToast(error);
 						}
 					}}
 				>

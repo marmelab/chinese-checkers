@@ -1,4 +1,4 @@
-import { fetchApi } from "./api";
+import { ApiError, fetchApi } from "./api";
 
 export async function createAccount(
 	name: string,
@@ -15,13 +15,24 @@ export async function authenticate(
 	username: string,
 	password: string,
 ): Promise<string> {
-	return (
-		await fetchApi("/api/v1/authentication", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-			},
-			body: JSON.stringify({ username, password }),
-		})
-	)?.token;
+	try {
+		return (
+			await fetchApi("/api/v1/authentication", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({ username, password }),
+			})
+		)?.token;
+	} catch (error) {
+		if (
+			error instanceof ApiError &&
+			error.errorMessage == "Invalid credentials."
+		) {
+			throw new InvalidCredentialsError();
+		} else throw error;
+	}
 }
+
+export class InvalidCredentialsError extends Error {}

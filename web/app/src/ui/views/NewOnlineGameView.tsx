@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { newGame } from "../../api/games";
 import { ApiError, formatErrorMessage } from "../../api/api";
 import { toast } from "react-toastify";
-import { handleCallbackError } from "../handleCallbackError";
+import { showErrorToast } from "../showErrorToast";
 import { AuthenticationRequired } from "../accounts/AuthenticationRequired";
 
 export function NewOnlineGameView() {
@@ -27,7 +27,7 @@ export function NewOnlineGameView() {
 							const game = await newGame(playerName);
 							navigate(`/app/game/${game.uuid}`);
 						} catch (error) {
-							handleCallbackError(error);
+							showErrorToast(error);
 						}
 					}}
 				>
