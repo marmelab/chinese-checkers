@@ -32,7 +32,7 @@ class ApiAccountsController extends AbstractController
 			$uniqueViolationVarName = str_contains($exception->getMessage(), "uniq_identifier_name") ? "name" : "email";
 			return $this->json([
 				"error" => "someone with the same $uniqueViolationVarName already exists",
-			]);
+			], Response::HTTP_UNAUTHORIZED);
 		}
 	}
 }

@@ -9,6 +9,7 @@ import { JoinOnlineGameView } from "./views/JoinOnlineGameView";
 import { PlayView } from "./views/PlayView";
 import { MyAccountView } from "./views/MyAccountView";
 import { SignUpView } from "./views/SignUpView";
+import { RegisteredView } from "./views/RegisteredView";
 
 export const router = createBrowserRouter([
 	{
@@ -47,6 +48,10 @@ export const router = createBrowserRouter([
 			{
 				path: "sign-up",
 				Component: SignUpView,
+			},
+			{
+				path: "registered",
+				Component: RegisteredView,
 			},
 		],
 	},
