@@ -140,6 +140,28 @@ make start-web-app-dev
 make start-admin-panel-dev
 ```
 
+## ⚙️ Game data generation
+
+You can generate fake game data to test various game situations, statistics and so on.
+
+### Generate accounts
+
+```shell
+# Generate 20 fake accounts.
+make sf c="app:generate-fake-accounts"
+# Generate 50 fake accounts.
+make sf c="app:generate-fake-accounts --count 50"
+```
+
+### Generate games
+
+```shell
+# Generate 20 ongoing games, 5 won games and 5 pending games (awaiting an opponent).
+make sf c="app:generate-fake-games"
+# Generate 50 ongoing games, 10 won games and 3 pending games (awaiting an opponent).
+make sf c="app:generate-fake-games --ongoing-games 50 --won-games 10 --pending-games 3"
+```
+
 ## 🧪 Running tests
 
 ### Unit tests
