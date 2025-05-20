@@ -81,6 +81,9 @@ Clone the repository, then:
      —— Mobile app 📱 ————————————————————————————————————————————————————————————
     build-mobile-app               Build the mobile app for production use with web app.
     start-mobile-app-dev           Run the mobile app in dev mode.
+     —— Admin panel 👑 ———————————————————————————————————————————————————————————
+    build-admin-panel              Build the admin panel for production.
+    start-admin-panel-dev          Run the admin panel in dev mode.
      —— Composer 🧙 ——————————————————————————————————————————————————————————————
     composer                       Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'.
     vendor                         Install vendors according to the current composer.lock file.
@@ -102,6 +105,7 @@ internal/game/        # Core game logic
 bin/                  # Binary file
 web/                  # Web application (Symfony)
 web/app/              # Mobile application (React)
+admin/                # Admin panel (React Admin)
 ```
 
 ## 👷 Testing
@@ -126,6 +130,15 @@ make start-mobile-app-dev
 ```
 
 You can then access the web application on [`http://localhost:5173/app`](http://localhost:5173/app).
+
+### Admin panel
+
+```shell
+# Start the web application (backend).
+make start-web-app-dev
+# Start the admin panel.
+make start-admin-panel-dev
+```
 
 ## 🧪 Running tests
 
