@@ -2,6 +2,7 @@
 
 namespace App\Game;
 
+use App\Entity\Account;
 use App\Entity\Game;
 use App\Entity\GamePlayer;
 use App\Entity\OnlinePlayer;
@@ -69,9 +70,11 @@ class OnlineGame
 	/**
 	 * Initialize a new online game.
 	 * @param string $playerName The green player name.
+	 * @param Account|null $account The current user account.
 	 * @return Game
+	 * @throws ORMException
 	 */
-	public function newGame(string $playerName): Game
+	public function newGame(string $playerName, ?Account $account = null): Game
 	{
 		$game = $this->gameState->getDefaultGame();
 		$game->setJoinCode($this->newGameJoinCode());
@@ -80,7 +83,7 @@ class OnlineGame
 		$this->entityManager->flush();
 
 		// Join the game as the green player.
-		$this->joinAsPlayer($game, GamePlayer::Green, $playerName);
+		$this->joinAsPlayer($game, GamePlayer::Green, $playerName, $account);
 
 		return $game;
 	}
@@ -146,13 +149,24 @@ class OnlineGame
 	 * @param Game $game The game to join.
 	 * @param GamePlayer $player The player ID (color) to be.
 	 * @param string $playerName The player name.
-	 * @return void
+	 * @param Account|null $account The current user account.
+	 * @return OnlinePlayer
+	 * @throws ORMException
 	 */
-	public function joinAsPlayer(Game $game, GamePlayer $player, string $playerName): void
+	public function joinAsPlayer(Game $game, GamePlayer $player, string $playerName, ?Account $account = null): OnlinePlayer
 	{
 		$this->registerOnlinePlayer(
-			$this->newOnlinePlayer($game, $player, $playerName)
+			$onlinePlayer = $this->newOnlinePlayer($game, $player, $playerName)
 		);
+
+		if (!empty($account))
+		{
+			$onlinePlayer->setAccount($account);
+			$this->entityManager->persist($onlinePlayer);
+			$this->entityManager->flush();
+		}
+
+		return $onlinePlayer;
 	}
 
 	/**

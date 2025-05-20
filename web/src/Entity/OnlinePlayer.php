@@ -43,6 +43,12 @@ class OnlinePlayer
 	private GamePlayer $gamePlayer;
 
 	/**
+	 * @var Account|null
+	 */
+	#[ORM\ManyToOne(Account::class)]
+	private ?Account $account = null;
+
+	/**
 	 * Get online player UUID.
 	 * @return string
 	 */
@@ -104,5 +110,15 @@ class OnlinePlayer
 	public function setName(string $name): void
 	{
 		$this->name = $name;
+	}
+
+	public function getAccount(): ?Account
+	{
+		return $this->account;
+	}
+
+	public function setAccount(?Account $account): void
+	{
+		$this->account = $account;
 	}
 }
