@@ -65,9 +65,10 @@ class GenerateFakeGamesCommand extends Command
 	protected function addOnlinePlayer(Game $fakeGame, Account $account, GamePlayer $gamePlayer): void
 	{
 		$fakePlayer = new OnlinePlayer();
-		$fakePlayer->setName($this->faker->name());
-		$fakePlayer->setGamePlayer(GamePlayer::Green);
+		$fakePlayer->setName($account->getName());
+		$fakePlayer->setGamePlayer($gamePlayer);
 		$fakePlayer->setAccount($account);
+		$fakePlayer->setGame($fakeGame);
 		$fakeGame->getPlayers()->add(
 			$fakePlayer
 		);
