@@ -5,6 +5,7 @@ import { newGame } from "../../api/games";
 import { ApiError, formatErrorMessage } from "../../api/api";
 import { toast } from "react-toastify";
 import { handleCallbackError } from "../CallbackErrorHandler";
+import { AuthenticationRequired } from "../accounts/AuthenticationRequired";
 
 export function NewOnlineGameView() {
 	const navigate = useNavigate();
@@ -12,7 +13,7 @@ export function NewOnlineGameView() {
 	const [playerName, setPlayerName] = useState("");
 
 	return (
-		<>
+		<AuthenticationRequired>
 			<header>
 				<h1>New Game</h1>
 			</header>
@@ -49,6 +50,6 @@ export function NewOnlineGameView() {
 					</button>
 				</form>
 			</main>
-		</>
+		</AuthenticationRequired>
 	);
 }
