@@ -5,16 +5,23 @@ export async function fetchApi(
 	const response = await fetch(input, init);
 
 	if (response.ok) return response.json();
-	else throw new ApiError(response);
+	else throw await ApiError.fromResponse(response);
 }
 
 export class ApiError extends Error {
-	constructor(public response: Response) {
+	constructor(
+		public response: Response,
+		public errorMessage: string | null,
+	) {
 		super("Invalid API call.");
 	}
 
-	async getApiMessage(): Promise<string | null> {
-		return (await this.response.json())?.error ?? null;
+	get formattedErrorMessage(): string {
+		return formatErrorMessage(this.errorMessage ?? "unknown error");
+	}
+
+	static async fromResponse(response: Response): Promise<ApiError> {
+		return new ApiError(response, (await response.json())?.error ?? null);
 	}
 }
 

@@ -8,6 +8,7 @@ use App\Exceptions\GameApiException;
 use App\Game\GameApi;
 use App\Game\OnlineGame;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Exception\ORMException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,6 +58,7 @@ class ApiController extends AbstractController
 	 * @param Request $request
 	 * @param OnlineGame $onlineGame
 	 * @return Response
+	 * @throws ORMException
 	 */
 	#[Route("/api/v1/games/new", methods: "POST", format: "json")]
 	public function newGame(Request $request, OnlineGame $onlineGame): Response
@@ -66,7 +68,7 @@ class ApiController extends AbstractController
 		if (empty($body?->playerName))
 			return $this->json([ "error" => "you must set a player name to create a game" ], 400);
 
-		$game = $onlineGame->newGame($body->playerName);
+		$game = $onlineGame->newGame($body->playerName, $this->getUser());
 		return $this->json($game, context: [ "groups" => "game:read" ]);
 	}
 
@@ -74,6 +76,7 @@ class ApiController extends AbstractController
 	 * @param Request $request
 	 * @param OnlineGame $onlineGame
 	 * @return Response
+	 * @throws ORMException
 	 */
 	#[Route("/api/v1/games/join", methods: "POST", format: "json")]
 	public function joinGame(Request $request, OnlineGame $onlineGame): Response
@@ -91,7 +94,7 @@ class ApiController extends AbstractController
 		if ($game->getPlayers()->count() >= 2)
 			return $this->json([ "error" => "the game is already full, please join another one" ], 400);
 
-		$onlineGame->joinAsPlayer($game, GamePlayer::Red, $body->playerName);
+		$onlineGame->joinAsPlayer($game, GamePlayer::Red, $body->playerName, $this->getUser());
 
 		return $this->json($game, context: [ "groups" => "game:read" ]);
 	}

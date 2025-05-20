@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { joinGame } from "../../api/games";
 import { ApiError, formatErrorMessage } from "../../api/api";
+import { AuthenticationRequired } from "../accounts/AuthenticationRequired";
 
 const INVALID_JOIN_CODE_ERROR = "no game for provided code";
 
@@ -16,7 +17,7 @@ export function JoinOnlineGameView() {
 	const [gameCodeError, setGameCodeError] = useState<string | null>(null);
 
 	return (
-		<>
+		<AuthenticationRequired>
 			<header>
 				<h1>Join a Game</h1>
 			</header>
@@ -85,6 +86,6 @@ export function JoinOnlineGameView() {
 					</button>
 				</form>
 			</main>
-		</>
+		</AuthenticationRequired>
 	);
 }

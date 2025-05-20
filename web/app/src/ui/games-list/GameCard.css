@@ -30,5 +30,10 @@
 		font-weight: 800;
 
 		vertical-align: middle;
+
+		.icon
+		{
+			margin: 0;
+		}
 	}
 }

@@ -1,0 +1,10 @@
+main.registered
+{
+	> .icon
+	{
+		display: block;
+		margin: auto;
+
+		color: var(--green);
+	}
+}

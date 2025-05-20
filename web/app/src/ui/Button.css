@@ -30,7 +30,7 @@ button, [role="button"]
 		opacity: 0.75;
 	}
 
-	&.cancel, &.remove, &.delete, &.red
+	&.cancel, &.remove, &.delete, &.red, &.log-out
 	{
 		border-color: var(--red-button-border);
 		background: var(--red-button);
