@@ -27,7 +27,7 @@ GO_PACKAGE=github.com/marmelab/chinese-checkers
 
 # Misc
 .DEFAULT_GOAL = help
-.PHONY        : help install build-cli build-api start-cli deps lint vet check clean up start-web-app start-web-app-dev down logs sh bash test install-e2e test-e2e build-mobile-app start-mobile-app-dev composer vendor composer-install composer-install-dev sf cc generate-jwt-keys
+.PHONY        : help install build-cli build-api start-cli deps lint vet check clean up start-web-app start-web-app-dev down logs sh bash test install-e2e test-e2e build-mobile-app start-mobile-app-dev build-admin-panel start-admin-panel-dev composer vendor composer-install composer-install-dev sf cc generate-jwt-keys
 
 ## —— Chinese Checkers ♟️ ——————————————————————————————————————————————————————
 help: ## Outputs this help screen.
@@ -103,6 +103,14 @@ build-mobile-app: ## Build the mobile app for production use with web app.
 
 start-mobile-app-dev: ## Run the mobile app in dev mode.
 	@(cd web && yarn install && yarn dev)
+
+## —— Admin panel 👑 ———————————————————————————————————————————————————————————
+
+build-admin-panel: ## Build the admin panel for production.
+	@(cd admin && yarn install && yarn build)
+
+start-admin-panel-dev: ## Run the admin panel in dev mode.
+	@(cd admin && yarn dev)
 
 ## —— Composer 🧙 ——————————————————————————————————————————————————————————————
 composer: ## Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'.
