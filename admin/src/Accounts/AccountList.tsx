@@ -1,4 +1,10 @@
-import { Datagrid, List, NumberField, TextField } from "react-admin";
+import {
+	Datagrid,
+	List,
+	NumberField,
+	ReferenceManyCount,
+	TextField,
+} from "react-admin";
 
 export function AccountList() {
 	return (
@@ -7,6 +13,11 @@ export function AccountList() {
 				<NumberField source="id" />
 				<TextField source="name" />
 				<TextField source="email" />
+				<ReferenceManyCount
+					label="Games"
+					reference="online_player"
+					target="account_id"
+				/>
 			</Datagrid>
 		</List>
 	);
