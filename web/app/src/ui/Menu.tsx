@@ -2,10 +2,10 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import { GameController, House, SignIn, User } from "@phosphor-icons/react";
 import "./Menu.css";
-import { getAuthenticationState } from "../storage/authentication";
+import { useAuthenticatedAccount } from "../storage/authentication";
 
 export function Menu() {
-	const isAuthenticated = !!getAuthenticationState();
+	const isAuthenticated = !!useAuthenticatedAccount();
 
 	return (
 		<nav className="menu">

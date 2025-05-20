@@ -3,10 +3,10 @@ import { useFetchOngoingGames } from "../../api/games";
 import { GameCard } from "./GameCard";
 import { getOnlineGamePlayerId } from "../../storage/online-game";
 import { Game, hasPlayer } from "../../model/game";
-import { getAuthenticationState } from "../../storage/authentication";
+import { useAuthenticatedAccount } from "../../storage/authentication";
 
 export function GamesList() {
-	const authenticationState = getAuthenticationState();
+	const authenticatedAccount = useAuthenticatedAccount();
 
 	const fetchedGames = useFetchOngoingGames();
 
@@ -26,7 +26,7 @@ export function GamesList() {
 		<>
 			{fetchedGames.data?.length > 0 ? (
 				<>
-					{authenticationState && (
+					{authenticatedAccount && (
 						<>
 							<h2>My games</h2>
 							{myGames?.length > 0 ? (

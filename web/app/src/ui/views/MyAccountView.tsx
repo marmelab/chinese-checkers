@@ -2,8 +2,8 @@ import React from "react";
 import { SignOut } from "@phosphor-icons/react";
 import { AuthenticationRequired } from "../accounts/AuthenticationRequired";
 import {
-	clearAuthenticationState,
-	getAuthenticationState,
+	clearAuthenticatedAccount,
+	useAuthenticatedAccount,
 } from "../../storage/authentication";
 import { useNavigate } from "react-router-dom";
 
@@ -18,7 +18,7 @@ export function MyAccountView() {
 export function MyAccount() {
 	const navigate = useNavigate();
 
-	const authenticationState = getAuthenticationState();
+	const authenticatedAccount = useAuthenticatedAccount();
 
 	return (
 		<>
@@ -27,13 +27,13 @@ export function MyAccount() {
 			</header>
 			<main className="account">
 				<p className="center">
-					Connected as <strong>{authenticationState.username}</strong>
+					Connected as <strong>{authenticatedAccount.username}</strong>
 				</p>
 
 				<button
 					className="log-out"
 					onClick={() => {
-						clearAuthenticationState();
+						clearAuthenticatedAccount();
 						navigate("/app");
 					}}
 				>

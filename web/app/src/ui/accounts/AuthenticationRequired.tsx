@@ -1,6 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { getAuthenticationState } from "../../storage/authentication";
+import { useAuthenticatedAccount } from "../../storage/authentication";
 import { UserPlus } from "@phosphor-icons/react";
 import { LoginForm } from "./LoginForm";
 
@@ -10,9 +10,9 @@ export function AuthenticationRequired({
 }: React.PropsWithChildren<{
 	message?: string;
 }>) {
-	const authState = getAuthenticationState();
+	const authenticatedAccount = useAuthenticatedAccount();
 
-	if (!authState)
+	if (!authenticatedAccount)
 		return (
 			<>
 				<header>

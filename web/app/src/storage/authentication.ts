@@ -1,24 +1,24 @@
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
 
-export interface AuthenticationState {
+export interface AuthenticatedAccount {
 	username: string;
 	roles: string[];
 }
 
-export function getAuthenticationState(): AuthenticationState | null {
+export function useAuthenticatedAccount(): AuthenticatedAccount | null {
 	const authToken = Cookies.get("authentication");
 
 	if (!authToken) return null;
 
 	try {
-		return jwtDecode<AuthenticationState>(authToken);
+		return jwtDecode<AuthenticatedAccount>(authToken);
 	} catch (err) {
 		console.error(err);
 		return null;
 	}
 }
 
-export function clearAuthenticationState(): void {
+export function clearAuthenticatedAccount(): void {
 	Cookies.set("authentication", null);
 }

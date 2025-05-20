@@ -11,12 +11,12 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import "./GameView.css";
 import { resetLocalGame } from "../../storage/local-game";
-import { getAuthenticationState } from "../../storage/authentication";
+import { useAuthenticatedAccount } from "../../storage/authentication";
 
 export function PlayView() {
 	const navigate = useNavigate();
 
-	const isAuthenticated = !!getAuthenticationState();
+	const isAuthenticated = !!useAuthenticatedAccount();
 
 	return (
 		<>
