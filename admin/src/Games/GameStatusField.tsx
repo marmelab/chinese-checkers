@@ -1,4 +1,4 @@
-import { Chip, Tooltip } from "@mui/material";
+import { Chip } from "@mui/material";
 import { FunctionField } from "react-admin";
 
 export const statusLabel: Record<string, string> = {
@@ -20,23 +20,15 @@ export function GameStatusField() {
 		<FunctionField
 			label={"Status"}
 			render={(record) => {
-				const chip = (
+				return (
 					<Chip
-						label={statusLabel?.[record.status] ?? "Unknown"}
+						label={
+							record.status == "finished" && record.winner_name
+								? `Winner: ${record.winner_name}`
+								: (statusLabel?.[record.status] ?? "Unknown")
+						}
 						color={statusLabelColor?.[record.status] ?? undefined}
 					/>
-				);
-
-				if (!record.winner_name) return chip;
-
-				return (
-					<Tooltip
-						title={`Winner: ${record.winner_name}`}
-						placement="top"
-						arrow
-					>
-						{chip}
-					</Tooltip>
 				);
 			}}
 		/>
