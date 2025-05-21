@@ -110,7 +110,7 @@ build-admin-panel: ## Build the admin panel for production.
 	@(cd admin && yarn install && yarn build)
 
 start-admin-panel-dev: ## Run the admin panel in dev mode.
-	@(cd admin && yarn dev)
+	@(cd admin && yarn install && yarn dev)
 
 ## —— Composer 🧙 ——————————————————————————————————————————————————————————————
 composer: ## Run composer, pass the parameter "c=" to run a given command, example: make composer c='req symfony/orm-pack'.
