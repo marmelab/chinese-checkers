@@ -20,7 +20,7 @@ export function GameList() {
 			}}
 			queryOptions={{
 				meta: {
-					columns: ["*", "status"],
+					columns: ["*", "status", "winner_name"],
 				},
 			}}
 		>
