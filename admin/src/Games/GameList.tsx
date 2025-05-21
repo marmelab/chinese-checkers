@@ -6,6 +6,7 @@ import {
 	List,
 	ReferenceField,
 	ReferenceManyField,
+	ShowButton,
 	SingleFieldList,
 	TopToolbar,
 } from "react-admin";
@@ -85,6 +86,10 @@ export function GameList() {
 							</ReferenceField>
 						</SingleFieldList>
 					</ReferenceManyField>
+				</DataTable.Col>
+
+				<DataTable.Col>
+					<ShowButton />
 				</DataTable.Col>
 			</DataTable>
 		</List>

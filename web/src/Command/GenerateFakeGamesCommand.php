@@ -121,7 +121,7 @@ class GenerateFakeGamesCommand extends Command
 			foreach (range(1, $count) as $i)
 			{
 				$fakeGame = new Game();
-				$fakeGame->setBoard($this->getShuffledBoard());
+				$fakeGame->setBoard($this->boardUtilities->getDefaultGameBoard());
 				$fakeGame->setCurrentPlayer(GamePlayer::random());
 				$fakeGame->setJoinCode($this->getJoinCode());
 
