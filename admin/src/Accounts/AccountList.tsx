@@ -4,7 +4,7 @@ export function AccountList() {
 	return (
 		<List resource="accounts">
 			<DataTable hiddenColumns={["id"]}>
-				<DataTable.Col source="id" />
+				<DataTable.NumberCol source="id" />
 				<DataTable.Col source="name" />
 				<DataTable.Col source="email" />
 				<DataTable.Col label={"Games"}>
