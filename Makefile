@@ -107,9 +107,11 @@ start-mobile-app-dev: ## Run the mobile app in dev mode.
 ## —— Admin panel 👑 ———————————————————————————————————————————————————————————
 
 build-admin-panel: ## Build the admin panel for production.
+	@(cd web && yarn install)
 	@(cd admin && yarn install && yarn build)
 
 start-admin-panel-dev: ## Run the admin panel in dev mode.
+	@(cd web && yarn install)
 	@(cd admin && yarn install && yarn dev)
 
 ## —— Composer 🧙 ——————————————————————————————————————————————————————————————
