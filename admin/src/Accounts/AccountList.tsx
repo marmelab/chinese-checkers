@@ -1,24 +1,20 @@
-import {
-	Datagrid,
-	List,
-	NumberField,
-	ReferenceManyCount,
-	TextField,
-} from "react-admin";
+import { DataTable, List, ReferenceManyCount } from "react-admin";
 
 export function AccountList() {
 	return (
 		<List resource="accounts">
-			<Datagrid>
-				<NumberField source="id" />
-				<TextField source="name" />
-				<TextField source="email" />
-				<ReferenceManyCount
-					label="Games"
-					reference="online_player"
-					target="account_id"
-				/>
-			</Datagrid>
+			<DataTable hiddenColumns={["id"]}>
+				<DataTable.Col source="id" />
+				<DataTable.Col source="name" />
+				<DataTable.Col source="email" />
+				<DataTable.Col label={"Games"}>
+					<ReferenceManyCount
+						label="Games"
+						reference="online_player"
+						target="account_id"
+					/>
+				</DataTable.Col>
+			</DataTable>
 		</List>
 	);
 }

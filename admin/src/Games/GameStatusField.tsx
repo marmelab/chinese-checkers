@@ -18,7 +18,6 @@ export const statusLabelColor: Record<
 export function GameStatusField() {
 	return (
 		<FunctionField
-			label={"Status"}
 			render={(record) => {
 				return (
 					<Chip
