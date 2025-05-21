@@ -9,6 +9,7 @@ jobs:
   build:
     name: Build the admin panel to be deployed
     runs-on: ubuntu-latest
+    environment: github-pages
     steps:
       - uses: actions/checkout@v4
 
