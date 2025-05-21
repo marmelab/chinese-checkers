@@ -30,14 +30,12 @@ export function GameShow() {
 					label="Players"
 					reference="online_player"
 					target="game_uuid"
+					sort={{
+						field: "game_player",
+						order: "ASC",
+					}}
 				>
-					<DataTable
-						bulkActionButtons={false}
-						sort={{
-							field: "game_player",
-							order: "ASC",
-						}}
-					>
+					<DataTable bulkActionButtons={false}>
 						<DataTable.Col source="name" />
 						<DataTable.Col source="game_player">
 							<PlayerTeamField />
