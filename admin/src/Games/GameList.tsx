@@ -2,28 +2,13 @@ import {
 	ChipField,
 	Datagrid,
 	DateField,
-	FunctionField,
 	List,
 	ReferenceField,
 	ReferenceManyField,
 	SingleFieldList,
 	TextField,
 } from "react-admin";
-import { Chip } from "@mui/material";
-
-export const statusLabel: Record<string, string> = {
-	started: "Started",
-	pending: "Pending",
-	finished: "Finished",
-};
-export const statusLabelColor: Record<
-	keyof typeof statusLabel,
-	"info" | "primary" | "success" | undefined
-> = {
-	pending: undefined,
-	started: "primary",
-	finished: "success",
-};
+import { GameStatusField } from "./GameStatusField.tsx";
 
 export function GameList() {
 	return (
@@ -44,15 +29,7 @@ export function GameList() {
 				<DateField source="created_at" showTime />
 				<DateField source="updated_at" showTime />
 
-				<FunctionField
-					label={"Status"}
-					render={(record) => (
-						<Chip
-							label={statusLabel?.[record.status] ?? "Unknown"}
-							color={statusLabelColor?.[record.status] ?? undefined}
-						/>
-					)}
-				/>
+				<GameStatusField />
 
 				<ReferenceManyField
 					label="Green"
