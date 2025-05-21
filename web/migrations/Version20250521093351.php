@@ -18,7 +18,7 @@ final class Version20250521093351 extends AbstractMigration
 	{
 		$this->addSql(<<<'SQL'
 CREATE FUNCTION name(games) RETURNS TEXT LANGUAGE SQL AS $$
-  SELECT (ARRAY_AGG(accounts.name))[1] || ' VS ' || (ARRAY_AGG(accounts.name))[2]
+  SELECT COALESCE((ARRAY_AGG(accounts.name))[1], 'Green') || ' VS ' || COALESCE((ARRAY_AGG(accounts.name))[2], 'Red')
 	FROM online_player
 		INNER JOIN accounts ON online_player.account_id = accounts.id
 	WHERE online_player.game_uuid = $1.uuid
