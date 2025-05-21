@@ -1,18 +1,29 @@
 import {
 	ChipField,
+	ColumnsButton,
 	DataTable,
 	DateField,
 	List,
 	ReferenceField,
 	ReferenceManyField,
 	SingleFieldList,
+	TopToolbar,
 } from "react-admin";
 import { GameStatusField } from "./GameStatusField.tsx";
+
+export function GameListActions() {
+	return (
+		<TopToolbar>
+			<ColumnsButton />
+		</TopToolbar>
+	);
+}
 
 export function GameList() {
 	return (
 		<List
 			resource="games"
+			actions={<GameListActions />}
 			sort={{
 				field: "updated_at",
 				order: "DESC",
