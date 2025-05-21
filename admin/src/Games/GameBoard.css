@@ -1,0 +1,11 @@
+table.game-board td button
+{
+	width: 3em;
+	height: 3em;
+
+	.pawn
+	{
+		width: 2em;
+		height: 2em;
+	}
+}

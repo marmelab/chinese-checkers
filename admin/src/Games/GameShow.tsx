@@ -1,6 +1,7 @@
 import {
 	DataTable,
 	DateField,
+	FunctionField,
 	Labeled,
 	ReferenceManyField,
 	Show,
@@ -8,6 +9,7 @@ import {
 } from "react-admin";
 import { GameStatusField } from "./GameStatusField.tsx";
 import { PlayerTeamField } from "./PlayerTeamField.tsx";
+import { GameBoard } from "./GameBoard.tsx";
 
 export function GameShow() {
 	return (
@@ -42,6 +44,11 @@ export function GameShow() {
 						</DataTable.Col>
 					</DataTable>
 				</ReferenceManyField>
+
+				<FunctionField
+					label="Board"
+					render={(record) => <GameBoard board={record.board} />}
+				/>
 			</SimpleShowLayout>
 		</Show>
 	);
