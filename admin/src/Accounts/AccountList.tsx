@@ -1,8 +1,10 @@
 import {
 	ColumnsButton,
 	DataTable,
+	EditButton,
 	List,
 	ReferenceManyCount,
+	ShowButton,
 	TopToolbar,
 } from "react-admin";
 
@@ -31,6 +33,10 @@ export function AccountList() {
 						reference="online_player"
 						target="account_id"
 					/>
+				</DataTable.Col>
+				<DataTable.Col>
+					<ShowButton />
+					<EditButton />
 				</DataTable.Col>
 			</DataTable>
 		</List>
