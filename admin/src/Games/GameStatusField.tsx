@@ -3,7 +3,7 @@ import { FunctionField } from "react-admin";
 
 export const statusLabel: Record<string, string> = {
 	started: "Started",
-	pending: "Pending",
+	pending: "Waiting for player",
 	finished: "Finished",
 };
 export const statusLabelColor: Record<
