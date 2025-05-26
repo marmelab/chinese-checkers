@@ -39,12 +39,6 @@ export function GameList() {
 		>
 			<DataTable hiddenColumns={["uuid"]}>
 				<DataTable.Col source="uuid" label="UUID" />
-				<DataTable.Col label="Creation">
-					<DateField source="created_at" showTime />
-				</DataTable.Col>
-				<DataTable.Col label="Update">
-					<DateField source="updated_at" showTime />
-				</DataTable.Col>
 
 				<DataTable.Col label="Status">
 					<GameStatusField />
@@ -124,6 +118,13 @@ export function GameList() {
 							</ReferenceManyField>
 						)}
 					/>
+				</DataTable.Col>
+
+				<DataTable.Col label="Creation">
+					<DateField source="created_at" showTime />
+				</DataTable.Col>
+				<DataTable.Col label="Update">
+					<DateField source="updated_at" showTime />
 				</DataTable.Col>
 
 				<DataTable.Col>
