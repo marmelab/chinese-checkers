@@ -15,14 +15,14 @@ export const statusLabelColor: Record<
 	finished: "success",
 };
 
-export function GameStatusField() {
+export function GameStatusField({ showWinner }: { showWinner?: boolean }) {
 	return (
 		<FunctionField
 			render={(record) => {
 				return (
 					<Chip
 						label={
-							record.status == "finished" && record.winner_name
+							showWinner && record.status == "finished" && record.winner_name
 								? `Winner: ${record.winner_name}`
 								: (statusLabel?.[record.status] ?? "Unknown")
 						}

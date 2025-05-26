@@ -3,6 +3,7 @@ import {
 	ColumnsButton,
 	DataTable,
 	DateField,
+	FunctionField,
 	List,
 	ReferenceField,
 	ReferenceManyField,
@@ -11,6 +12,7 @@ import {
 	TopToolbar,
 } from "react-admin";
 import { GameStatusField } from "./GameStatusField.tsx";
+import { GamePlayer } from "../../../web/app/src/model/game-player.ts";
 
 export function GameListActions() {
 	return (
@@ -49,43 +51,79 @@ export function GameList() {
 				</DataTable.Col>
 
 				<DataTable.Col label="Green">
-					<ReferenceManyField
-						reference="online_player"
-						target="game_uuid"
-						filter={{
-							game_player: 1,
-						}}
-					>
-						<SingleFieldList linkType={false}>
-							<ReferenceField
-								reference="accounts"
-								source="account_id"
-								link={"show"}
+					<FunctionField
+						render={(gameRecord) => (
+							<ReferenceManyField
+								reference="online_player"
+								target="game_uuid"
+								filter={{
+									game_player: GamePlayer.Green.valueOf(),
+								}}
 							>
-								<ChipField source="name" />
-							</ReferenceField>
-						</SingleFieldList>
-					</ReferenceManyField>
+								<SingleFieldList linkType={false}>
+									<ReferenceField
+										reference="accounts"
+										source="account_id"
+										link="show"
+									>
+										<ChipField
+											source="name"
+											color={
+												gameRecord.winner
+													? gameRecord.winner == GamePlayer.Green.valueOf()
+														? "success"
+														: "warning"
+													: undefined
+											}
+											sx={
+												gameRecord.winner
+													? { color: "white!important" }
+													: undefined
+											}
+										/>
+									</ReferenceField>
+								</SingleFieldList>
+							</ReferenceManyField>
+						)}
+					/>
 				</DataTable.Col>
 
 				<DataTable.Col label="Red">
-					<ReferenceManyField
-						reference="online_player"
-						target="game_uuid"
-						filter={{
-							game_player: 2,
-						}}
-					>
-						<SingleFieldList linkType={false}>
-							<ReferenceField
-								reference="accounts"
-								source="account_id"
-								link={"show"}
+					<FunctionField
+						render={(gameRecord) => (
+							<ReferenceManyField
+								reference="online_player"
+								target="game_uuid"
+								filter={{
+									game_player: GamePlayer.Red.valueOf(),
+								}}
 							>
-								<ChipField source="name" />
-							</ReferenceField>
-						</SingleFieldList>
-					</ReferenceManyField>
+								<SingleFieldList linkType={false}>
+									<ReferenceField
+										reference="accounts"
+										source="account_id"
+										link="show"
+									>
+										<ChipField
+											source="name"
+											color={
+												gameRecord.winner
+													? gameRecord.winner == GamePlayer.Red.valueOf()
+														? "success"
+														: "warning"
+													: undefined
+											}
+											sx={
+												gameRecord.winner
+													? { color: "white!important" }
+													: undefined
+											}
+										/>
+									</ReferenceField>
+								</SingleFieldList>
+							</ReferenceManyField>
+						)}
+					/>
 				</DataTable.Col>
 
 				<DataTable.Col>
