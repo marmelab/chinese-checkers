@@ -44,7 +44,7 @@ export function GameList() {
 					source="online_player.account_id"
 					reference="accounts"
 				>
-					<AutocompleteInput label="Player" />
+					<AutocompleteInput label="Player" sx={{ width: "30ch" }} />
 				</ReferenceInput>,
 			]}
 			queryOptions={{
