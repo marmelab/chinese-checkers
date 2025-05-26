@@ -9,6 +9,7 @@ export const dataProvider = postgrestProvider({
 	defaultListOp: "eq",
 	primaryKeys: new Map([
 		["games", ["uuid"]],
+		["accounts_games", ["uuid"]],
 		["online_player", ["uuid"]],
 	]),
 	schema: defaultSchema,

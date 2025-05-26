@@ -21,18 +21,16 @@ export const statusChoices: { id: keyof typeof statusLabel; name: string }[] =
 export function GameStatusField({ showWinner }: { showWinner?: boolean }) {
 	return (
 		<FunctionField
-			render={(record) => {
-				return (
-					<Chip
-						label={
-							showWinner && record.status == "finished" && record.winner_name
-								? `Winner: ${record.winner_name}`
-								: (statusLabel?.[record.status] ?? "Unknown")
-						}
-						color={statusLabelColor?.[record.status] ?? undefined}
-					/>
-				);
-			}}
+			render={(record) => (
+				<Chip
+					label={
+						showWinner && record.status == "finished" && record.winner_name
+							? `Winner: ${record.winner_name}`
+							: (statusLabel?.[record.status] ?? "Unknown")
+					}
+					color={statusLabelColor?.[record.status] ?? undefined}
+				/>
+			)}
 		/>
 	);
 }
