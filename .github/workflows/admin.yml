@@ -22,6 +22,7 @@ jobs:
       - name: Build
         env:
           VITE_POSTGREST_URL: https://${{ vars.DEPLOY_SERVER_NAME }}/postgrest
+          VITE_SERVER_NAME: https://${{ vars.DEPLOY_SERVER_NAME }}
         run: make build-admin-panel
         
       - name: Upload static files as artifact
