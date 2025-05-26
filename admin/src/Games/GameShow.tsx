@@ -1,14 +1,16 @@
 import {
-	DataTable,
+	ChipField,
 	DateField,
+	FunctionField,
 	Labeled,
 	ReferenceManyField,
 	Show,
 	SimpleShowLayout,
+	SingleFieldList,
 } from "react-admin";
 import { GameStatusField } from "./GameStatusField.tsx";
-import { PlayerTeamField } from "./PlayerTeamField.tsx";
 import { GameBoardField } from "./GameBoard.tsx";
+import { Grid } from "@mui/material";
 
 export function GameShow() {
 	return (
@@ -20,33 +22,49 @@ export function GameShow() {
 			}}
 		>
 			<SimpleShowLayout>
-				<DateField source="created_at" showTime />
-				<DateField source="updated_at" showTime />
-
-				<Labeled label="Status">
-					<GameStatusField />
-				</Labeled>
-
-				<ReferenceManyField
-					label="Players"
-					reference="online_player"
-					target="game_uuid"
-					sort={{
-						field: "game_player",
-						order: "ASC",
-					}}
-				>
-					<DataTable bulkActionButtons={false}>
-						<DataTable.Col source="name" />
-						<DataTable.Col source="game_player">
-							<PlayerTeamField />
-						</DataTable.Col>
-					</DataTable>
-				</ReferenceManyField>
+				<Grid container spacing={3}>
+					<Grid>
+						<Labeled label="Status">
+							<GameStatusField showWinner />
+						</Labeled>
+					</Grid>
+					<Grid>
+						<Labeled label="Players">
+							<ReferenceManyField
+								reference="online_player"
+								target="game_uuid"
+								sort={{
+									field: "game_player",
+									order: "ASC",
+								}}
+								queryOptions={{
+									meta: {
+										embed: ["accounts"],
+									},
+								}}
+							>
+								<SingleFieldList linkType={false}>
+									<FunctionField
+										render={(record) => (
+											<ChipField
+												source="accounts.name"
+												color={record.game_player == 1 ? "success" : "error"}
+												variant="outlined"
+											/>
+										)}
+									/>
+								</SingleFieldList>
+							</ReferenceManyField>
+						</Labeled>
+					</Grid>
+				</Grid>
 
 				<Labeled label="Board">
 					<GameBoardField />
 				</Labeled>
+
+				<DateField source="created_at" showTime />
+				<DateField source="updated_at" showTime />
 			</SimpleShowLayout>
 		</Show>
 	);

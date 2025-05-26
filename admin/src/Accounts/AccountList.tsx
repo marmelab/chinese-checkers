@@ -21,7 +21,7 @@ export function AccountList() {
 				<DataTable.NumberCol source="id" />
 				<DataTable.Col source="name" />
 				<DataTable.Col source="email" />
-				<DataTable.Col label={"Games"}>
+				<DataTable.Col label="Games">
 					<ReferenceManyCount
 						label="Games"
 						reference="online_player"
