@@ -44,7 +44,7 @@ export function GameList() {
 					<GameStatusField />
 				</DataTable.Col>
 
-				<DataTable.Col label="Green">
+				<DataTable.Col label="Green player">
 					<FunctionField
 						render={(gameRecord) => (
 							<ReferenceManyField
@@ -82,7 +82,7 @@ export function GameList() {
 					/>
 				</DataTable.Col>
 
-				<DataTable.Col label="Red">
+				<DataTable.Col label="Red player">
 					<FunctionField
 						render={(gameRecord) => (
 							<ReferenceManyField
