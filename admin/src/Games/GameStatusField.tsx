@@ -3,7 +3,7 @@ import { FunctionField } from "react-admin";
 
 export const statusLabel: Record<string, string> = {
 	started: "Started",
-	pending: "Pending",
+	pending: "Waiting for player",
 	finished: "Finished",
 };
 export const statusLabelColor: Record<
@@ -15,14 +15,14 @@ export const statusLabelColor: Record<
 	finished: "success",
 };
 
-export function GameStatusField() {
+export function GameStatusField({ showWinner }: { showWinner?: boolean }) {
 	return (
 		<FunctionField
 			render={(record) => {
 				return (
 					<Chip
 						label={
-							record.status == "finished" && record.winner_name
+							showWinner && record.status == "finished" && record.winner_name
 								? `Winner: ${record.winner_name}`
 								: (statusLabel?.[record.status] ?? "Unknown")
 						}

@@ -13,7 +13,11 @@ export const App = () => (
 			show={GameShow}
 			recordRepresentation={(record) => record?.name ?? record.uuid}
 		/>
-		<Resource name="accounts" list={AccountList} />
+		<Resource
+			name="accounts"
+			options={{ label: "Players" }}
+			list={AccountList}
+		/>
 		<Resource name="online_player" recordRepresentation="name" />
 	</Admin>
 );
