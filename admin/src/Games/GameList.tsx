@@ -13,6 +13,8 @@ import {
 } from "react-admin";
 import { GameStatusField } from "./GameStatusField.tsx";
 import { GamePlayer } from "../../../web/app/src/model/game-player.ts";
+import { Tooltip } from "@mui/material";
+import { GamePlayerField } from "./GamePlayerField.tsx";
 
 export function GameListActions() {
 	return (
@@ -60,20 +62,9 @@ export function GameList() {
 										source="account_id"
 										link="show"
 									>
-										<ChipField
-											source="name"
-											color={
-												gameRecord.winner
-													? gameRecord.winner == GamePlayer.Green.valueOf()
-														? "success"
-														: "warning"
-													: undefined
-											}
-											sx={
-												gameRecord.winner
-													? { color: "white!important" }
-													: undefined
-											}
+										<GamePlayerField
+											gameRecord={gameRecord}
+											currentPlayer={GamePlayer.Green.valueOf()}
 										/>
 									</ReferenceField>
 								</SingleFieldList>
@@ -98,20 +89,9 @@ export function GameList() {
 										source="account_id"
 										link="show"
 									>
-										<ChipField
-											source="name"
-											color={
-												gameRecord.winner
-													? gameRecord.winner == GamePlayer.Red.valueOf()
-														? "success"
-														: "warning"
-													: undefined
-											}
-											sx={
-												gameRecord.winner
-													? { color: "white!important" }
-													: undefined
-											}
+										<GamePlayerField
+											gameRecord={gameRecord}
+											currentPlayer={GamePlayer.Red.valueOf()}
 										/>
 									</ReferenceField>
 								</SingleFieldList>
