@@ -5,12 +5,19 @@ import {
 	Show,
 	SimpleShowLayout,
 	TextField,
+	useRecordContext,
 } from "react-admin";
 import { GamesTable } from "../Games/GamesTable.tsx";
 
+export function AccountShowTitle() {
+	const record = useRecordContext();
+
+	return record?.name ?? "Unknown";
+}
+
 export function AccountShow() {
 	return (
-		<Show>
+		<Show title={<AccountShowTitle />}>
 			<SimpleShowLayout>
 				<TextField source="name" />
 				<EmailField source="email" />
