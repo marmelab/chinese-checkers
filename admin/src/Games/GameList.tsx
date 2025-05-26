@@ -31,7 +31,7 @@ export function GameList() {
 			resource="games"
 			actions={<GameListActions />}
 			sort={{
-				field: "updated_at",
+				field: "created_at",
 				order: "DESC",
 			}}
 			filters={[<AutocompleteInput source="status" choices={statusChoices} />]}
@@ -44,7 +44,7 @@ export function GameList() {
 			<DataTable hiddenColumns={["uuid"]}>
 				<DataTable.Col source="uuid" label="UUID" />
 
-				<DataTable.Col label="Status">
+				<DataTable.Col label="Status" source="status">
 					<GameStatusField />
 				</DataTable.Col>
 
@@ -102,10 +102,10 @@ export function GameList() {
 					/>
 				</DataTable.Col>
 
-				<DataTable.Col label="Creation">
+				<DataTable.Col label="Creation" source="created_at">
 					<DateField source="created_at" showTime />
 				</DataTable.Col>
-				<DataTable.Col label="Update">
+				<DataTable.Col label="Update" source="updated_at">
 					<DateField source="updated_at" showTime />
 				</DataTable.Col>
 
