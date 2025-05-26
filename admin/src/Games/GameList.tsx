@@ -44,7 +44,11 @@ export function GameList() {
 					source="online_player.account_id"
 					reference="accounts"
 				>
-					<AutocompleteInput label="Player" sx={{ width: "30ch" }} />
+					<AutocompleteInput
+						label="Player"
+						sx={{ width: "30ch" }}
+						filterToQuery={(query) => ({ "name@ilike": `%${query}%` })}
+					/>
 				</ReferenceInput>,
 			]}
 			queryOptions={{
