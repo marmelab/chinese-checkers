@@ -6,7 +6,9 @@ import {
 	FilterButton,
 	FunctionField,
 	List,
+	RadioButtonGroupInput,
 	ReferenceField,
+	ReferenceInput,
 	ReferenceManyField,
 	ShowButton,
 	SingleFieldList,
@@ -34,10 +36,21 @@ export function GameList() {
 				field: "created_at",
 				order: "DESC",
 			}}
-			filters={[<AutocompleteInput source="status" choices={statusChoices} />]}
+			filters={[
+				<RadioButtonGroupInput source="status" choices={statusChoices} />,
+				<ReferenceInput
+					name="account_id"
+					label="Player"
+					source="online_player.account_id"
+					reference="accounts"
+				>
+					<AutocompleteInput label="Player" />
+				</ReferenceInput>,
+			]}
 			queryOptions={{
 				meta: {
 					columns: ["*", "status", "winner_name"],
+					embed: ["online_player!inner"],
 				},
 			}}
 		>
