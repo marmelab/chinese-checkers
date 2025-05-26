@@ -1,5 +1,4 @@
 import {
-	ChipField,
 	ColumnsButton,
 	DataTable,
 	DateField,
@@ -13,7 +12,6 @@ import {
 } from "react-admin";
 import { GameStatusField } from "./GameStatusField.tsx";
 import { GamePlayer } from "../../../web/app/src/model/game-player.ts";
-import { Tooltip } from "@mui/material";
 import { GamePlayerField } from "./GamePlayerField.tsx";
 
 export function GameListActions() {
