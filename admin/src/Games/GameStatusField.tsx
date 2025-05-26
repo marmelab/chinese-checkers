@@ -15,6 +15,9 @@ export const statusLabelColor: Record<
 	finished: "success",
 };
 
+export const statusChoices: { id: keyof typeof statusLabel; name: string }[] =
+	Object.entries(statusLabel).map(([id, name]) => ({ id, name }));
+
 export function GameStatusField({ showWinner }: { showWinner?: boolean }) {
 	return (
 		<FunctionField

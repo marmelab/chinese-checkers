@@ -1,7 +1,9 @@
 import {
+	AutocompleteInput,
 	ColumnsButton,
 	DataTable,
 	DateField,
+	FilterButton,
 	FunctionField,
 	List,
 	ReferenceField,
@@ -10,13 +12,14 @@ import {
 	SingleFieldList,
 	TopToolbar,
 } from "react-admin";
-import { GameStatusField } from "./GameStatusField.tsx";
+import { GameStatusField, statusChoices } from "./GameStatusField.tsx";
 import { GamePlayer } from "../../../web/app/src/model/game-player.ts";
 import { GamePlayerField } from "./GamePlayerField.tsx";
 
 export function GameListActions() {
 	return (
 		<TopToolbar>
+			<FilterButton />
 			<ColumnsButton />
 		</TopToolbar>
 	);
@@ -31,6 +34,7 @@ export function GameList() {
 				field: "updated_at",
 				order: "DESC",
 			}}
+			filters={[<AutocompleteInput source="status" choices={statusChoices} />]}
 			queryOptions={{
 				meta: {
 					columns: ["*", "status", "winner_name"],
