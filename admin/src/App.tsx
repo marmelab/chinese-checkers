@@ -5,6 +5,7 @@ import { dataProvider } from "./DataProvider.ts";
 import { GameList } from "./Games/GameList.tsx";
 import { GameShow } from "./Games/GameShow.tsx";
 import { AccountShow } from "./Accounts/AccountShow.tsx";
+import { AccountEdit } from "./Accounts/AccountEdit.tsx";
 
 export const App = () => (
 	<Admin layout={Layout} dataProvider={dataProvider}>
@@ -19,6 +20,7 @@ export const App = () => (
 			options={{ label: "Players" }}
 			list={AccountList}
 			show={AccountShow}
+			edit={AccountEdit}
 		/>
 		<Resource name="online_player" recordRepresentation="name" />
 	</Admin>
