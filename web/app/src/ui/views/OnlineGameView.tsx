@@ -18,6 +18,7 @@ import { ErrorView } from "./ErrorView";
 import { getOnlineGamePlayerId } from "../../storage/online-game";
 import { PlayableGameBoard } from "../board/PlayableGameBoard";
 import { confetti } from "@tsparticles/confetti";
+import { useGameLiveUpdate } from "./useGameLiveUpdate";
 
 export function OnlineGameView() {
 	const gameUuid = useParams().uuid;
@@ -25,19 +26,7 @@ export function OnlineGameView() {
 
 	const [updatedGame, setUpdatedGame] = useState<Game | null>(null);
 
-	useEffect(() => {
-		const eventSource = new EventSource(
-			`/.well-known/mercure?topic=${gameUuid}`,
-		);
-
-		eventSource.addEventListener("message", (event) => {
-			setUpdatedGame(zGame.parse(JSON.parse(event.data)));
-		});
-
-		return () => {
-			eventSource.close();
-		};
-	}, []);
+	useGameLiveUpdate(gameUuid, setUpdatedGame);
 
 	const game = updatedGame ?? fetchedGame?.data;
 
