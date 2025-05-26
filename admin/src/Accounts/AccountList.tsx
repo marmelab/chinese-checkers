@@ -23,7 +23,7 @@ export function AccountList() {
 			title={"Players"}
 			actions={<AccountListActions />}
 		>
-			<DataTable hiddenColumns={["id"]}>
+			<DataTable hiddenColumns={["id"]} bulkActionButtons={false}>
 				<DataTable.NumberCol source="id" />
 				<DataTable.Col source="name" />
 				<DataTable.Col source="email" />
