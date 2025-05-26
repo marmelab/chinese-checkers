@@ -96,6 +96,8 @@ class GenerateFakeGamesCommand extends Command
 			foreach (range(1, $count) as $i)
 			{
 				$fakeGame = new Game();
+				$fakeGame->setCreatedAt($this->faker->dateTimeBetween("-7 days", "-1 day"));
+				$fakeGame->setUpdatedAt($this->faker->dateTimeBetween($fakeGame->getCreatedAt(), "now"));
 				$fakeGame->setBoard($this->getShuffledBoard());
 				$fakeGame->setCurrentPlayer(GamePlayer::random());
 				$fakeGame->setJoinCode($this->getJoinCode());
@@ -121,6 +123,8 @@ class GenerateFakeGamesCommand extends Command
 			foreach (range(1, $count) as $i)
 			{
 				$fakeGame = new Game();
+				$fakeGame->setCreatedAt($this->faker->dateTimeBetween("-7 days", "-1 day"));
+				$fakeGame->setUpdatedAt($this->faker->dateTimeBetween($fakeGame->getCreatedAt(), "now"));
 				$fakeGame->setBoard($this->boardUtilities->getDefaultGameBoard());
 				$fakeGame->setCurrentPlayer(GamePlayer::random());
 				$fakeGame->setJoinCode($this->getJoinCode());
@@ -145,6 +149,8 @@ class GenerateFakeGamesCommand extends Command
 			foreach (range(1, $count) as $i)
 			{
 				$fakeGame = new Game();
+				$fakeGame->setCreatedAt($this->faker->dateTimeBetween("-7 days", "-1 day"));
+				$fakeGame->setUpdatedAt($this->faker->dateTimeBetween($fakeGame->getCreatedAt(), "now"));
 				$fakeGame->setBoard($this->getGreenWinBoard());
 				$fakeGame->setCurrentPlayer(GamePlayer::Red);
 				$fakeGame->setJoinCode($this->getJoinCode());

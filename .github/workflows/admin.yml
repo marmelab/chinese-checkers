@@ -16,6 +16,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: lts/*
+      - name: Enable corepack to use latest stable yarn
+        run: corepack enable
 
       - name: Build
         env:

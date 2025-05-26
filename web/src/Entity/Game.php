@@ -94,8 +94,8 @@ class Game implements \JsonSerializable
 	#[ORM\PrePersist]
 	public function onPrePersist(): void
 	{
-		$this->createdAt = new DateTime("now");
-		$this->updatedAt = new DateTime("now");
+		if (empty($this->createdAt)) $this->createdAt = new DateTime("now");
+		if (empty($this->updatedAt)) $this->updatedAt = new DateTime("now");
 	}
 
 	/**
@@ -105,7 +105,7 @@ class Game implements \JsonSerializable
 	#[ORM\PreUpdate]
 	public function onPreUpdate(): void
 	{
-		$this->updatedAt = new DateTime("now");
+		if (empty($this->updatedAt)) $this->updatedAt = new DateTime("now");
 	}
 
 	/**
@@ -115,6 +115,26 @@ class Game implements \JsonSerializable
 	public function getUuid(): string
 	{
 		return $this->uuid;
+	}
+
+	public function getCreatedAt(): DateTime
+	{
+		return $this->createdAt;
+	}
+
+	public function setCreatedAt(DateTime $createdAt): void
+	{
+		$this->createdAt = $createdAt;
+	}
+
+	public function getUpdatedAt(): DateTime
+	{
+		return $this->updatedAt;
+	}
+
+	public function setUpdatedAt(DateTime $updatedAt): void
+	{
+		$this->updatedAt = $updatedAt;
 	}
 
 	/**
