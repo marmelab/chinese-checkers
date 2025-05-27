@@ -16,7 +16,7 @@ export function AccountEditTitle() {
 
 export function AccountEdit() {
 	return (
-		<Edit title={<AccountEditTitle />}>
+		<Edit title={<AccountEditTitle />} mutationMode="optimistic">
 			<SimpleForm
 				toolbar={
 					<Toolbar>
