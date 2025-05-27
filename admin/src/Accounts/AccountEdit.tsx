@@ -1,4 +1,5 @@
 import {
+	CheckboxGroupInput,
 	Edit,
 	SaveButton,
 	SimpleForm,
@@ -24,6 +25,11 @@ export function AccountEdit() {
 				}
 			>
 				<TextInput source="name" />
+
+				<CheckboxGroupInput
+					source="roles"
+					choices={[{ id: "ROLE_ADMIN", name: "Admin" }]}
+				/>
 			</SimpleForm>
 		</Edit>
 	);
