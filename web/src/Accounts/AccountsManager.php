@@ -32,9 +32,20 @@ readonly class AccountsManager
 		return $account;
 	}
 
+	/**
+	 * @param UserInterface $account
+	 * @return bool
+	 */
+	public function isAdmin(UserInterface $account): bool
+	{
+		return in_array("ROLE_ADMIN", $account->getRoles());
+	}
+
 	public function getAuthenticationToken(UserInterface $account): string
 	{
-		return $this->jwtManager->create($account);
+		return $this->jwtManager->createFromPayload($account, [
+			"role" => $this->isAdmin($account) ? "admin" : null,
+		]);
 	}
 
 	public function getAuthenticationCookie(UserInterface $account): Cookie

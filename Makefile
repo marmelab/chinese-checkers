@@ -139,3 +139,4 @@ cc: sf
 
 generate-jwt-keys: ## Generate keypair for JWT.
 	@$(SYMFONY) lexik:jwt:generate-keypair --skip-if-exists
+	@$(PHP_CONT) sh -c "/app/jose.phar key:load:key /app/config/jwt/public.pem > /app/config/jwt/public.jwk"

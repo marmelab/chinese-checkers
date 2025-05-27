@@ -32,4 +32,5 @@ node_modules/
 
 ###> lexik/jwt-authentication-bundle ###
 /config/jwt/*.pem
+/config/jwt/*.jwk
 ###< lexik/jwt-authentication-bundle ###
