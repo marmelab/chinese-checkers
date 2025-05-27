@@ -17,13 +17,16 @@ export async function authenticate(
 ): Promise<string> {
 	try {
 		return (
-			await fetchApi("/api/v1/authentication", {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
+			await fetchApi(
+				(import.meta.env.VITE_SERVER_NAME ?? "") + "/api/v1/authentication",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ username, password }),
 				},
-				body: JSON.stringify({ username, password }),
-			})
+			)
 		)?.token;
 	} catch (error) {
 		if (
