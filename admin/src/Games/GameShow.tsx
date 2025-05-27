@@ -1,6 +1,7 @@
 import {
 	ChipField,
 	DateField,
+	DeleteButton,
 	FunctionField,
 	Labeled,
 	ReferenceManyField,
@@ -22,6 +23,11 @@ export function GameShow() {
 			}}
 		>
 			<SimpleShowLayout>
+				<Grid container justifyContent="end">
+					<Grid>
+						<DeleteButton />
+					</Grid>
+				</Grid>
 				<Grid container spacing={3}>
 					<Grid>
 						<Labeled label="Status">

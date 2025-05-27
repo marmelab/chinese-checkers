@@ -1,8 +1,10 @@
 import {
 	ColumnsButton,
 	DataTable,
+	EditButton,
 	List,
 	ReferenceManyCount,
+	ShowButton,
 	TopToolbar,
 } from "react-admin";
 
@@ -17,7 +19,7 @@ export function AccountListActions() {
 export function AccountList() {
 	return (
 		<List resource="accounts" title="Players" actions={<AccountListActions />}>
-			<DataTable hiddenColumns={["id"]}>
+			<DataTable hiddenColumns={["id"]} bulkActionButtons={false}>
 				<DataTable.NumberCol source="id" />
 				<DataTable.Col source="name" />
 				<DataTable.Col source="email" />
@@ -27,6 +29,10 @@ export function AccountList() {
 						reference="online_player"
 						target="account_id"
 					/>
+				</DataTable.Col>
+				<DataTable.Col>
+					<ShowButton />
+					<EditButton />
 				</DataTable.Col>
 			</DataTable>
 		</List>
