@@ -12,6 +12,8 @@ use Symfony\Component\Security\Core\User\UserInterface;
 
 readonly class AccountsManager
 {
+	public const string AUTHENTICATION_COOKIE_NAME = "authentication";
+
 	public function __construct(
 		private EntityManagerInterface      $entityManager,
 		private UserPasswordHasherInterface $passwordHasher,
@@ -51,7 +53,7 @@ readonly class AccountsManager
 	public function getAuthenticationCookie(UserInterface $account): Cookie
 	{
 		return (
-			Cookie::create("authentication")
+			Cookie::create(self::AUTHENTICATION_COOKIE_NAME)
 				->withValue($this->getAuthenticationToken($account))
 				->withSecure()
 				->withHttpOnly(false)

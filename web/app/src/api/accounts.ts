@@ -38,4 +38,40 @@ export async function authenticate(
 	}
 }
 
+export async function refreshAuthentication(): Promise<string> {
+	try {
+		return (
+			await fetchApi(
+				(import.meta.env.VITE_SERVER_NAME ?? "") +
+					"/api/v1/authentication/refresh",
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+				},
+			)
+		)?.token;
+	} catch (error) {
+		if (
+			error instanceof ApiError &&
+			error.errorMessage == "Invalid credentials."
+		) {
+			throw new InvalidCredentialsError();
+		} else throw error;
+	}
+}
+
+export async function logout(): Promise<void> {
+	await fetchApi(
+		(import.meta.env.VITE_SERVER_NAME ?? "") + "/api/v1/authentication/logout",
+		{
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+		},
+	);
+}
+
 export class InvalidCredentialsError extends Error {}
