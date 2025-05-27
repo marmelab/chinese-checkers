@@ -1,4 +1,5 @@
 import {
+	BooleanField,
 	EmailField,
 	ReferenceManyCount,
 	ReferenceManyField,
@@ -17,10 +18,19 @@ export function AccountShowTitle() {
 
 export function AccountShow() {
 	return (
-		<Show title={<AccountShowTitle />}>
+		<Show
+			title={<AccountShowTitle />}
+			queryOptions={{
+				meta: {
+					columns: ["*", "admin"],
+				},
+			}}
+		>
 			<SimpleShowLayout>
 				<TextField source="name" />
 				<EmailField source="email" />
+
+				<BooleanField source="admin" />
 
 				<ReferenceManyCount
 					label="Games count"
