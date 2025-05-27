@@ -74,10 +74,10 @@ export function GamesTable() {
 				/>
 			</DataTable.Col>
 
-			<DataTable.Col label="Creation" source="created_at">
+			<DataTable.Col label="Creation" source="created_at" sortByOrder="DESC">
 				<DateField source="created_at" showTime />
 			</DataTable.Col>
-			<DataTable.Col label="Update" source="updated_at">
+			<DataTable.Col label="Update" source="updated_at" sortByOrder="DESC">
 				<DateField source="updated_at" showTime />
 			</DataTable.Col>
 

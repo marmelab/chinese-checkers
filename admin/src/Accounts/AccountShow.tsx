@@ -32,6 +32,10 @@ export function AccountShow() {
 					label="Games"
 					reference="accounts_games"
 					target="account_id"
+					sort={{
+						field: "created_at",
+						order: "DESC",
+					}}
 				>
 					<GamesTable />
 				</ReferenceManyField>
