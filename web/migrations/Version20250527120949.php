@@ -27,12 +27,14 @@ SQL);
 
 		$this->addSql("GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO admin;");
 		$this->addSql("GRANT EXECUTE ON ALL FUNCTIONS IN SCHEMA public TO admin;");
-		$this->addSql("ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT SELECT ON TABLES TO admin;");
+		$this->addSql("ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO admin;");
+		$this->addSql("ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT EXECUTE ON FUNCTIONS TO admin;");
 	}
 
 	public function down(Schema $schema): void
 	{
-		$this->addSql("ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE SELECT ON TABLES TO admin;");
+		$this->addSql("ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE ALL PRIVILEGES ON TABLES TO admin;");
+		$this->addSql("ALTER DEFAULT PRIVILEGES IN SCHEMA public REVOKE EXECUTE ON FUNCTIONS TO admin;");
 
 		$this->addSql("DROP ROLE authenticator;");
 		$this->addSql("DROP ROLE admin;");
