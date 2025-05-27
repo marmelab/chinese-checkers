@@ -18,7 +18,15 @@ export function AccountListActions() {
 
 export function AccountList() {
 	return (
-		<List resource="accounts" title="Players" actions={<AccountListActions />}>
+		<List
+			resource="accounts"
+			title="Players"
+			actions={<AccountListActions />}
+			sort={{
+				field: "id",
+				order: "DESC",
+			}}
+		>
 			<DataTable hiddenColumns={["id"]} bulkActionButtons={false}>
 				<DataTable.NumberCol source="id" />
 				<DataTable.Col source="name" />
