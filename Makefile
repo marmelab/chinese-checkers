@@ -27,7 +27,7 @@ GO_PACKAGE=github.com/marmelab/chinese-checkers
 
 # Misc
 .DEFAULT_GOAL = help
-.PHONY        : help install build-cli build-api start-cli deps lint vet check clean up start-web-app start-web-app-dev down logs sh bash test install-e2e test-e2e build-mobile-app start-mobile-app-dev build-admin-panel start-admin-panel-dev composer vendor composer-install composer-install-dev sf cc generate-jwt-keys
+.PHONY        : help install build-cli build-api start-cli deps lint vet check clean up prepare-web-app start-web-app start-web-app-dev down logs sh bash test install-e2e test-e2e build-mobile-app start-mobile-app-dev build-admin-panel start-admin-panel-dev composer vendor composer-install composer-install-dev sf cc generate-jwt-keys
 
 ## —— Chinese Checkers ♟️ ——————————————————————————————————————————————————————
 help: ## Outputs this help screen.
@@ -69,8 +69,12 @@ up: ## Start web app in detached mode.
 up-production: ## Start web app in detached mode for production.
 	@$(DOCKER_COMP) -f $(DOCKER_COMPOSE_WEB_MAIN) -f $(DOCKER_COMPOSE_WEB_PROD) up --detach
 
-start-web-app: install build-api composer-install up-production cc generate-jwt-keys ## Build and start the web application for production.
-start-web-app-dev: install build-api composer-install-dev up generate-jwt-keys ## Build and start the web application in dev mode.
+prepare-web-app: ## Prepare web application files.
+	@mkdir -p web/config/jwt
+	@touch web/config/jwt/public.jwk
+
+start-web-app: install build-api prepare-web-app composer-install up-production generate-jwt-keys cc ## Build and start the web application for production.
+start-web-app-dev: install build-api prepare-web-app composer-install-dev up generate-jwt-keys ## Build and start the web application in dev mode.
 
 down: ## Stop web app.
 	@$(DOCKER_COMP) down --remove-orphans

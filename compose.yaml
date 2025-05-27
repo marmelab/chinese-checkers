@@ -74,7 +74,6 @@ services:
       STABILITY: ${STABILITY:-stable}
       # Application specific environment
       APP_GAME_ENGINE_API_URL: ${APP_GAME_ENGINE_API_URL:-http://game-api:3003}
-      PGRST_JWT_SECRET: ${PGRST_JWT_SECRET}
     volumes:
       - caddy_data:/data
       - caddy_config:/config

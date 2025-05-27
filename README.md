@@ -69,6 +69,7 @@ Clone the repository, then:
      —— Web app 🌐 ———————————————————————————————————————————————————————————————
     up                             Start web app in detached mode.
     up-production                  Start web app in detached mode for production.
+    prepare-web-app                Prepare web application files.
     start-web-app                  Build and start the web application for production.
     start-web-app-dev              Build and start the web application in dev mode.
     down                           Stop web app.
