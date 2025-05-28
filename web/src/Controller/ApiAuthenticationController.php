@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Accounts\AccountsManager;
 use App\Entity\Account;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -17,7 +18,7 @@ final class ApiAuthenticationController extends AbstractController
 	 * @param AccountsManager $accountsManager
 	 * @return JsonResponse
 	 */
-	#[Route("/api/v1/authentication", name: "api_authentication", methods: ["POST"])]
+	#[Route("/api/v1/authentication", name: "api_authentication", methods: ["POST"], format: "json")]
 	public function index(#[CurrentUser] ?Account $account, AccountsManager $accountsManager): JsonResponse
 	{
 		if (empty($account))
@@ -39,7 +40,7 @@ final class ApiAuthenticationController extends AbstractController
 	 * @param AccountsManager $accountsManager
 	 * @return JsonResponse
 	 */
-	#[Route("/api/v1/authentication/refresh", name: "api_authentication_refresh", methods: "GET")]
+	#[Route("/api/v1/authentication/refresh", name: "api_authentication_refresh", methods: "POST", format: "json")]
 	public function refresh(AccountsManager $accountsManager): JsonResponse
 	{
 		$this->denyAccessUnlessGranted("ROLE_USER");
@@ -49,6 +50,25 @@ final class ApiAuthenticationController extends AbstractController
 			"token" => $accountsManager->getAuthenticationToken($this->getUser()),
 		]);
 		$response->headers->setCookie($accountsManager->getAuthenticationCookie($this->getUser()));
+		return $response;
+	}
+
+	/**
+	 * @param Security $security
+	 * @return JsonResponse
+	 */
+	#[Route("/api/v1/authentication/logout", name: "api_authentication_logout", methods: "POST", format: "json")]
+	public function logout(Security $security): JsonResponse
+	{
+		try
+		{
+			$security->logout(false);
+		}
+		catch (\Throwable $exception) {}
+
+		$response = new JsonResponse();
+		$response->setData(true);
+		$response->headers->clearCookie(AccountsManager::AUTHENTICATION_COOKIE_NAME);
 		return $response;
 	}
 }

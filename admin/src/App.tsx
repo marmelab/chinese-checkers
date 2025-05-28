@@ -2,13 +2,18 @@ import { Admin, Resource } from "react-admin";
 import { Layout } from "./Layout";
 import { AccountList } from "./Accounts/AccountList.tsx";
 import { dataProvider } from "./DataProvider.ts";
+import { authProvider } from "./AuthProvider.ts";
 import { GameList } from "./Games/GameList.tsx";
 import { GameShow } from "./Games/GameShow.tsx";
 import { AccountShow } from "./Accounts/AccountShow.tsx";
 import { AccountEdit } from "./Accounts/AccountEdit.tsx";
 
 export const App = () => (
-	<Admin layout={Layout} dataProvider={dataProvider}>
+	<Admin
+		layout={Layout}
+		dataProvider={dataProvider}
+		authProvider={authProvider}
+	>
 		<Resource
 			name="games"
 			list={GameList}

@@ -2,7 +2,10 @@ export async function fetchApi(
 	input: string | URL | Request,
 	init?: RequestInit,
 ): Promise<any> {
-	const response = await fetch(input, init);
+	const response = await fetch(input, {
+		credentials: "include",
+		...init,
+	});
 
 	if (response.ok) return response.json();
 	else throw await ApiError.fromResponse(response);

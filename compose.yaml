@@ -34,7 +34,7 @@ services:
 ###< doctrine/doctrine-bundle ###
 
   postgrest:
-    container_name: postgrest
+    container_name: chinese-checkers-postgrest
     image: postgrest/postgrest:latest
     # Available environment variables documented here:
     # https://postgrest.org/en/latest/configuration.html#environment-variables
@@ -45,9 +45,13 @@ services:
       # The name of which database schema to expose to REST clients
       - PGRST_DB_SCHEMA=${POSTGREST_DB_SCHEMA:-public}
       # The database role to use when no client authentication is provided
-      - PGRST_DB_ANON_ROLE=${DB_ANON_ROLE:-app}
+      - PGRST_DB_ANON_ROLE=${DB_ANON_ROLE:-authenticator}
       # Overrides the base URL used within the OpenAPI self-documentation hosted at the API root path
       - PGRST_OPENAPI_SERVER_PROXY_URI=https://chinese-checkers.marmelab.com/postgrest
+      # Set the JWT secret for authentication.
+      - PGRST_JWT_SECRET=@/app/public.jwk
+    volumes:
+      - "./web/config/jwt/public.jwk:/app/public.jwk"
     restart: always
 
   php:

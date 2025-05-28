@@ -1,4 +1,5 @@
 import {
+	CheckboxGroupInput,
 	Edit,
 	SaveButton,
 	SimpleForm,
@@ -15,7 +16,7 @@ export function AccountEditTitle() {
 
 export function AccountEdit() {
 	return (
-		<Edit title={<AccountEditTitle />}>
+		<Edit title={<AccountEditTitle />} mutationMode="optimistic">
 			<SimpleForm
 				toolbar={
 					<Toolbar>
@@ -24,6 +25,11 @@ export function AccountEdit() {
 				}
 			>
 				<TextInput source="name" />
+
+				<CheckboxGroupInput
+					source="roles"
+					choices={[{ id: "ROLE_ADMIN", name: "Admin" }]}
+				/>
 			</SimpleForm>
 		</Edit>
 	);
