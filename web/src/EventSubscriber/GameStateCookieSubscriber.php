@@ -6,6 +6,8 @@ use App\Game\GameSession;
 use App\Game\GameState;
 use App\Game\OnlineGame;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\HttpFoundation\Exception\SessionNotFoundException;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 /**
@@ -24,13 +26,17 @@ readonly class GameStateCookieSubscriber implements EventSubscriberInterface
 
 	public function onResponseEvent(ResponseEvent $event): void
 	{
-		if (!empty($updatedGameState = $this->gameSession->getUpdatedGameState()))
-		{ // Create a cookie from the updated game state, if there is one.
-			$event->getResponse()->headers->setCookie($this->gameState->createCookie($updatedGameState));
-			$this->gameSession->clearUpdatedGameState();
+		try
+		{
+			if (!empty($updatedGameState = $this->gameSession->getUpdatedGameState()))
+			{ // Create a cookie from the updated game state, if there is one.
+				$event->getResponse()->headers->setCookie($this->gameState->createCookie($updatedGameState));
+				$this->gameSession->clearUpdatedGameState();
+			}
+			// Update online games cookie.
+			$event->getResponse()->headers->setCookie($this->onlineGame->createOnlineGamesCookie());
 		}
-		// Update online games cookie.
-		$event->getResponse()->headers->setCookie($this->onlineGame->createOnlineGamesCookie());
+		catch (SessionNotFoundException $exception) {}
 	}
 
 	public static function getSubscribedEvents(): array
