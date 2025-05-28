@@ -46,6 +46,7 @@ readonly class AccountsManager
 	public function getAuthenticationToken(UserInterface $account): string
 	{
 		return $this->jwtManager->createFromPayload($account, [
+			"username" => $account->getName(),
 			"role" => $this->isAdmin($account) ? "admin" : null,
 		]);
 	}

@@ -32,7 +32,7 @@ export function SignUpView() {
 					}}
 				>
 					<label htmlFor="name">
-						Name
+						Username
 						<input
 							type="text"
 							id="name"

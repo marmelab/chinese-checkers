@@ -71,4 +71,15 @@ final class ApiAuthenticationController extends AbstractController
 		$response->headers->clearCookie(AccountsManager::AUTHENTICATION_COOKIE_NAME);
 		return $response;
 	}
+
+	/**
+	 * @return JsonResponse
+	 */
+	#[Route("/api/v1/authentication/account", name: "api_authenticated_account", methods: "GET", format: "json")]
+	public function account(): JsonResponse
+	{
+		$this->denyAccessUnlessGranted("ROLE_USER");
+
+		return $this->json($this->getUser());
+	}
 }

@@ -75,7 +75,7 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
 	#[Ignore]
 	public function getUserIdentifier(): string
 	{
-		return (string)$this->name;
+		return (string)$this->id;
 	}
 
 	/**
