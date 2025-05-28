@@ -1,4 +1,7 @@
 import { ApiError, fetchApi } from "./api";
+import { Account, zAccount } from "../model/account";
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { getGame } from "./games";
 
 export async function createAccount(
 	name: string,
@@ -74,4 +77,19 @@ export async function logout(): Promise<void> {
 	);
 }
 
+export async function authenticatedAccount(): Promise<Account> {
+	return zAccount.parse(
+		await fetchApi("/api/v1/authentication/account", {
+			method: "GET",
+		}),
+	);
+}
+
 export class InvalidCredentialsError extends Error {}
+
+export function useFetchAuthenticatedAccount() {
+	return useSuspenseQuery({
+		queryKey: ["authenticated-account"],
+		queryFn: () => authenticatedAccount(),
+	});
+}

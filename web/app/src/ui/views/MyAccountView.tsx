@@ -6,6 +6,7 @@ import {
 	useAuthenticatedAccount,
 } from "../../storage/authentication";
 import { useNavigate } from "react-router-dom";
+import { useFetchAuthenticatedAccount } from "../../api/accounts";
 
 export function MyAccountView() {
 	return (
@@ -18,7 +19,7 @@ export function MyAccountView() {
 export function MyAccount() {
 	const navigate = useNavigate();
 
-	const authenticatedAccount = useAuthenticatedAccount();
+	const authenticatedAccountQuery = useFetchAuthenticatedAccount();
 
 	return (
 		<>
@@ -27,7 +28,7 @@ export function MyAccount() {
 			</header>
 			<main className="account">
 				<p className="center">
-					Connected as <strong>{authenticatedAccount.username}</strong>
+					Connected as <strong>{authenticatedAccountQuery.data.name}</strong>
 				</p>
 
 				<button
