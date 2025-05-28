@@ -40,11 +40,10 @@ export function JoinOnlineGameView() {
 								return;
 							}
 
-							const errorMessage = await error.getApiMessage();
-							if (errorMessage == INVALID_JOIN_CODE_ERROR) {
+							if (error.errorMessage == INVALID_JOIN_CODE_ERROR) {
 								setGameCodeError("Invalid game code.");
 							} else {
-								toast.error(formatErrorMessage(errorMessage));
+								toast.error(error.formattedErrorMessage);
 							}
 						}
 					}}
