@@ -1,7 +1,8 @@
 import postgrestProvider, {
 	defaultSchema,
 } from "@raphiniert/ra-data-postgrest";
-import { fetchUtils, Options } from "react-admin";
+import { addRefreshAuthToDataProvider, fetchUtils, Options } from "react-admin";
+import { tryAuthenticationRefresh } from "./AuthProvider.ts";
 
 export function fetchJson(
 	url: any,
@@ -18,14 +19,17 @@ export function fetchJson(
 	});
 }
 
-export const dataProvider = postgrestProvider({
-	apiUrl: import.meta.env.VITE_POSTGREST_URL,
-	httpClient: fetchJson,
-	defaultListOp: "eq",
-	primaryKeys: new Map([
-		["games", ["uuid"]],
-		["accounts_games", ["uuid"]],
-		["online_player", ["uuid"]],
-	]),
-	schema: defaultSchema,
-});
+export const dataProvider = addRefreshAuthToDataProvider(
+	postgrestProvider({
+		apiUrl: import.meta.env.VITE_POSTGREST_URL,
+		httpClient: fetchJson,
+		defaultListOp: "eq",
+		primaryKeys: new Map([
+			["games", ["uuid"]],
+			["accounts_games", ["uuid"]],
+			["online_player", ["uuid"]],
+		]),
+		schema: defaultSchema,
+	}),
+	tryAuthenticationRefresh,
+);

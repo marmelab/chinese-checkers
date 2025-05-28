@@ -5,36 +5,51 @@ import {
 	logout,
 	refreshAuthentication,
 } from "../../web/app/src/api/accounts.ts";
-import { dataProvider } from "./DataProvider.ts";
+
+export function checkAndStoreToken(token: string): void {
+	if (jwtDecode<any>(token)?.role != "admin")
+		throw new Error("You must be an administrator to sign in.");
+
+	localStorage.setItem("authentication", token);
+}
+
+export async function tryAuthenticationRefresh() {
+	const { exp } = jwtDecode<any>(localStorage.getItem("authentication") ?? "");
+
+	const in15Minutes = new Date();
+	in15Minutes.setMinutes(in15Minutes.getMinutes() + 15);
+
+	if (in15Minutes.getTime() / 1000 < exp) return;
+
+	try {
+		checkAndStoreToken(await refreshAuthentication());
+	} catch (error) {
+		await authProvider.logout(undefined);
+		throw new Error(
+			"Invalid authentication. You must be an administrator to sign in.",
+		);
+	}
+}
 
 export const authProvider: AuthProvider = addRefreshAuthToAuthProvider(
 	{
 		async login({ username, password }) {
 			try {
-				const token = await authenticate(username, password);
-				localStorage.setItem("authentication", token);
-
-				// Check authentication by running a test request.
-				await dataProvider.getList("accounts", {
-					meta: { limit: 1 },
-					pagination: {
-						page: 1,
-						perPage: 1,
-					},
-					filter: {},
-				});
+				checkAndStoreToken(await authenticate(username, password));
 			} catch (error) {
-				localStorage.removeItem("authentication");
 				throw new Error(
 					"Invalid credentials. You must be an administrator to sign in.",
 				);
 			}
 		},
 		async checkError(error) {
-			const status = error.status;
-			if (status === 401 || status === 403) {
-				localStorage.removeItem("authentication");
-				throw new Error();
+			if (
+				error.status === 401 ||
+				error.status === 403 ||
+				error.body?.code === 22023
+			) {
+				await this.logout();
+				throw error;
 			}
 		},
 		async checkAuth() {
@@ -61,14 +76,5 @@ export const authProvider: AuthProvider = addRefreshAuthToAuthProvider(
 			return true;
 		},
 	},
-	async () => {
-		try {
-			localStorage.setItem("authentication", await refreshAuthentication());
-		} catch (error) {
-			localStorage.removeItem("authentication");
-			throw new Error(
-				"Invalid authentication. You must be an administrator to sign in.",
-			);
-		}
-	},
+	tryAuthenticationRefresh,
 );
