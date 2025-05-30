@@ -16,11 +16,14 @@
 	--green: #1C820F;
 	--red: #C30000;
 	--orange: #BF620B;
+	--yellow: #FFE100;
 
 	--red-background: #f2dada;
 
 	--vs-border: var(--orange);
 	--vs: #E7770E;
+
+	--hint: var(--yellow);
 
 	--warning: var(--orange);
 
@@ -34,6 +37,7 @@
 	--board-background: var(--background-darker);
 	--board-green-background: rgba(29, 130, 16, 0.25);
 	--board-red-background: rgba(194, 0, 0, 0.25);
+	--board-hint-background: rgba(255, 225, 0, 0.33);
 
 	--board-cell-clickable-hover: rgba(0, 0, 0, 0.1);
 }

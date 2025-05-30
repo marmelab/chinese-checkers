@@ -8,6 +8,10 @@ import {
 import { Pawn } from "./Pawn";
 import { MoveState } from "./PlayableGameBoard";
 import { X } from "@phosphor-icons/react";
+import {
+	useIsBestMoveHintEnd,
+	useIsBestMoveHintStart,
+} from "../../storage/moves-hint";
 
 export function GameBoardCell({
 	move,
@@ -24,11 +28,20 @@ export function GameBoardCell({
 	onClick?: (rowIndex: number, cellIndex: number) => void;
 }) {
 	const isMoveStart =
-		move?.[0]?.rowIndex == rowIndex && move?.[0]?.cellIndex == cellIndex;
+		move?.[0]?.row == rowIndex && move?.[0]?.column == cellIndex;
 
 	const isPartOfTheMove = !!move?.find(
-		(cell) => cell.rowIndex == rowIndex && cell.cellIndex == cellIndex,
+		(cell) => cell.row == rowIndex && cell.column == cellIndex,
 	);
+
+	const isBestMoveHintStart = useIsBestMoveHintStart({
+		row: rowIndex,
+		column: cellIndex,
+	});
+	const isBestMoveHintEnd = useIsBestMoveHintEnd({
+		row: rowIndex,
+		column: cellIndex,
+	});
 
 	return (
 		<td
@@ -36,6 +49,7 @@ export function GameBoardCell({
 			className={clsx({
 				"green-target": inGreenTargetArea(rowIndex, cellIndex),
 				"red-target": inRedTargetArea(rowIndex, cellIndex),
+				hint: isBestMoveHintEnd,
 			})}
 		>
 			<button
@@ -44,7 +58,11 @@ export function GameBoardCell({
 				onClick={() => onClick?.(rowIndex, cellIndex)}
 			>
 				{cell != CellContent.Empty && (
-					<Pawn pawn={cell} selected={isMoveStart} />
+					<Pawn
+						pawn={cell}
+						selected={isMoveStart}
+						hint={isBestMoveHintStart && move?.length == 0}
+					/>
 				)}
 			</button>
 

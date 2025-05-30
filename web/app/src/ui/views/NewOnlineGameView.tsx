@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import { Check } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import { newGame } from "../../api/games";
-import { ApiError, formatErrorMessage } from "../../api/api";
-import { toast } from "react-toastify";
 import { showErrorToast } from "../showErrorToast";
 import { AuthenticationRequired } from "../accounts/AuthenticationRequired";
 

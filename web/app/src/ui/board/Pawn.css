@@ -16,6 +16,8 @@
 	{ background: var(--red); }
 	&.green
 	{ background: var(--green); }
+	&.hint
+	{ animation: pawn-hint 0.33s linear infinite alternate; }
 
 	&.virtual
 	{
@@ -30,5 +32,14 @@
 
 		&.red { outline-color: var(--red); }
 		&.green { outline-color: var(--green); }
+	}
+}
+
+@keyframes pawn-hint {
+	from {
+		transform: scale(1);
+	}
+	to {
+		transform: scale(0.8);
 	}
 }

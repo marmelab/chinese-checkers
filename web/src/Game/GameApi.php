@@ -5,6 +5,7 @@ namespace App\Game;
 use App\Entity\Game;
 use App\Entity\GamePlayer;
 use App\Exceptions\GameApiException;
+use mysql_xdevapi\ColumnResult;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
@@ -118,5 +119,20 @@ class GameApi
 	public function evaluate(Game $game): object
 	{
 		return json_decode($this->call("/evaluate", $game)->getContent());
+	}
+
+	/**
+	 * Get a hint of the best available move of the current player.
+	 * @param Game $game The game for which to find the hint.
+	 * @return object{row: int, column: int}[]
+	 * @throws ClientExceptionInterface
+	 * @throws GameApiException
+	 * @throws RedirectionExceptionInterface
+	 * @throws ServerExceptionInterface
+	 * @throws TransportExceptionInterface
+	 */
+	public function hint(Game $game): array
+	{
+		return json_decode($this->call("/hint", $game)->getContent())?->move;
 	}
 }

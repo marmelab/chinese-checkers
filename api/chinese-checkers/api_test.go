@@ -236,3 +236,42 @@ func TestEvaluationApi(t *testing.T) {
 		Red:   49,
 	}}, evaluation, "should have correct evaluation scores")
 }
+
+func TestHintApi(t *testing.T) {
+	// Build the request.
+	request := httptest.NewRequest(http.MethodPost, "/hint", strings.NewReader(`
+{
+  "board": [
+    [0, 1, 1, 0, 0, 0, 0],
+    [1, 1, 1, 2, 0, 0, 0],
+    [1, 1, 0, 0, 0, 0, 0],
+    [1, 0, 2, 0, 0, 0, 2],
+    [0, 0, 0, 0, 0, 2, 2],
+    [0, 0, 1, 0, 2, 2, 0],
+    [0, 0, 0, 2, 1, 2, 2]
+  ],
+  "currentPlayer": 2
+}
+`))
+	response := httptest.NewRecorder()
+
+	// Run the request.
+	e := echo.New()
+	context := e.NewContext(request, response)
+	err := HandleHint(context)
+	assert.Nil(t, err)
+
+	// Parse the response.
+	responseBody, err := io.ReadAll(response.Body)
+	assert.Nil(t, err, "should read the response body without error")
+
+	hint := struct {
+		Move []game.CellIdentifier
+	}{}
+	err = json.Unmarshal(responseBody, &hint)
+	assert.Nil(t, err, "should parse the hint without error")
+
+	assert.Equal(t, struct {
+		Move []game.CellIdentifier
+	}{Move: []game.CellIdentifier{{Row: 1, Column: 3}, {Row: 0, Column: 3}}}, hint, "should have correct hint")
+}

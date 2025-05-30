@@ -11,6 +11,17 @@ export enum CellContent {
 
 export const zCellContent = z.nativeEnum(CellContent);
 
+export const zCellIdentifier = z.object({
+	row: z.number().int(),
+	column: z.number().int(),
+});
+
+export type CellIdentifier = z.infer<typeof zCellIdentifier>;
+
+export function isSameCell(a: CellIdentifier, b: CellIdentifier): boolean {
+	return a?.column == b?.column && a?.row == b?.row;
+}
+
 /**
  * Shape of the target area, in each corner of the game board.
  */

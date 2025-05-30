@@ -11,13 +11,22 @@ const pawnClassName: Partial<Record<CellContent, string>> = {
 export function Pawn({
 	pawn,
 	selected,
+	hint,
 }: {
 	pawn: CellContent;
 	selected: boolean;
+	hint?: boolean;
 }) {
 	return (
 		<div
-			className={clsx("pawn", selected && "selected", pawnClassName[pawn])}
+			className={clsx(
+				"pawn",
+				{
+					selected: selected,
+					hint: !!hint,
+				},
+				pawnClassName[pawn],
+			)}
 		></div>
 	);
 }

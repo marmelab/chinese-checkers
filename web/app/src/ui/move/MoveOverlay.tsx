@@ -1,7 +1,8 @@
 import React from "react";
 import { CaretRight } from "@phosphor-icons/react";
 import "./MoveOverlay.css";
-import { CellIdentifier } from "../board/PlayableGameBoard";
+import { CellIdentifier } from "../../model/cell";
+import { clsx } from "clsx";
 
 /**
  * Overlay height in px.
@@ -12,22 +13,24 @@ const OVERLAY_HEIGHT = 16;
  * An overlay to show a simple move between two cells.
  */
 export function MoveOverlay({
+	className,
 	from,
 	to,
 }: {
+	className?: string;
 	from: CellIdentifier;
 	to: CellIdentifier;
 }) {
 	return (
 		<div
-			className="move-overlay"
+			className={clsx("move-overlay", className)}
 			ref={(element) => {
 				if (element) {
 					const fromPosition = document
-						.getElementById(`cell-${from.rowIndex}-${from.cellIndex}`)
+						.getElementById(`cell-${from.row}-${from.column}`)
 						?.getBoundingClientRect();
 					const toPosition = document
-						.getElementById(`cell-${to.rowIndex}-${to.cellIndex}`)
+						.getElementById(`cell-${to.row}-${to.column}`)
 						?.getBoundingClientRect();
 
 					if (fromPosition && toPosition) {

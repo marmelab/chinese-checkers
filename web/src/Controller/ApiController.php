@@ -184,4 +184,27 @@ class ApiController extends AbstractController
 			], 400);
 		}
 	}
+
+	#[Route("/api/v1/games/hint", methods: "POST", format: "json")]
+	public function getHint(Request $request, GameApi $gameApi): Response
+	{
+		$body = json_decode($request->getContent());
+		$game = Game::initFromRaw($body);
+
+		if (empty($game))
+			return $this->json([
+				"error" => "missing game state",
+			], 400);
+
+		try
+		{
+			return $this->json($gameApi->hint($game));
+		}
+		catch (GameApiException $exception)
+		{
+			return $this->json([
+				"error" => $exception->getMessage(),
+			], 400);
+		}
+	}
 }

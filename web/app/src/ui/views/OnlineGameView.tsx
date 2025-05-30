@@ -20,6 +20,7 @@ import { PlayableGameBoard } from "../board/PlayableGameBoard";
 import { confetti } from "@tsparticles/confetti";
 import { useGameLiveUpdate } from "./useGameLiveUpdate";
 import { PlayersWinChances } from "../board/PlayersWinChances";
+import { GetMoveHint } from "../board/GetMoveHint";
 
 export function OnlineGameView() {
 	const gameUuid = useParams().uuid;
@@ -62,6 +63,9 @@ export function OnlineGameView() {
 			</>
 		);
 
+	const isPlayable =
+		onlineGamePlayerId && getCurrentPlayer(game).uuid == onlineGamePlayerId;
+
 	return (
 		<>
 			<header>
@@ -75,13 +79,13 @@ export function OnlineGameView() {
 			</header>
 			<main className="online game">
 				<PlayersWinChances game={game} />
-				{onlineGamePlayerId &&
-				getCurrentPlayer(game).uuid == onlineGamePlayerId ? (
+				{isPlayable ? (
 					<PlayableGameBoard game={game} onChange={setUpdatedGame} online />
 				) : (
 					<GameBoard board={game.board} />
 				)}
 				<PlayerTurn game={game} playerId={onlineGamePlayerId} />
+				{isPlayable && <GetMoveHint game={game} />}
 			</main>
 		</>
 	);

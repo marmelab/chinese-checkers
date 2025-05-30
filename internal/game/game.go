@@ -339,16 +339,20 @@ func (board *BoardState) CheckMovesLegality(moveList []CellIdentifier, disallowS
 
 // Move a pawn of the board.
 func (board *BoardState) MovePawn(serializedMoveList string) error {
-	// If there is a winner, moving a pawn is disallowed.
-	winner := board.GetWinner()
-	if winner != None {
-		return fmt.Errorf("cannot move a pawn: %s has won", winner.Name())
-	}
-
 	// Parse the move list.
 	moveList, err := board.ParseMoveList(serializedMoveList)
 	if err != nil {
 		return err
+	}
+	return board.movePawn(moveList)
+}
+
+// Move a pawn of the board.
+func (board *BoardState) movePawn(moveList []CellIdentifier) error {
+	// If there is a winner, moving a pawn is disallowed.
+	winner := board.GetWinner()
+	if winner != None {
+		return fmt.Errorf("cannot move a pawn: %s has won", winner.Name())
 	}
 
 	// Ensure that there is a pawn at start position.
@@ -362,7 +366,7 @@ func (board *BoardState) MovePawn(serializedMoveList string) error {
 	}
 
 	// Check all successive moves legality, allowing only one simple move.
-	if err = board.CheckMovesLegality(moveList, false); err != nil {
+	if err := board.CheckMovesLegality(moveList, false); err != nil {
 		return err
 	}
 

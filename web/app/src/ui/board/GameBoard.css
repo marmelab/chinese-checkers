@@ -22,6 +22,8 @@ table.game-board
 		{ background: var(--board-green-background); }
 		&.red-target
 		{ background: var(--board-red-background); }
+		&.hint
+		{ background: var(--board-hint-background); }
 
 		button
 		{
