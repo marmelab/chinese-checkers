@@ -8,11 +8,13 @@ func euclideanDistance(x int, y int) int {
 	return int(math.Round(math.Sqrt(float64(x*x + y*y))))
 }
 
+type Evaluation = struct {
+	GreenScore int `json:"green"`
+	RedScore   int `json:"red"`
+}
+
 // Evaluate the chances of winning of players.
-func (board *BoardState) Evaluate() (result struct {
-	GreenScore int
-	RedScore   int
-}) {
+func (board *BoardState) Evaluate() (result Evaluation) {
 	greenDistanceScore := 0
 	redDistanceScore := 0
 

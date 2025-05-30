@@ -194,3 +194,45 @@ func TestWinnerApiGreenWinner(t *testing.T) {
 
 	assert.Equal(t, int8(1), winner, "should have green as a winner")
 }
+
+func TestEvaluationApi(t *testing.T) {
+	// Build the request.
+	request := httptest.NewRequest(http.MethodPost, "/evaluate", strings.NewReader(`
+{
+  "board": [
+    [0, 1, 1, 0, 0, 0, 0],
+    [1, 1, 1, 2, 0, 0, 0],
+    [1, 1, 0, 0, 0, 0, 0],
+    [1, 0, 2, 0, 0, 0, 2],
+    [0, 0, 0, 0, 0, 2, 2],
+    [0, 0, 1, 0, 2, 2, 0],
+    [0, 0, 0, 2, 1, 2, 2]
+  ],
+  "currentPlayer": 2
+}
+`))
+	response := httptest.NewRecorder()
+
+	// Run the request.
+	e := echo.New()
+	context := e.NewContext(request, response)
+	err := HandleEvaluate(context)
+	assert.Nil(t, err)
+
+	// Parse the response.
+	responseBody, err := io.ReadAll(response.Body)
+	assert.Nil(t, err, "should read the response body without error")
+
+	evaluation := struct {
+		Evaluation game.Evaluation
+	}{Evaluation: game.Evaluation{}}
+	err = json.Unmarshal(responseBody, &evaluation)
+	assert.Nil(t, err, "should parse the evaluation without error")
+
+	assert.Equal(t, struct {
+		Evaluation game.Evaluation
+	}{Evaluation: game.Evaluation{
+		GreenScore: 51,
+		RedScore:   49,
+	}}, evaluation, "should have correct evaluation scores")
+}
