@@ -1,9 +1,9 @@
 import { z } from "zod";
 import { Game, zGame } from "../model/game";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { CellIdentifier, MoveState } from "../ui/board/PlayableGameBoard";
 import { fetchApi } from "./api";
 import { GameEvaluation, zGameEvaluation } from "../model/game-evaluation";
+import { CellIdentifier, zCellIdentifier } from "../model/cell";
 
 export async function getOngoingGames(): Promise<Game[]> {
 	return z.array(zGame).parse(await fetchApi("/api/v1/games"));
@@ -66,6 +66,15 @@ export async function joinGame(
 export async function evaluateGame(game: Game): Promise<GameEvaluation> {
 	return zGameEvaluation.parse(
 		await fetchApi("/api/v1/games/evaluate", {
+			method: "POST",
+			body: JSON.stringify(game),
+		}),
+	);
+}
+
+export async function getHint(game: Game): Promise<CellIdentifier[]> {
+	return z.array(zCellIdentifier).parse(
+		await fetchApi("/api/v1/games/hint", {
 			method: "POST",
 			body: JSON.stringify(game),
 		}),

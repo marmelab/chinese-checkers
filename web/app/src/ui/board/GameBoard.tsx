@@ -2,8 +2,9 @@ import React from "react";
 import "./GameBoard.css";
 import { Game } from "../../model/game";
 import { GameBoardRow } from "./GameBoardRow";
-import { CellIdentifier, MoveState } from "./PlayableGameBoard";
-import { MoveOverlay } from "../move/MoveOverlay";
+import { MoveState } from "./PlayableGameBoard";
+import { MoveOverlays } from "../move/MoveOverlays";
+import { useBestMoveHint } from "../../storage/moves-hint";
 
 export function GameBoard({
 	board,
@@ -17,26 +18,9 @@ export function GameBoard({
 	 */
 	move?: MoveState;
 
-	onCellClick?: (rowIndex: number, cellIndex: number) => void;
+	onCellClick?: (rowIndex: number, columnIndex: number) => void;
 }) {
-	const moveOverlays: React.ReactElement[] = [];
-	if (move) {
-		// Create move overlays by finding all atomic move pairs (move between a cell and another).
-		let previousCell: CellIdentifier = null;
-		for (const cell of move) {
-			if (previousCell) {
-				moveOverlays.push(
-					<MoveOverlay
-						key={`overlay-${previousCell.rowIndex}-${previousCell.cellIndex}-${cell.rowIndex}-${cell.cellIndex}`}
-						from={previousCell}
-						to={cell}
-					/>,
-				);
-			}
-
-			previousCell = cell;
-		}
-	}
+	const bestMoveHint = useBestMoveHint();
 
 	return (
 		<>
@@ -54,7 +38,10 @@ export function GameBoard({
 				</tbody>
 			</table>
 
-			{moveOverlays}
+			<MoveOverlays move={move} />
+			{move?.length == 0 && bestMoveHint && (
+				<MoveOverlays move={bestMoveHint} hint />
+			)}
 		</>
 	);
 }

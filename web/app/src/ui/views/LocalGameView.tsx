@@ -4,6 +4,7 @@ import { PlayerTurn } from "../board/PlayerTurn";
 import { setLocalGame, useLocalGameStore } from "../../storage/local-game";
 import { PlayableGameBoard } from "../board/PlayableGameBoard";
 import { PlayersScores } from "../board/PlayersScores";
+import { GetMoveHint } from "../board/GetMoveHint";
 
 export function LocalGameView() {
 	const localGame = useLocalGameStore();
@@ -17,6 +18,7 @@ export function LocalGameView() {
 				<PlayersScores game={localGame.game} />
 				<PlayableGameBoard game={localGame.game} onChange={setLocalGame} />
 				<PlayerTurn game={localGame.game} />
+				<GetMoveHint game={localGame.game} />
 			</main>
 		</>
 	);

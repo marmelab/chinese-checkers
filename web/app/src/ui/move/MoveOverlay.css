@@ -20,6 +20,11 @@
 		margin: 0;
 		animation: moving-caret 1s infinite;
 	}
+
+	&.hint
+	{
+		background: linear-gradient(90deg, transparent, rgba(255, 225, 0, 0.6), transparent);
+	}
 }
 
 @keyframes moving-caret
