@@ -3,12 +3,17 @@ import "./PlayersWinChances.css";
 import { Game, getGameGreenPlayer, getGameRedPlayer } from "../../model/game";
 import { useFetchGameEvaluation } from "../../api/games";
 import { Loader } from "../kit/Loader";
+import { ErrorBoundary } from "react-error-boundary";
+import { showErrorToast } from "../showErrorToast";
 
 export function PlayersWinChances(props: { game: Game }) {
 	return (
-		<Suspense fallback={<Loader />}>
-			<AsyncPlayersWinChances {...props} />
-		</Suspense>
+		// Hide the win chances display when an error happen.
+		<ErrorBoundary onError={(error) => showErrorToast(error)} fallback={<></>}>
+			<Suspense fallback={<Loader />}>
+				<AsyncPlayersWinChances {...props} />
+			</Suspense>
+		</ErrorBoundary>
 	);
 }
 
