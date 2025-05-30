@@ -1,0 +1,60 @@
+
+.win-chances
+{
+	align-self: stretch;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+
+	margin: 1em 1.5em;
+
+	> div
+	{
+		strong
+		{
+			display: block;
+		}
+
+		&.green strong
+		{ color: var(--green); }
+		&.red strong
+		{ color: var(--red); }
+
+		&.red
+		{ text-align: right }
+	}
+
+	progress
+	{
+		margin: 0.5em auto;
+		width: 100%;
+
+		appearance: none;
+		-webkit-appearance: none;
+
+		border: none;
+		border-radius: 5em;
+		background: var(--red);
+
+		overflow: hidden;
+
+		&::-webkit-progress-bar
+		{
+			background: var(--red);
+		}
+
+		&::-moz-progress-bar
+		{
+			border: solid var(--background-darker);
+			border-width: 0 0.2em 0 0;
+			background: var(--green);
+		}
+
+		&::-webkit-progress-value
+		{
+			border: solid var(--background-darker);
+			border-width: 0 0.2em 0 0;
+			background: var(--green);
+		}
+	}
+}

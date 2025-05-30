@@ -66,6 +66,7 @@ Clone the repository, then:
     vet                            Run `go vet` (inside Docker).
     check                          Run `staticcheck` and `go vet` (inside Docker).
     clean                          Remove the built binary (inside Docker).
+    test-engine                    Test the game engine.
      —— Web app 🌐 ———————————————————————————————————————————————————————————————
     up                             Start web app in detached mode.
     up-production                  Start web app in detached mode for production.

@@ -52,26 +52,56 @@ func HandleMove(c echo.Context) error {
 }
 
 func HandleWinner(c echo.Context) error {
+	board, err := parseGameBoard(c)
+	if err != nil {
+		return err
+	}
+
+	// Return the updated board.
+	return c.JSON(http.StatusOK, board.GetWinner())
+}
+
+func HandleEvaluate(c echo.Context) error {
+	board, err := parseGameBoard(c)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, struct {
+		Evaluation game.Evaluation `json:"evaluation"`
+	}{
+		Evaluation: board.Evaluate(),
+	})
+}
+
+func parseGameBoard(c echo.Context) (*game.BoardState, error) {
 	// Read the full body.
 	body, err := io.ReadAll(c.Request().Body)
 
 	// Cannot read the body, return an internal error.
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, ErrorResponse{
+		if responseErr := c.JSON(http.StatusInternalServerError, ErrorResponse{
 			Error: "internal server error",
-		})
+		}); responseErr != nil {
+			return nil, responseErr
+		}
+
+		return nil, err
 	}
 
 	// Initialize a board state from the request body.
 	board, err := game.NewBoardFromState(body)
 	if err != nil {
-		return c.JSON(http.StatusBadRequest, ErrorResponse{
+		if responseErr := c.JSON(http.StatusBadRequest, ErrorResponse{
 			Error: err.Error(),
-		})
+		}); responseErr != nil {
+			return nil, responseErr
+		}
+
+		return nil, err
 	}
 
-	// Return the updated board.
-	return c.JSON(http.StatusOK, board.GetWinner())
+	return board, nil
 }
 
 func main() {
@@ -81,6 +111,8 @@ func main() {
 	e.POST("/move", HandleMove)
 
 	e.POST("/winner", HandleWinner)
+
+	e.POST("/evaluate", HandleEvaluate)
 
 	// Start the API server.
 	e.Logger.Fatal(e.Start(":3003"))

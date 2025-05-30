@@ -3,6 +3,7 @@ import { Game, zGame } from "../model/game";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { CellIdentifier, MoveState } from "../ui/board/PlayableGameBoard";
 import { fetchApi } from "./api";
+import { GameEvaluation, zGameEvaluation } from "../model/game-evaluation";
 
 export async function getOngoingGames(): Promise<Game[]> {
 	return z.array(zGame).parse(await fetchApi("/api/v1/games"));
@@ -62,6 +63,15 @@ export async function joinGame(
 	);
 }
 
+export async function evaluateGame(game: Game): Promise<GameEvaluation> {
+	return zGameEvaluation.parse(
+		await fetchApi("/api/v1/games/evaluate", {
+			method: "POST",
+			body: JSON.stringify(game),
+		}),
+	);
+}
+
 export function useFetchOngoingGames() {
 	return useSuspenseQuery({
 		queryKey: ["ongoingGames"],
@@ -76,6 +86,14 @@ export function useFetchGame(uuid: string) {
 	return useSuspenseQuery({
 		queryKey: ["game", uuid],
 		queryFn: () => getGame(uuid),
+		retry: false,
+	});
+}
+
+export function useFetchGameEvaluation(game: Game) {
+	return useSuspenseQuery({
+		queryKey: ["gameEvaluation", game],
+		queryFn: async () => !game.winner && (await evaluateGame(game)),
 		retry: false,
 	});
 }
