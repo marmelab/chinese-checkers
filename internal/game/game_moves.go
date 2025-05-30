@@ -28,8 +28,6 @@ func (game *BoardState) tryMove(bestScore *int, bestMove *[]CellIdentifier, play
 			*bestScore = distanceScore
 		}
 	}
-
-	return
 }
 
 // FindBestMove of the provided player.
