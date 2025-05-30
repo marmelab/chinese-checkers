@@ -24,13 +24,15 @@ export function AsyncPlayersWinChances({ game }: { game: Game }) {
 
 	return (
 		<div className="win-chances">
-			<div className="green">
-				<strong>{getGameGreenPlayer(game).name}</strong>
-				<span className="chance">{gameEvaluation.data.evaluation.green}</span>
-			</div>
-			<div className="red">
-				<strong>{getGameRedPlayer(game).name}</strong>
-				<span className="chance">{gameEvaluation.data.evaluation.red}</span>
+			<div>
+				<div className="green">
+					<strong>{getGameGreenPlayer(game).name}</strong>
+					<span className="chance">{gameEvaluation.data.evaluation.green}</span>
+				</div>
+				<div className="red">
+					<strong>{getGameRedPlayer(game).name}</strong>
+					<span className="chance">{gameEvaluation.data.evaluation.red}</span>
+				</div>
 			</div>
 
 			<progress

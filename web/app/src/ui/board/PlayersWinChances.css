@@ -2,26 +2,35 @@
 .win-chances
 {
 	align-self: stretch;
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
 
 	margin: 1em 1.5em;
 
 	> div
 	{
-		strong
+		display: flex;
+
+		> * { flex: 1; }
+		> *:last-of-type { text-align: right; }
+
+		> div
 		{
-			display: block;
+			display: flex;
+			flex-direction: column;
+
+			strong
+			{
+				display: block;
+				margin-top: auto;
+			}
+
+			&.green strong
+			{ color: var(--green); }
+			&.red strong
+			{ color: var(--red); }
+
+			&.red
+			{ text-align: right }
 		}
-
-		&.green strong
-		{ color: var(--green); }
-		&.red strong
-		{ color: var(--red); }
-
-		&.red
-		{ text-align: right }
 	}
 
 	progress
