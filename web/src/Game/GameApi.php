@@ -104,4 +104,19 @@ class GameApi
 		// There is a player, return it.
 		return GamePlayer::from($rawPlayer);
 	}
+
+	/**
+	 * Evaluate a game board.
+	 * @param Game $game The game to evaluate.
+	 * @return object{evaluation: object{green: int, red: int}} Game evaluation object.
+	 * @throws ClientExceptionInterface
+	 * @throws GameApiException
+	 * @throws RedirectionExceptionInterface
+	 * @throws ServerExceptionInterface
+	 * @throws TransportExceptionInterface
+	 */
+	public function evaluate(Game $game): object
+	{
+		return json_decode($this->call("/evaluate", $game)->getContent());
+	}
 }

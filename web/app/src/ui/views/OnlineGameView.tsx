@@ -19,6 +19,7 @@ import { getOnlineGamePlayerId } from "../../storage/online-game";
 import { PlayableGameBoard } from "../board/PlayableGameBoard";
 import { confetti } from "@tsparticles/confetti";
 import { useGameLiveUpdate } from "./useGameLiveUpdate";
+import { PlayersScores } from "../board/PlayersScores";
 
 export function OnlineGameView() {
 	const gameUuid = useParams().uuid;
@@ -73,6 +74,7 @@ export function OnlineGameView() {
 				</h1>
 			</header>
 			<main className="online game">
+				<PlayersScores game={game} />
 				{onlineGamePlayerId &&
 				getCurrentPlayer(game).uuid == onlineGamePlayerId ? (
 					<PlayableGameBoard game={game} onChange={setUpdatedGame} online />
