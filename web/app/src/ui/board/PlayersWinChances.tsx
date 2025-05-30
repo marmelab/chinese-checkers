@@ -20,6 +20,8 @@ export function PlayersWinChances(props: { game: Game }) {
 export function AsyncPlayersWinChances({ game }: { game: Game }) {
 	const gameEvaluation = useFetchGameEvaluation(game);
 
+	if (game.winner) return null;
+
 	return (
 		<div className="win-chances">
 			<div className="green">
