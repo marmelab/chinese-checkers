@@ -27,7 +27,7 @@ GO_PACKAGE=github.com/marmelab/chinese-checkers
 
 # Misc
 .DEFAULT_GOAL = help
-.PHONY        : help install build-cli build-api start-cli deps lint vet check clean up prepare-web-app start-web-app start-web-app-dev down logs sh bash test install-e2e test-e2e build-mobile-app start-mobile-app-dev build-admin-panel start-admin-panel-dev composer vendor composer-install composer-install-dev sf cc generate-jwt-keys
+.PHONY        : help install build-cli build-api start-cli deps lint vet check clean test-engine up prepare-web-app start-web-app start-web-app-dev down logs sh bash test install-e2e test-e2e build-mobile-app start-mobile-app-dev build-admin-panel start-admin-panel-dev composer vendor composer-install composer-install-dev sf cc generate-jwt-keys
 
 ## —— Chinese Checkers ♟️ ——————————————————————————————————————————————————————
 help: ## Outputs this help screen.
@@ -61,6 +61,9 @@ check: lint vet ## Run `staticcheck` and `go vet` (inside Docker).
 clean: ## Remove the built binary (inside Docker).
 	@$(CHINESE_CHECKERS_RUN) rm -f bin/$(APP_NAME)
 
+test-engine: ## Test the game engine.
+	@$(CHINESE_CHECKERS_RUN) go test -v ./...
+
 ## —— Web app 🌐 ———————————————————————————————————————————————————————————————
 
 up: ## Start web app in detached mode.
@@ -88,8 +91,7 @@ sh: ## Connect to the FrankenPHP container.
 bash: ## Connect to the FrankenPHP container via bash so up and down arrows go to previous commands.
 	@$(PHP_CONT) bash
 
-test: ## Run tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure".
-	@$(CHINESE_CHECKERS_RUN) go test -v ./...
+test: test-engine ## Run tests with phpunit, pass the parameter "c=" to add options to phpunit, example: make test c="--group e2e --stop-on-failure".
 	@$(eval c ?=)
 	@$(DOCKER_COMP) run --rm -e APP_ENV=test php bin/phpunit $(c)
 
