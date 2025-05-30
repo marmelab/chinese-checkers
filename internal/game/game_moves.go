@@ -18,9 +18,9 @@ func (game *BoardState) tryMove(bestScore *int, bestMove *[]CellIdentifier, play
 	if err := virtualGame.movePawn(move); err == nil {
 		// Get the distance score of the current player after the move: the lower, the better.
 		distance := virtualGame.EvaluateDistance()
-		distanceScore := distance.GreenScore
+		distanceScore := distance.Green
 		if player == Red {
-			distanceScore = distance.RedScore
+			distanceScore = distance.Red
 		}
 
 		if distanceScore < *bestScore {

@@ -18,12 +18,12 @@ func TestGameEvaluation(t *testing.T) {
 			{0, 0, 0, 1, 1, 1, 1},
 		}
 
-		// Red distance score: sqrt(0*0 + 4*4) = 4
-		// Green distance score: 0
+		// Red distance: sqrt(0*0 + 4*4) = 4
+		// Green distance: 0
 
-		scores := board.Evaluate()
-		assert.Equal(t, 100, scores.GreenScore)
-		assert.Equal(t, 0, scores.RedScore)
+		chances := board.Evaluate()
+		assert.Equal(t, 100, chances.Green)
+		assert.Equal(t, 0, chances.Red)
 	}
 
 	{
@@ -38,12 +38,12 @@ func TestGameEvaluation(t *testing.T) {
 			{0, 0, 0, 1, 1, 1, 1},
 		}
 
-		// Red distance score: sqrt(0*0 + 4*4) + sqrt(0*0 + 5*5) = 9
-		// Green distance score: sqrt(1*1 + 3*3) ~= 3
+		// Red distance: sqrt(0*0 + 4*4) + sqrt(0*0 + 5*5) = 9
+		// Green distance: sqrt(1*1 + 3*3) ~= 3
 
-		scores := board.Evaluate()
-		assert.Equal(t, 75, scores.GreenScore)
-		assert.Equal(t, 25, scores.RedScore)
+		chances := board.Evaluate()
+		assert.Equal(t, 75, chances.Green)
+		assert.Equal(t, 25, chances.Red)
 	}
 
 	{
@@ -58,12 +58,12 @@ func TestGameEvaluation(t *testing.T) {
 			{0, 0, 0, 1, 0, 1, 1},
 		}
 
-		// Red distance score: sqrt(0*0 + 4*4) + sqrt(0*0 + 5*5) = 9
-		// Green distance score: sqrt(1*1 + 3*3) + sqrt(2*2 + 3*3) ~= 7
+		// Red distance: sqrt(0*0 + 4*4) + sqrt(0*0 + 5*5) = 9
+		// Green distance: sqrt(1*1 + 3*3) + sqrt(2*2 + 3*3) ~= 7
 
-		scores := board.Evaluate()
-		assert.Equal(t, 56, scores.GreenScore)
-		assert.Equal(t, 44, scores.RedScore)
+		chances := board.Evaluate()
+		assert.Equal(t, 56, chances.Green)
+		assert.Equal(t, 44, chances.Red)
 	}
 
 	{
@@ -71,8 +71,8 @@ func TestGameEvaluation(t *testing.T) {
 
 		// Starting position: all players have the same chance to win.
 
-		scores := board.Evaluate()
-		assert.Equal(t, 50, scores.GreenScore)
-		assert.Equal(t, 50, scores.RedScore)
+		chances := board.Evaluate()
+		assert.Equal(t, 50, chances.Green)
+		assert.Equal(t, 50, chances.Red)
 	}
 }

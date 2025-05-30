@@ -102,7 +102,7 @@ export function useFetchGame(uuid: string) {
 export function useFetchGameEvaluation(game: Game) {
 	return useSuspenseQuery({
 		queryKey: ["gameEvaluation", game],
-		queryFn: () => evaluateGame(game),
+		queryFn: async () => !game.winner && (await evaluateGame(game)),
 		retry: false,
 	});
 }
