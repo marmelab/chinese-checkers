@@ -232,7 +232,7 @@ func TestEvaluationApi(t *testing.T) {
 	assert.Equal(t, struct {
 		Evaluation game.Evaluation
 	}{Evaluation: game.Evaluation{
-		GreenScore: 51,
-		RedScore:   49,
+		Green: 51,
+		Red:   49,
 	}}, evaluation, "should have correct evaluation scores")
 }

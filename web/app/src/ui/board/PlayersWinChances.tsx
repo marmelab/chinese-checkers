@@ -1,29 +1,29 @@
 import React, { Suspense } from "react";
-import "./PlayersScores.css";
+import "./PlayersWinChances.css";
 import { Game, getGameGreenPlayer, getGameRedPlayer } from "../../model/game";
 import { useFetchGameEvaluation } from "../../api/games";
 import { Loader } from "../kit/Loader";
 
-export function PlayersScores(props: { game: Game }) {
+export function PlayersWinChances(props: { game: Game }) {
 	return (
 		<Suspense fallback={<Loader />}>
-			<AsyncPlayersScores {...props} />
+			<AsyncPlayersWinChances {...props} />
 		</Suspense>
 	);
 }
 
-export function AsyncPlayersScores({ game }: { game: Game }) {
+export function AsyncPlayersWinChances({ game }: { game: Game }) {
 	const gameEvaluation = useFetchGameEvaluation(game);
 
 	return (
-		<div className="scores">
+		<div className="win-chances">
 			<div className="green">
 				<strong>{getGameGreenPlayer(game).name}</strong>
-				<span className="score">{gameEvaluation.data.evaluation.green}</span>
+				<span className="chance">{gameEvaluation.data.evaluation.green}</span>
 			</div>
 			<div className="red">
 				<strong>{getGameRedPlayer(game).name}</strong>
-				<span className="score">{gameEvaluation.data.evaluation.red}</span>
+				<span className="chance">{gameEvaluation.data.evaluation.red}</span>
 			</div>
 
 			<progress
