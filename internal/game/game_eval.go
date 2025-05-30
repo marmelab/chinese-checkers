@@ -13,10 +13,11 @@ type Evaluation = struct {
 	RedScore   int `json:"red"`
 }
 
-// Evaluate the chances of winning of players.
-func (board *BoardState) Evaluate() (result Evaluation) {
-	greenDistanceScore := 0
-	redDistanceScore := 0
+// Evaluate the distance score of each player.
+// The lower the better: a low score indicates that the player is near their target area.
+func (board *BoardState) EvaluateDistance() (result Evaluation) {
+	result.GreenScore = 0
+	result.RedScore = 0
 
 	for rowIndex, row := range board.Board {
 		for columnIndex, cell := range row {
@@ -30,21 +31,28 @@ func (board *BoardState) Evaluate() (result Evaluation) {
 				rowTargetDiff := len(board.Board) - 1 - rowIndex
 				colTargetDiff := len(board.Board) - 1 - columnIndex
 
-				greenDistanceScore += euclideanDistance(rowTargetDiff, colTargetDiff)
+				result.GreenScore += euclideanDistance(rowTargetDiff, colTargetDiff)
 			} else if cell == RedCell {
 				if cellPos.InMask(board.gameDefinition.RedTargetAreaMask) {
 					continue
 				}
 
-				redDistanceScore += euclideanDistance(rowIndex, columnIndex)
+				result.RedScore += euclideanDistance(rowIndex, columnIndex)
 			}
 		}
 	}
 
-	totalScores := float64(greenDistanceScore + redDistanceScore)
+	return
+}
 
-	result.GreenScore = int(math.Round((float64(redDistanceScore) / totalScores) * 100))
-	result.RedScore = int(math.Round((float64(greenDistanceScore) / totalScores) * 100))
+// Evaluate the chances of winning of players.
+func (board *BoardState) Evaluate() (result Evaluation) {
+	distance := board.EvaluateDistance()
+
+	totalScores := float64(distance.GreenScore + distance.RedScore)
+
+	result.GreenScore = int(math.Round((float64(distance.RedScore) / totalScores) * 100))
+	result.RedScore = int(math.Round((float64(distance.GreenScore) / totalScores) * 100))
 
 	return
 }
