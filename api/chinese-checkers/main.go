@@ -74,6 +74,19 @@ func HandleEvaluate(c echo.Context) error {
 	})
 }
 
+func HandleHint(c echo.Context) error {
+	board, err := parseGameBoard(c)
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, struct {
+		Move []game.CellIdentifier `json:"move"`
+	}{
+		Move: board.FindBestMove(board.CurrentPlayer),
+	})
+}
+
 func parseGameBoard(c echo.Context) (*game.BoardState, error) {
 	// Read the full body.
 	body, err := io.ReadAll(c.Request().Body)
@@ -113,6 +126,8 @@ func main() {
 	e.POST("/winner", HandleWinner)
 
 	e.POST("/evaluate", HandleEvaluate)
+
+	e.POST("/hint", HandleHint)
 
 	// Start the API server.
 	e.Logger.Fatal(e.Start(":3003"))
