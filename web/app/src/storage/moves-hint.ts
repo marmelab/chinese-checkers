@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { CellIdentifier, isSameCell } from "../model/cell";
 import { PathsTree } from "../model/paths";
-import { getValidMoves } from "../api/games";
 
 export interface MovesHint {
 	bestMove?: CellIdentifier[];
