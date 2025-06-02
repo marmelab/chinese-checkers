@@ -87,6 +87,29 @@ func HandleHint(c echo.Context) error {
 	})
 }
 
+func HandleValidMoves(c echo.Context) error {
+	board, err := parseGameBoard(c)
+	if err != nil {
+		return err
+	}
+
+	// Get the provided starting cell.
+	from := c.QueryParam("from")
+	if len(from) == 0 {
+		return c.JSON(http.StatusBadRequest, ErrorResponse{
+			Error: "missing cell from which to start moving",
+		})
+	}
+	fromCell, err := board.ParseCellIdentifier(from)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, ErrorResponse{
+			Error: err.Error(),
+		})
+	}
+
+	return c.JSON(http.StatusOK, board.FindValidMovesFrom(*fromCell, []game.CellIdentifier{}, true))
+}
+
 func parseGameBoard(c echo.Context) (*game.BoardState, error) {
 	// Read the full body.
 	body, err := io.ReadAll(c.Request().Body)
@@ -128,6 +151,8 @@ func main() {
 	e.POST("/evaluate", HandleEvaluate)
 
 	e.POST("/hint", HandleHint)
+
+	e.POST("/valid-moves", HandleValidMoves)
 
 	// Start the API server.
 	e.Logger.Fatal(e.Start(":3003"))

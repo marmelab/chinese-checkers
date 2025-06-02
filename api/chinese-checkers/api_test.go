@@ -275,3 +275,53 @@ func TestHintApi(t *testing.T) {
 		Move []game.CellIdentifier
 	}{Move: []game.CellIdentifier{{Row: 1, Column: 3}, {Row: 0, Column: 3}}}, hint, "should have correct hint")
 }
+
+func TestValidMovesApi(t *testing.T) {
+	// Build the request.
+	request := httptest.NewRequest(http.MethodPost, "/valid-moves?from=b3", strings.NewReader(`
+{
+  "board": [
+    [0, 1, 1, 0, 0, 0, 0],
+    [1, 1, 1, 2, 0, 0, 0],
+    [1, 1, 0, 0, 0, 0, 0],
+    [1, 0, 2, 0, 0, 0, 2],
+    [0, 0, 0, 0, 0, 2, 2],
+    [0, 0, 1, 0, 2, 2, 0],
+    [0, 0, 0, 2, 1, 2, 2]
+  ],
+  "currentPlayer": 1
+}
+`))
+	response := httptest.NewRecorder()
+
+	// Run the request.
+	e := echo.New()
+	context := e.NewContext(request, response)
+	err := HandleValidMoves(context)
+	assert.Nil(t, err)
+
+	// Parse the response.
+	responseBody, err := io.ReadAll(response.Body)
+	assert.Nil(t, err, "should read the response body without error")
+
+	pathsTree := game.PathsTree{}
+	err = json.Unmarshal(responseBody, &pathsTree)
+	assert.Nil(t, err, "should parse the path tree without error")
+
+	assert.Equal(t, game.PathsTree{
+		Cell: game.CellIdentifier{Row: 1, Column: 2},
+		Move: []game.CellIdentifier{{Row: 1, Column: 2}},
+		Paths: []game.PathsTree{
+			{
+				Cell:  game.CellIdentifier{Row: 2, Column: 2},
+				Move:  []game.CellIdentifier{{Row: 1, Column: 2}, {Row: 2, Column: 2}},
+				Paths: []game.PathsTree{},
+			},
+			{
+				Cell:  game.CellIdentifier{Row: 1, Column: 4},
+				Move:  []game.CellIdentifier{{Row: 1, Column: 2}, {Row: 1, Column: 4}},
+				Paths: []game.PathsTree{},
+			},
+		},
+	}, pathsTree, "should have correct path tree")
+}
