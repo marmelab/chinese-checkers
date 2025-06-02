@@ -3,7 +3,8 @@ import { Game, zGame } from "../model/game";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { fetchApi } from "./api";
 import { GameEvaluation, zGameEvaluation } from "../model/game-evaluation";
-import { CellIdentifier, zCellIdentifier } from "../model/cell";
+import { CellIdentifier, getCellName, zCellIdentifier } from "../model/cell";
+import { PathsTree, zPathsTree } from "../model/paths";
 
 export async function getOngoingGames(): Promise<Game[]> {
 	return z.array(zGame).parse(await fetchApi("/api/v1/games"));
@@ -78,6 +79,22 @@ export async function getHint(game: Game): Promise<CellIdentifier[]> {
 			method: "POST",
 			body: JSON.stringify(game),
 		}),
+	);
+}
+
+export async function getValidMoves(
+	game: Game,
+	from: CellIdentifier,
+): Promise<PathsTree> {
+	return zPathsTree.parse(
+		await fetchApi(
+			"/api/v1/games/valid-moves?from=" +
+				encodeURI(getCellName(from.row, from.column)),
+			{
+				method: "POST",
+				body: JSON.stringify(game),
+			},
+		),
 	);
 }
 
