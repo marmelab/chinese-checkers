@@ -19,6 +19,14 @@ export function useIsBestMoveHintStart(cell: CellIdentifier): boolean {
 	return isSameCell(cell, bestMoveHint?.[0]);
 }
 
+export function useIsInBestMoveHint(cell: CellIdentifier): boolean {
+	const bestMoveHint = useBestMoveHint();
+	return bestMoveHint?.some(
+		(currentCell) =>
+			currentCell.row == cell.row && currentCell.column == cell.column,
+	);
+}
+
 export function useIsBestMoveHintEnd(cell: CellIdentifier): boolean {
 	const bestMoveHint = useBestMoveHint();
 	return isSameCell(cell, bestMoveHint?.[bestMoveHint.length - 1]);

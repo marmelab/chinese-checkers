@@ -66,5 +66,22 @@ table.game-board
 
 			pointer-events: none;
 		}
+
+		.best-move-part
+		{
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			margin: auto;
+			width: 1em;
+			height: 1em;
+			border-radius: 1em;
+
+			background: var(--board-hint-background);
+
+			pointer-events: none;
+		}
 	}
 }
