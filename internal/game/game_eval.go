@@ -21,22 +21,12 @@ func (board *BoardState) EvaluateDistance() (result Evaluation) {
 
 	for rowIndex, row := range board.Board {
 		for columnIndex, cell := range row {
-			cellPos := CellIdentifier{int8(rowIndex), int8(columnIndex)}
-
 			if cell == GreenCell {
-				if cellPos.InMask(board.gameDefinition.GreenTargetAreaMask) {
-					continue
-				}
-
 				rowTargetDiff := len(board.Board) - 1 - rowIndex
 				colTargetDiff := len(board.Board) - 1 - columnIndex
 
 				result.Green += euclideanDistance(rowTargetDiff, colTargetDiff)
 			} else if cell == RedCell {
-				if cellPos.InMask(board.gameDefinition.RedTargetAreaMask) {
-					continue
-				}
-
 				result.Red += euclideanDistance(rowIndex, columnIndex)
 			}
 		}
