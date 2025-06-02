@@ -11,6 +11,9 @@ import { X } from "@phosphor-icons/react";
 import {
 	useIsBestMoveHintEnd,
 	useIsBestMoveHintStart,
+	useIsCellReachable,
+	useIsInBestMoveHint,
+	useValidMoves,
 } from "../../storage/moves-hint";
 
 export function GameBoardCell({
@@ -34,7 +37,17 @@ export function GameBoardCell({
 		(cell) => cell.row == rowIndex && cell.column == cellIndex,
 	);
 
+	const isCellClickable =
+		useIsCellReachable(move, {
+			row: rowIndex,
+			column: cellIndex,
+		}) || isPartOfTheMove;
+
 	const isBestMoveHintStart = useIsBestMoveHintStart({
+		row: rowIndex,
+		column: cellIndex,
+	});
+	const isInBestMoveHint = useIsInBestMoveHint({
 		row: rowIndex,
 		column: cellIndex,
 	});
@@ -54,7 +67,7 @@ export function GameBoardCell({
 		>
 			<button
 				type="button"
-				disabled={!onClick}
+				disabled={!isCellClickable || !onClick}
 				onClick={() => onClick?.(rowIndex, cellIndex)}
 			>
 				{cell != CellContent.Empty && (
@@ -67,6 +80,9 @@ export function GameBoardCell({
 			</button>
 
 			{isPartOfTheMove && <X className="remove-move-part icon" />}
+			{isInBestMoveHint && !isBestMoveHintStart && !isBestMoveHintEnd && (
+				<span className="best-move-part"></span>
+			)}
 		</td>
 	);
 }

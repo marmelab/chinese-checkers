@@ -135,4 +135,19 @@ class GameApi
 	{
 		return json_decode($this->call("/hint", $game)->getContent())?->move;
 	}
+
+	/**
+	 * @param Game $game The game for which to find the valid moves.
+	 * @param string $from Cell name from which to find valid moves.
+	 * @return object
+	 * @throws ClientExceptionInterface
+	 * @throws GameApiException
+	 * @throws RedirectionExceptionInterface
+	 * @throws ServerExceptionInterface
+	 * @throws TransportExceptionInterface
+	 */
+	public function validMoves(Game $game, string $from): object
+	{
+		return json_decode($this->call("/valid-moves?from=".urlencode($from), $game)->getContent());
+	}
 }

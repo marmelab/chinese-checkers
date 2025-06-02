@@ -207,4 +207,33 @@ class ApiController extends AbstractController
 			], 400);
 		}
 	}
+
+	#[Route("/api/v1/games/valid-moves", methods: "POST", format: "json")]
+	public function getValidMoves(Request $request, GameApi $gameApi): Response
+	{
+		$body = json_decode($request->getContent());
+		$game = Game::initFromRaw($body);
+
+		if (empty($game))
+			return $this->json([
+				"error" => "missing game state",
+			], 400);
+
+		$from = $request->query->get("from");
+		if (empty($from))
+			return $this->json([
+				"error" => "missing required cell from which to get valid moves",
+			], 400);
+
+		try
+		{
+			return $this->json($gameApi->validMoves($game, $from));
+		}
+		catch (GameApiException $exception)
+		{
+			return $this->json([
+				"error" => $exception->getMessage(),
+			], 400);
+		}
+	}
 }

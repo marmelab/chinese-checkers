@@ -5,6 +5,7 @@ import { GameBoardRow } from "./GameBoardRow";
 import { MoveState } from "./PlayableGameBoard";
 import { MoveOverlays } from "../move/MoveOverlays";
 import { useBestMoveHint } from "../../storage/moves-hint";
+import { clsx } from "clsx";
 
 export function GameBoard({
 	board,
@@ -24,7 +25,11 @@ export function GameBoard({
 
 	return (
 		<>
-			<table className="game-board">
+			<table
+				className={clsx("game-board", {
+					moving: move?.length > 0,
+				})}
+			>
 				<tbody>
 					{board.map((row, rowIndex) => (
 						<GameBoardRow

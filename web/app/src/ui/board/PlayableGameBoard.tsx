@@ -3,13 +3,27 @@ import { toast } from "react-toastify";
 import { Game, isCellPlayable, isPawnPlayable } from "../../model/game";
 import { GameBoard } from "./GameBoard";
 import { MoveActionsBar } from "../move/MoveActionsBar";
-import { executeMove } from "../../api/games";
+import { executeMove, getValidMoves } from "../../api/games";
 import { CellIdentifier, getCellName } from "../../model/cell";
 import { ApiError } from "../../api/api";
 import { showErrorToast } from "../showErrorToast";
-import { resetMovesHint, useBestMoveHint } from "../../storage/moves-hint";
+import {
+	findValidMoveToCell,
+	resetMovesHint,
+	resetValidMoves,
+	setValidMoves,
+	useValidMoves,
+} from "../../storage/moves-hint";
 
 export type MoveState = CellIdentifier[];
+
+async function fetchMoveState(game: Game, cell: CellIdentifier) {
+	try {
+		setValidMoves(await getValidMoves(game, cell));
+	} catch (error) {
+		showErrorToast(error);
+	}
+}
 
 export function PlayableGameBoard({
 	game,
@@ -22,6 +36,8 @@ export function PlayableGameBoard({
 }) {
 	const [move, setMove] = useState<MoveState>([]);
 	online = !!online;
+
+	const validMoves = useValidMoves();
 
 	const appendCellToMove = async (rowIndex: number, columnIndex: number) => {
 		const newMove: MoveState = [
@@ -55,6 +71,7 @@ export function PlayableGameBoard({
 				return;
 			}
 
+			fetchMoveState(game, { row: rowIndex, column: columnIndex });
 			appendCellToMove(rowIndex, columnIndex);
 			return;
 		}
@@ -62,7 +79,21 @@ export function PlayableGameBoard({
 		// If the clicked cell is already in the move, remove all cells after it.
 		for (const [index, cell] of move.entries()) {
 			if (cell.row == rowIndex && cell.column == columnIndex) {
-				setMove(move.toSpliced(index, move.length - index));
+				const newMove = move.toSpliced(index, move.length - index);
+				setMove(newMove);
+				if (newMove?.length == 0) resetValidMoves();
+
+				return;
+			}
+		}
+
+		if (validMoves) {
+			const move = findValidMoveToCell(validMoves, {
+				row: rowIndex,
+				column: columnIndex,
+			});
+			if (move) {
+				setMove(move);
 				return;
 			}
 		}
