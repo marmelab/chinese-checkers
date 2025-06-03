@@ -2,6 +2,7 @@ package game
 
 import (
 	"github.com/stretchr/testify/assert"
+	"os"
 	"testing"
 )
 
@@ -181,4 +182,28 @@ func TestFindPathsChainedJump(t *testing.T) {
 			},
 		},
 	}, paths, "should have one simple move and chained jumps to c6")
+}
+
+func TestBestMovesWin(t *testing.T) {
+	board := NewDefaultBoard7()
+	board.Board = [][]Cell{
+		{2, 2, 2, 2, 0, 0, 0},
+		{2, 2, 2, 0, 0, 1, 0},
+		{0, 2, 2, 0, 0, 0, 0},
+		{0, 0, 0, 0, 0, 0, 1},
+		{0, 0, 0, 0, 0, 1, 1},
+		{2, 0, 0, 0, 1, 0, 1},
+		{0, 0, 0, 1, 1, 1, 1},
+	}
+	board.CurrentPlayer = Green
+
+	assert.Nil(t, board.movePawn(board.FindBestMove()))
+	assert.Nil(t, board.movePawn(board.FindBestMove()))
+	assert.Nil(t, board.movePawn(board.FindBestMove()))
+	assert.Nil(t, board.movePawn(board.FindBestMove()))
+	board.Print(os.Stdout)
+	assert.Nil(t, board.movePawn(board.FindBestMove()))
+	board.Print(os.Stdout)
+
+	assert.Equal(t, Green, board.GetWinner())
 }

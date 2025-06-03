@@ -14,6 +14,16 @@ func (game *BoardState) minMaxEvaluateMove(depth int, minimizing bool, player Pl
 		return 0, err
 	}
 
+	if virtualGame.GetWinner() != None {
+		if virtualGame.GetWinner() == player {
+			// Try to win as soon as possible.
+			return float64(math.MinInt + depth), nil
+		} else {
+			// Try to lose as late as possible.
+			return float64(math.MaxInt - depth), nil
+		}
+	}
+
 	var moveScore float64
 	if depth >= options.maxDepth {
 		// Reached the max depth, perform a simple evaluation.
