@@ -41,7 +41,7 @@ export function BotGameView() {
 	const isPlayerTurn = botGame.game.currentPlayer == GamePlayer.Green;
 
 	useEffect(() => {
-		if (!isPlayerTurn) {
+		if (!isPlayerTurn && !botGame.game.winner) {
 			moveTheBot(botGame.game);
 		}
 	}, [isPlayerTurn, botGame.game]);
@@ -59,7 +59,8 @@ export function BotGameView() {
 					<GameBoard board={botGame.game.board} />
 				)}
 				<PlayerTurn game={botGame.game} />
-				{isPlayerTurn ? <GetMoveHint game={botGame.game} /> : <Loader />}
+				{isPlayerTurn && <GetMoveHint game={botGame.game} />}
+				{!isPlayerTurn && !botGame.game.winner && <Loader />}
 			</main>
 		</>
 	);
