@@ -36,7 +36,7 @@ func (board *BoardState) EvaluateDistance() (result DistanceEvaluation) {
 			if cell == GreenCell {
 				// Pawns already in the target area are less important.
 				if cellPos.InMask(board.gameDefinition.GreenTargetAreaMask) {
-					modifier = 0.25
+					modifier = 0.5
 				}
 
 				rowTargetDiff := int(greenTarget.Row) - rowIndex
@@ -46,7 +46,7 @@ func (board *BoardState) EvaluateDistance() (result DistanceEvaluation) {
 			} else if cell == RedCell {
 				// Pawns already in the target area are less important.
 				if cellPos.InMask(board.gameDefinition.RedTargetAreaMask) {
-					modifier = 0.25
+					modifier = 0.5
 				}
 
 				rowTargetDiff := int(redTarget.Row) - rowIndex
