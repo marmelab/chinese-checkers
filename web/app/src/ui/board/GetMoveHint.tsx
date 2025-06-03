@@ -19,6 +19,8 @@ export function GetMoveHint({ game }: { game: Game }) {
 		setLoading(false);
 	};
 
+	if (game.winner) return null;
+
 	return loading ? (
 		<Loader />
 	) : (
