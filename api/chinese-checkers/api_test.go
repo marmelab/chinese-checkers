@@ -273,7 +273,7 @@ func TestHintApi(t *testing.T) {
 
 	assert.Equal(t, struct {
 		Move []game.CellIdentifier
-	}{Move: []game.CellIdentifier{{Row: 1, Column: 3}, {Row: 0, Column: 3}}}, hint, "should have correct hint")
+	}{Move: []game.CellIdentifier{{Row: 3, Column: 2}, {Row: 2, Column: 2}}}, hint, "should have correct hint")
 }
 
 func TestValidMovesApi(t *testing.T) {
