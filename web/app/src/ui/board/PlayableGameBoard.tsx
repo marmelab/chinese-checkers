@@ -130,7 +130,13 @@ export function PlayableGameBoard({
 
 	return (
 		<>
-			<GameBoard board={game.board} move={move} onCellClick={handleCellClick} />
+			<GameBoard
+				board={game.board}
+				move={move}
+				lastMove={game.lastMove}
+				currentPlayer={game.currentPlayer}
+				onCellClick={handleCellClick}
+			/>
 
 			{isMoveStarted && (
 				<MoveActionsBar

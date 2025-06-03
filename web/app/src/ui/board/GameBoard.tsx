@@ -6,10 +6,13 @@ import { MoveState } from "./PlayableGameBoard";
 import { MoveOverlays } from "../move/MoveOverlays";
 import { useBestMoveHint } from "../../storage/moves-hint";
 import { clsx } from "clsx";
+import { GamePlayer } from "../../model/game-player";
 
 export function GameBoard({
 	board,
 	move,
+	lastMove,
+	currentPlayer,
 	onCellClick,
 }: {
 	board: Game["board"];
@@ -19,12 +22,19 @@ export function GameBoard({
 	 */
 	move?: MoveState;
 
+	/**
+	 * The last move to show on the board.
+	 */
+	lastMove?: MoveState;
+
+	currentPlayer?: GamePlayer;
+
 	onCellClick?: (rowIndex: number, columnIndex: number) => void;
 }) {
 	const bestMoveHint = useBestMoveHint();
 
 	return (
-		<>
+		<div id="game-board-container">
 			<table
 				className={clsx("game-board", {
 					moving: move?.length > 0,
@@ -47,6 +57,13 @@ export function GameBoard({
 			{move?.length == 0 && bestMoveHint && (
 				<MoveOverlays move={bestMoveHint} hint />
 			)}
-		</>
+			{move?.length == 0 && lastMove?.length > 0 && (
+				<MoveOverlays
+					move={lastMove}
+					green={currentPlayer == GamePlayer.Red}
+					red={currentPlayer == GamePlayer.Green}
+				/>
+			)}
+		</div>
 	);
 }

@@ -34,13 +34,25 @@ export function MoveOverlay({
 						?.getBoundingClientRect();
 
 					if (fromPosition && toPosition) {
+						const gameBoardPosition = document
+							.getElementById("game-board-container")
+							.getBoundingClientRect();
+
 						// Center of the origin cell.
-						const x1 = fromPosition.left + fromPosition.width / 2;
-						const y1 = fromPosition.top + fromPosition.height / 2;
+						const x1 =
+							fromPosition.left -
+							gameBoardPosition.left +
+							fromPosition.width / 2;
+						const y1 =
+							fromPosition.top -
+							gameBoardPosition.top +
+							fromPosition.height / 2;
 
 						// Center of the destination cell.
-						const x2 = toPosition.left + toPosition.width / 2;
-						const y2 = toPosition.top + toPosition.height / 2;
+						const x2 =
+							toPosition.left - gameBoardPosition.left + toPosition.width / 2;
+						const y2 =
+							toPosition.top - gameBoardPosition.top + toPosition.height / 2;
 
 						const distance = Math.sqrt(
 							(x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1),

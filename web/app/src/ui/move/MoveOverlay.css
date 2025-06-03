@@ -1,3 +1,8 @@
+#game-board-container
+{
+	position: relative;
+}
+
 .move-overlay
 {
 	position: absolute;
@@ -24,6 +29,16 @@
 	&.hint
 	{
 		background: linear-gradient(90deg, transparent, rgba(255, 225, 0, 0.6), transparent);
+	}
+
+	&.green
+	{
+		background: linear-gradient(90deg, transparent, var(--board-green-background), transparent);
+	}
+
+	&.red
+	{
+		background: linear-gradient(90deg, transparent, var(--board-red-background), transparent);
 	}
 }
 

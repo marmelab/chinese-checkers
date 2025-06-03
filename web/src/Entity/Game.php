@@ -74,6 +74,14 @@ class Game implements \JsonSerializable
 	private GamePlayer|null $winner = null;
 
 	/**
+	 * The last played move.
+	 * @var object{row: int, column: int}[]
+	 */
+	#[ORM\Column(type: "json", options: ["jsonb" => true])]
+	#[Groups(["game:read"])]
+	private array|null $lastMove = null;
+
+	/**
 	 * Related online players.
 	 * @var Collection<int, OnlinePlayer>
 	 */
@@ -215,6 +223,16 @@ class Game implements \JsonSerializable
 		$this->winner = $winner;
 	}
 
+	public function getLastMove(): ?array
+	{
+		return $this->lastMove;
+	}
+
+	public function setLastMove(?array $lastMove): void
+	{
+		$this->lastMove = $lastMove;
+	}
+
 	/**
 	 * Get related players of the game.
 	 * @return Collection<int, OnlinePlayer>
@@ -246,6 +264,8 @@ class Game implements \JsonSerializable
 		$board = new self();
 		$board->board = $rawBoard->board;
 		$board->currentPlayer = GamePlayer::from($rawBoard->currentPlayer);
+		if (!empty($rawBoard->lastMove))
+			$board->lastMove = $rawBoard->lastMove;
 
 		return $board;
 	}
