@@ -19,8 +19,8 @@ func TestGameEvaluation(t *testing.T) {
 		}
 
 		chances := board.Evaluate()
-		assert.Equal(t, 65, chances.Green)
-		assert.Equal(t, 35, chances.Red)
+		assert.Equal(t, 71, chances.Green)
+		assert.Equal(t, 29, chances.Red)
 	}
 
 	{
@@ -36,8 +36,8 @@ func TestGameEvaluation(t *testing.T) {
 		}
 
 		chances := board.Evaluate()
-		assert.Equal(t, 71, chances.Green)
-		assert.Equal(t, 29, chances.Red)
+		assert.Equal(t, 77, chances.Green)
+		assert.Equal(t, 23, chances.Red)
 	}
 
 	{
@@ -53,8 +53,8 @@ func TestGameEvaluation(t *testing.T) {
 		}
 
 		chances := board.Evaluate()
-		assert.Equal(t, 65, chances.Green)
-		assert.Equal(t, 35, chances.Red)
+		assert.Equal(t, 68, chances.Green)
+		assert.Equal(t, 32, chances.Red)
 	}
 
 	{

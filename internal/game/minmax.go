@@ -17,10 +17,10 @@ func (game *BoardState) minMaxEvaluateMove(depth int, minimizing bool, player Pl
 	if virtualGame.GetWinner() != None {
 		if virtualGame.GetWinner() == player {
 			// Try to win as soon as possible.
-			return float64(math.MinInt + depth), nil
+			return float64(math.MinInt + depth*10_000), nil
 		} else {
 			// Try to lose as late as possible.
-			return float64(math.MaxInt - depth), nil
+			return float64(math.MaxInt - depth*10_000), nil
 		}
 	}
 

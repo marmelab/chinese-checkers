@@ -2,7 +2,6 @@ package game
 
 import (
 	"github.com/stretchr/testify/assert"
-	"os"
 	"testing"
 )
 
@@ -185,25 +184,49 @@ func TestFindPathsChainedJump(t *testing.T) {
 }
 
 func TestBestMovesWin(t *testing.T) {
-	board := NewDefaultBoard7()
-	board.Board = [][]Cell{
-		{2, 2, 2, 2, 0, 0, 0},
-		{2, 2, 2, 0, 0, 1, 0},
-		{0, 2, 2, 0, 0, 0, 0},
-		{0, 0, 0, 0, 0, 0, 1},
-		{0, 0, 0, 0, 0, 1, 1},
-		{2, 0, 0, 0, 1, 0, 1},
-		{0, 0, 0, 1, 1, 1, 1},
+	{
+		board := NewDefaultBoard7()
+		board.Board = [][]Cell{
+			{2, 2, 2, 2, 0, 0, 0},
+			{2, 2, 2, 0, 0, 1, 0},
+			{0, 2, 2, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 1},
+			{0, 0, 0, 0, 0, 1, 1},
+			{2, 0, 0, 0, 1, 0, 1},
+			{0, 0, 0, 1, 1, 1, 1},
+		}
+		board.CurrentPlayer = Green
+
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+
+		assert.Equal(t, Green, board.GetWinner())
 	}
-	board.CurrentPlayer = Green
 
-	assert.Nil(t, board.movePawn(board.FindBestMove()))
-	assert.Nil(t, board.movePawn(board.FindBestMove()))
-	assert.Nil(t, board.movePawn(board.FindBestMove()))
-	assert.Nil(t, board.movePawn(board.FindBestMove()))
-	board.Print(os.Stdout)
-	assert.Nil(t, board.movePawn(board.FindBestMove()))
-	board.Print(os.Stdout)
+	{
+		board := NewDefaultBoard7()
+		board.Board = [][]Cell{
+			{2, 2, 2, 2, 0, 0, 0},
+			{2, 2, 2, 0, 0, 1, 0},
+			{0, 2, 2, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 1},
+			{0, 0, 0, 0, 0, 1, 1},
+			{0, 0, 0, 0, 1, 1, 1},
+			{0, 2, 0, 1, 1, 1, 0},
+		}
+		board.CurrentPlayer = Green
 
-	assert.Equal(t, Green, board.GetWinner())
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+
+		assert.Equal(t, Green, board.GetWinner())
+	}
 }
