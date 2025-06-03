@@ -3,12 +3,12 @@ import { CellIdentifier } from "../../model/cell";
 import { MoveOverlay } from "./MoveOverlay";
 import { MoveState } from "../board/PlayableGameBoard";
 import { clsx } from "clsx";
+import { GamePlayer } from "../../model/game-player";
 
 export function MoveOverlays({
 	move,
 	hint,
-	green,
-	red,
+	player,
 }: {
 	/**
 	 * The move for which to show overlays.
@@ -17,8 +17,7 @@ export function MoveOverlays({
 
 	hint?: boolean;
 
-	green?: boolean;
-	red?: boolean;
+	player?: GamePlayer;
 }) {
 	hint = !!hint;
 
@@ -33,8 +32,8 @@ export function MoveOverlays({
 						key={`overlay-${previousCell.row}-${previousCell.column}-${cell.row}-${cell.column}`}
 						className={clsx({
 							hint: hint,
-							green: green,
-							red: red,
+							green: player == GamePlayer.Green,
+							red: player == GamePlayer.Red,
 						})}
 						from={previousCell}
 						to={cell}

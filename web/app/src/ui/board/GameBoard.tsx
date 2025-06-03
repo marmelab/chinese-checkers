@@ -60,8 +60,11 @@ export function GameBoard({
 			{move?.length == 0 && lastMove?.length > 0 && (
 				<MoveOverlays
 					move={lastMove}
-					green={currentPlayer == GamePlayer.Red}
-					red={currentPlayer == GamePlayer.Green}
+					player={
+						currentPlayer == GamePlayer.Green
+							? GamePlayer.Red
+							: GamePlayer.Green
+					}
 				/>
 			)}
 		</div>
