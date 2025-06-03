@@ -120,6 +120,7 @@ export function PlayableGameBoard({
 				board: updatedGame.board,
 				currentPlayer: updatedGame.currentPlayer,
 				winner: updatedGame.winner,
+				lastMove: updatedGame.lastMove,
 			});
 		} catch (error) {
 			showErrorToast(error);
