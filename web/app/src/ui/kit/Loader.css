@@ -20,8 +20,8 @@ main.loader
 		width: 1em;
 		height: 1em;
 		border-radius: 50%;
-		background: var(--lightgray);
-		box-shadow: 2em 0 var(--lightgray);
+		background: var(--light-gray);
+		box-shadow: 2em 0 var(--light-gray);
 		left: 0;
 		top: 0;
 		animation: ballMoveX 0.75s linear infinite;
