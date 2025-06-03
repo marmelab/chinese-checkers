@@ -83,7 +83,7 @@ func HandleHint(c echo.Context) error {
 	return c.JSON(http.StatusOK, struct {
 		Move []game.CellIdentifier `json:"move"`
 	}{
-		Move: board.FindBestMove(board.CurrentPlayer),
+		Move: board.FindBestMove(),
 	})
 }
 

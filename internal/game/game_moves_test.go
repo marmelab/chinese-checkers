@@ -8,9 +8,9 @@ import (
 func TestFindBestMove(t *testing.T) {
 	{
 		board := NewDefaultBoard7()
-
-		bestMove := board.FindBestMove(Green)
-		assert.Equal(t, []CellIdentifier{{0, 2}, {0, 4}}, bestMove)
+		board.CurrentPlayer = Green
+		bestMove := board.FindBestMove()
+		assert.Equal(t, []CellIdentifier{{2, 0}, {4, 0}}, bestMove)
 	}
 
 	{
@@ -26,11 +26,13 @@ func TestFindBestMove(t *testing.T) {
 		}
 
 		{
-			bestMove := board.FindBestMove(Green)
+			board.CurrentPlayer = Green
+			bestMove := board.FindBestMove()
 			assert.Equal(t, []CellIdentifier{{2, 6}, {3, 6}}, bestMove)
 		}
 		{
-			bestMove := board.FindBestMove(Red)
+			board.CurrentPlayer = Red
+			bestMove := board.FindBestMove()
 			assert.Equal(t, []CellIdentifier{{0, 4}, {0, 3}}, bestMove)
 		}
 	}
@@ -48,12 +50,14 @@ func TestFindBestMove(t *testing.T) {
 		}
 
 		{
-			bestMove := board.FindBestMove(Green)
+			board.CurrentPlayer = Green
+			bestMove := board.FindBestMove()
 			assert.Equal(t, []CellIdentifier{{0, 3}, {2, 3}, {4, 3}, {4, 5}}, bestMove)
 		}
 		{
-			bestMove := board.FindBestMove(Red)
-			assert.Equal(t, []CellIdentifier{{6, 5}, {4, 5}, {4, 3}, {4, 1}}, bestMove)
+			board.CurrentPlayer = Red
+			bestMove := board.FindBestMove()
+			assert.Equal(t, []CellIdentifier{{6, 5}, {4, 5}, {4, 3}, {2, 3}}, bestMove)
 		}
 	}
 }
@@ -177,4 +181,52 @@ func TestFindPathsChainedJump(t *testing.T) {
 			},
 		},
 	}, paths, "should have one simple move and chained jumps to c6")
+}
+
+func TestBestMovesWin(t *testing.T) {
+	{
+		board := NewDefaultBoard7()
+		board.Board = [][]Cell{
+			{2, 2, 2, 2, 0, 0, 0},
+			{2, 2, 2, 0, 0, 1, 0},
+			{0, 2, 2, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 1},
+			{0, 0, 0, 0, 0, 1, 1},
+			{2, 0, 0, 0, 1, 0, 1},
+			{0, 0, 0, 1, 1, 1, 1},
+		}
+		board.CurrentPlayer = Green
+
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+
+		assert.Equal(t, Green, board.GetWinner())
+	}
+
+	{
+		board := NewDefaultBoard7()
+		board.Board = [][]Cell{
+			{2, 2, 2, 2, 0, 0, 0},
+			{2, 2, 2, 0, 0, 1, 0},
+			{0, 2, 2, 0, 0, 0, 0},
+			{0, 0, 0, 0, 0, 0, 1},
+			{0, 0, 0, 0, 0, 1, 1},
+			{0, 0, 0, 0, 1, 1, 1},
+			{0, 2, 0, 1, 1, 1, 0},
+		}
+		board.CurrentPlayer = Green
+
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMove()))
+
+		assert.Equal(t, Green, board.GetWinner())
+	}
 }
