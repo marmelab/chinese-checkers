@@ -24,7 +24,7 @@ func (board *BoardState) EvaluateDistance() (result DistanceEvaluation) {
 	result.Green = 0
 	result.Red = 0
 
-	greenTarget := CellIdentifier{6, 6}
+	greenTarget := CellIdentifier{int8(len(board.Board) - 1), int8(len(board.Board) - 1)}
 	redTarget := CellIdentifier{0, 0}
 
 	for rowIndex, row := range board.Board {
