@@ -10,6 +10,7 @@ import { PlayView } from "./views/PlayView";
 import { MyAccountView } from "./views/MyAccountView";
 import { SignUpView } from "./views/SignUpView";
 import { RegisteredView } from "./views/RegisteredView";
+import { BotGameView } from "./views/BotGameView";
 
 export const router = createBrowserRouter([
 	{
@@ -28,6 +29,10 @@ export const router = createBrowserRouter([
 			{
 				path: "game/local",
 				Component: LocalGameView,
+			},
+			{
+				path: "game/bot",
+				Component: BotGameView,
 			},
 			{
 				path: "game/online/new",
