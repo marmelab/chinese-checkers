@@ -5,6 +5,7 @@ import {
 	Planet,
 	Play,
 	PlusCircle,
+	Robot,
 	SignIn,
 	UserPlus,
 } from "@phosphor-icons/react";
@@ -12,6 +13,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "./GameView.css";
 import { resetLocalGame } from "../../storage/local-game";
 import { useAuthenticatedAccount } from "../../storage/authentication";
+import { resetBotGame } from "../../storage/bot-game";
 
 export function PlayView() {
 	const navigate = useNavigate();
@@ -73,6 +75,26 @@ export function PlayView() {
 				<Link role="button" to={"/app/game/local"}>
 					<Play />
 					Resume local game
+				</Link>
+
+				<h2>
+					<Robot /> Robot
+				</h2>
+
+				<button
+					type="button"
+					onClick={() => {
+						resetBotGame();
+						navigate("/app/game/bot");
+					}}
+				>
+					<PlusCircle />
+					New game with the robot
+				</button>
+
+				<Link role="button" to={"/app/game/bot"}>
+					<Play />
+					Resume game with the robot
 				</Link>
 			</main>
 		</>
