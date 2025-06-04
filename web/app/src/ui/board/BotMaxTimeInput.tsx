@@ -10,9 +10,7 @@ export function BotMaxTimeInput({
 }) {
 	return (
 		<div className="max-time-input">
-			<label htmlFor="max-time">
-				Temps maximal de réflexion du robot (en secondes)
-			</label>
+			<label htmlFor="max-time">Robot maximum thinking time (in seconds)</label>
 			<input
 				type="number"
 				id="max-time"
