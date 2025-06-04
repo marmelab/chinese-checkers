@@ -33,9 +33,6 @@ class ApiController extends AbstractController
 	{
 		return $this->json(
 			$this->entityManager->getRepository(Game::class)->findAllOngoingGames(),
-			context: [
-				"groups" => "game:read",
-			],
 		);
 	}
 
@@ -51,7 +48,7 @@ class ApiController extends AbstractController
 
 		if (empty($game)) throw $this->createNotFoundException();
 
-		return $this->json($game, context: [ "groups" => "game:read" ]);
+		return $this->json($game);
 	}
 
 	/**
@@ -69,7 +66,7 @@ class ApiController extends AbstractController
 			return $this->json([ "error" => "you must set a player name to create a game" ], 400);
 
 		$game = $onlineGame->newGame($body->playerName, $this->getUser());
-		return $this->json($game, context: [ "groups" => "game:read" ]);
+		return $this->json($game);
 	}
 
 	/**
@@ -96,7 +93,7 @@ class ApiController extends AbstractController
 
 		$onlineGame->joinAsPlayer($game, GamePlayer::Red, $body->playerName, $this->getUser());
 
-		return $this->json($game, context: [ "groups" => "game:read" ]);
+		return $this->json($game);
 	}
 
 	/**
@@ -124,7 +121,7 @@ class ApiController extends AbstractController
 		{
 			$game = $gameApi->move($game, $body?->move ?? []);
 			$game->setWinner($gameApi->getWinner($game));
-			return $this->json($game, context: [ "groups" => "game:read" ]);
+			return $this->json($game);
 		}
 		catch (GameApiException $exception)
 		{
@@ -152,7 +149,7 @@ class ApiController extends AbstractController
 			$updatedGameState = $gameApi->move($game, $body?->move ?? []);
 			$updatedGameState->setWinner($gameApi->getWinner($updatedGameState));
 			$onlineGame->updateGame($game, $updatedGameState);
-			return $this->json($game, context: [ "groups" => "game:read" ]);
+			return $this->json($game);
 		}
 		catch (GameApiException $exception)
 		{

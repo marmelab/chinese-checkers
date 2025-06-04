@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import "./GameView.css";
 import { PlayerTurn } from "../board/PlayerTurn";
-import { setLocalGame, useLocalGameStore } from "../../storage/local-game";
 import { PlayableGameBoard } from "../board/PlayableGameBoard";
 import { PlayersWinChances } from "../board/PlayersWinChances";
 import { GetMoveHint } from "../board/GetMoveHint";
@@ -29,6 +28,7 @@ async function moveTheBot(game: Game): Promise<void> {
 			board: updatedGame.board,
 			currentPlayer: updatedGame.currentPlayer,
 			winner: updatedGame.winner,
+			lastMove: updatedGame.lastMove,
 		});
 	} catch (error) {
 		showErrorToast(error);
@@ -45,7 +45,7 @@ export function BotGameView() {
 	}, []);
 
 	useEffect(() => {
-		if (!isPlayerTurn) {
+		if (!isPlayerTurn && !botGame.game.winner) {
 			moveTheBot(botGame.game);
 		}
 	}, [isPlayerTurn, botGame.game]);
@@ -63,7 +63,8 @@ export function BotGameView() {
 					<GameBoard board={botGame.game.board} />
 				)}
 				<PlayerTurn game={botGame.game} />
-				{isPlayerTurn ? <GetMoveHint game={botGame.game} /> : <Loader />}
+				{isPlayerTurn && <GetMoveHint game={botGame.game} />}
+				{!isPlayerTurn && !botGame.game.winner && <Loader />}
 			</main>
 		</>
 	);

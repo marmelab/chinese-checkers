@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
 /**
  * Entity of an online player.
@@ -32,6 +33,7 @@ class OnlinePlayer
 	 */
 	#[ORM\ManyToOne(targetEntity: Game::class, inversedBy: "players")]
 	#[ORM\JoinColumn(name: "game_uuid", referencedColumnName: "uuid")]
+	#[Ignore]
 	private Game $game;
 
 	/**

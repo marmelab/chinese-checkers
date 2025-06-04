@@ -25,6 +25,7 @@ class Account implements UserInterface, PasswordAuthenticatedUserInterface
 
 	#[ORM\Column(length: 180)]
 	#[Assert\Email]
+	#[Ignore]
 	private ?string $email = null;
 
 	/**

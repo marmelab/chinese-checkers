@@ -108,7 +108,7 @@ class OnlineGame
 
 		$this->entityManager->refresh($game);
 		$this->mercure->publish(new Update($game->getUuid(),
-			$this->serializer->serialize($game, "json", [ "groups" => ["game:read"] ])
+			$this->serializer->serialize($game, "json")
 		));
 
 		return $onlinePlayer;
@@ -135,12 +135,13 @@ class OnlineGame
 		$toUpdate->setBoard($updatedGameState->getBoard());
 		$toUpdate->setCurrentPlayer($updatedGameState->getCurrentPlayer());
 		$toUpdate->setWinner($updatedGameState->getWinner());
+		$toUpdate->setLastMove($updatedGameState->getLastMove());
 
 		$this->entityManager->persist($toUpdate);
 		$this->entityManager->flush();
 
 		$this->mercure->publish(new Update($toUpdate->getUuid(),
-			$this->serializer->serialize($toUpdate, "json", [ "groups" => ["game:read"] ])
+			$this->serializer->serialize($toUpdate, "json")
 		));
 	}
 

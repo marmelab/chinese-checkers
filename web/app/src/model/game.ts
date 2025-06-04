@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { OnlinePlayer, zOnlinePlayer } from "./online-player";
 import { GamePlayer, zGamePlayer } from "./game-player";
-import { CellContent, zCellContent } from "./cell";
+import { CellContent, zCellContent, zCellIdentifier } from "./cell";
 
 export const zGame = z.object({
 	uuid: z.string().uuid().optional(),
@@ -10,6 +10,7 @@ export const zGame = z.object({
 	board: z.array(z.array(zCellContent)),
 	currentPlayer: zGamePlayer,
 	winner: zGamePlayer.nullish(),
+	lastMove: z.array(zCellIdentifier).nullish(),
 
 	players: z.array(zOnlinePlayer),
 });
