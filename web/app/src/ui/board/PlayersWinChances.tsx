@@ -10,7 +10,7 @@ export function PlayersWinChances(props: { game: Game }) {
 	return (
 		// Hide the win chances display when an error happen.
 		<ErrorBoundary onError={(error) => showErrorToast(error)} fallback={<></>}>
-			<Suspense fallback={<Loader />}>
+			<Suspense fallback={<Loader className="win-chances" />}>
 				<AsyncPlayersWinChances {...props} />
 			</Suspense>
 		</ErrorBoundary>
