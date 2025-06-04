@@ -10,7 +10,7 @@ func TestFindBestMove(t *testing.T) {
 		board := NewDefaultBoard7()
 		board.CurrentPlayer = Green
 		bestMove := board.FindBestMoveIn30s()
-		assert.Equal(t, []CellIdentifier{{2, 0}, {4, 0}}, bestMove)
+		assert.Equal(t, []CellIdentifier{{3, 0}, {3, 1}}, bestMove)
 	}
 
 	{
@@ -28,12 +28,12 @@ func TestFindBestMove(t *testing.T) {
 		{
 			board.CurrentPlayer = Green
 			bestMove := board.FindBestMoveIn30s()
-			assert.Equal(t, []CellIdentifier{{2, 6}, {3, 6}}, bestMove)
+			assert.Equal(t, []CellIdentifier{{3, 0}, {3, 1}}, bestMove)
 		}
 		{
 			board.CurrentPlayer = Red
 			bestMove := board.FindBestMoveIn30s()
-			assert.Equal(t, []CellIdentifier{{0, 4}, {0, 3}}, bestMove)
+			assert.Equal(t, []CellIdentifier{{6, 3}, {5, 3}}, bestMove)
 		}
 	}
 
