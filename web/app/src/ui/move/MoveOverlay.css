@@ -34,11 +34,13 @@
 	&.green
 	{
 		background: linear-gradient(90deg, transparent, var(--board-green-background), transparent);
+		> .icon { display: none; }
 	}
 
 	&.red
 	{
 		background: linear-gradient(90deg, transparent, var(--board-red-background), transparent);
+		> .icon { display: none; }
 	}
 }
 
