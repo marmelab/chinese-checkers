@@ -5,6 +5,8 @@ import (
 	"github.com/marmelab/chinese-checkers/internal/game"
 	"io"
 	"net/http"
+	"strconv"
+	"time"
 )
 
 // Error response structure.
@@ -80,10 +82,16 @@ func HandleHint(c echo.Context) error {
 		return err
 	}
 
+	maxTime := time.Now().Unix() + 30
+	// Get the max allowed time parameter.
+	if timeParam, err := strconv.Atoi(c.QueryParam("time")); err == nil {
+		maxTime = time.Now().Unix() + int64(timeParam)
+	}
+
 	return c.JSON(http.StatusOK, struct {
 		Move []game.CellIdentifier `json:"move"`
 	}{
-		Move: board.FindBestMove(),
+		Move: board.FindBestMove(maxTime),
 	})
 }
 

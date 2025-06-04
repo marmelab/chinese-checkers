@@ -1,9 +1,16 @@
 package game
 
+import "time"
+
 // FindBestMove of the provided player.
-func (game *BoardState) FindBestMove() (bestMove []CellIdentifier) {
-	bestMove, _ = game.DefaultMinMaxBestMove()
+func (game *BoardState) FindBestMove(maxTime int64) (bestMove []CellIdentifier) {
+	bestMove, _ = game.DefaultMinMaxBestMove(maxTime)
 	return
+}
+
+// FindBestMove in less than 30s.
+func (game *BoardState) FindBestMoveIn30s() []CellIdentifier {
+	return game.FindBestMove(time.Now().Unix() + 30)
 }
 
 // A tree of valid move paths.

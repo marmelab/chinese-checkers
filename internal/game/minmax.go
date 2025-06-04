@@ -2,10 +2,12 @@ package game
 
 import (
 	"math"
+	"time"
 )
 
 type MinMaxOptions = struct {
 	maxDepth int
+	maxTime  int64
 }
 
 func (game *BoardState) minMaxEvaluateMove(depth int, minimizing bool, player Player, options MinMaxOptions, move []CellIdentifier) (float64, error) {
@@ -25,8 +27,8 @@ func (game *BoardState) minMaxEvaluateMove(depth int, minimizing bool, player Pl
 	}
 
 	var moveScore float64
-	if depth >= options.maxDepth {
-		// Reached the max depth, perform a simple evaluation.
+	if depth >= options.maxDepth || time.Now().Unix() > options.maxTime {
+		// Reached max depth or max time, perform a simple evaluation.
 		distances := virtualGame.EvaluateDistance()
 		moveScore = distances.Green - distances.Red
 		if player == Red {
@@ -74,6 +76,6 @@ func (game *BoardState) MinMaxBestMove(depth int, minimizing bool, player Player
 	return
 }
 
-func (game *BoardState) DefaultMinMaxBestMove() (bestMove []CellIdentifier, bestScore float64) {
-	return game.MinMaxBestMove(0, true, game.CurrentPlayer, MinMaxOptions{maxDepth: 3})
+func (game *BoardState) DefaultMinMaxBestMove(maxTime int64) (bestMove []CellIdentifier, bestScore float64) {
+	return game.MinMaxBestMove(0, true, game.CurrentPlayer, MinMaxOptions{maxDepth: 3, maxTime: maxTime})
 }
