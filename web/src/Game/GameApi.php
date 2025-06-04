@@ -124,6 +124,7 @@ class GameApi
 	/**
 	 * Get a hint of the best available move of the current player.
 	 * @param Game $game The game for which to find the hint.
+	 * @param int|null $time Maximum time in seconds to find the best move.
 	 * @return object{row: int, column: int}[]
 	 * @throws ClientExceptionInterface
 	 * @throws GameApiException
@@ -131,9 +132,9 @@ class GameApi
 	 * @throws ServerExceptionInterface
 	 * @throws TransportExceptionInterface
 	 */
-	public function hint(Game $game): array
+	public function hint(Game $game, ?int $time = null): array
 	{
-		return json_decode($this->call("/hint", $game)->getContent())?->move;
+		return json_decode($this->call("/hint" . (!empty($time) ? "?time=$time" : ""), $game)->getContent())?->move;
 	}
 
 	/**

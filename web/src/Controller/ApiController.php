@@ -193,9 +193,11 @@ class ApiController extends AbstractController
 				"error" => "missing game state",
 			], 400);
 
+		$time = intval($request->query->get("time"));
+
 		try
 		{
-			return $this->json($gameApi->hint($game));
+			return $this->json($gameApi->hint($game, $time > 0 ? $time : null));
 		}
 		catch (GameApiException $exception)
 		{

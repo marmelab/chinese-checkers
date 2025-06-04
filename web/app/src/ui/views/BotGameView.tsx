@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./GameView.css";
 import { PlayerTurn } from "../board/PlayerTurn";
 import { PlayableGameBoard } from "../board/PlayableGameBoard";
@@ -13,10 +13,11 @@ import { Game } from "../../model/game";
 import { getCellName } from "../../model/cell";
 import { showErrorToast } from "../showErrorToast";
 import { resetMovesHint } from "../../storage/moves-hint";
+import { BotMaxTimeInput } from "../board/BotMaxTimeInput";
 
-async function moveTheBot(game: Game): Promise<void> {
+async function moveTheBot(game: Game, maxTime: number): Promise<void> {
 	try {
-		const botMove = await getHint(game);
+		const botMove = await getHint(game, maxTime);
 		const updatedGame = await executeMove(
 			game,
 			botMove.map((cell) => getCellName(cell.row, cell.column)),
@@ -38,6 +39,8 @@ async function moveTheBot(game: Game): Promise<void> {
 export function BotGameView() {
 	const botGame = useBotGameStore();
 
+	const [maxTime, setMaxTime] = useState(30);
+
 	const isPlayerTurn = botGame.game.currentPlayer == GamePlayer.Green;
 
 	useEffect(() => {
@@ -46,7 +49,7 @@ export function BotGameView() {
 
 	useEffect(() => {
 		if (!isPlayerTurn && !botGame.game.winner) {
-			moveTheBot(botGame.game);
+			moveTheBot(botGame.game, maxTime);
 		}
 	}, [isPlayerTurn, botGame.game]);
 
@@ -65,6 +68,8 @@ export function BotGameView() {
 				<PlayerTurn game={botGame.game} />
 				{isPlayerTurn && <GetMoveHint game={botGame.game} />}
 				{!isPlayerTurn && !botGame.game.winner && <Loader />}
+
+				<BotMaxTimeInput value={maxTime} onChange={setMaxTime} />
 			</main>
 		</>
 	);

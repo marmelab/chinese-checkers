@@ -1,0 +1,21 @@
+.max-time-input
+{
+	text-align: center;
+
+	label
+	{
+		margin: 0;
+	}
+
+	input
+	{
+		display: inline-block;
+		margin-right: 1em;
+		vertical-align: middle;
+
+		&:last-of-type
+		{
+			margin-right: auto;
+		}
+	}
+}
