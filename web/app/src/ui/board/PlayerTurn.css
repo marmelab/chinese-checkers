@@ -1,6 +1,7 @@
 .player-turn
 {
 	font-size: 1.2em;
+	text-align: center;
 
 	strong.green
 	{ color: var(--green); }

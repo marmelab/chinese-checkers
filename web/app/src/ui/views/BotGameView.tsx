@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import "./GameView.css";
 import { PlayerTurn } from "../board/PlayerTurn";
-import { setLocalGame, useLocalGameStore } from "../../storage/local-game";
 import { PlayableGameBoard } from "../board/PlayableGameBoard";
 import { PlayersWinChances } from "../board/PlayersWinChances";
 import { GetMoveHint } from "../board/GetMoveHint";
@@ -13,6 +12,7 @@ import { executeMove, getHint } from "../../api/games";
 import { Game } from "../../model/game";
 import { getCellName } from "../../model/cell";
 import { showErrorToast } from "../showErrorToast";
+import { resetMovesHint } from "../../storage/moves-hint";
 
 async function moveTheBot(game: Game): Promise<void> {
 	try {
@@ -39,6 +39,10 @@ export function BotGameView() {
 	const botGame = useBotGameStore();
 
 	const isPlayerTurn = botGame.game.currentPlayer == GamePlayer.Green;
+
+	useEffect(() => {
+		resetMovesHint();
+	}, []);
 
 	useEffect(() => {
 		if (!isPlayerTurn && !botGame.game.winner) {
