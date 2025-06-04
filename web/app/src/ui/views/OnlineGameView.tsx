@@ -12,7 +12,6 @@ import {
 	getGameRedPlayer,
 	getWinnerPlayer,
 	isGameStarted,
-	zGame,
 } from "../../model/game";
 import { ErrorView } from "./ErrorView";
 import { getOnlineGamePlayerId } from "../../storage/online-game";
@@ -21,10 +20,15 @@ import { confetti } from "@tsparticles/confetti";
 import { useGameLiveUpdate } from "./useGameLiveUpdate";
 import { PlayersWinChances } from "../board/PlayersWinChances";
 import { GetMoveHint } from "../board/GetMoveHint";
+import { resetMovesHint } from "../../storage/moves-hint";
 
 export function OnlineGameView() {
 	const gameUuid = useParams().uuid;
 	const fetchedGame = useFetchGame(gameUuid);
+
+	useEffect(() => {
+		resetMovesHint();
+	}, []);
 
 	const [updatedGame, setUpdatedGame] = useState<Game | null>(null);
 
