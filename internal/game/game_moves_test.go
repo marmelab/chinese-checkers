@@ -9,8 +9,8 @@ func TestFindBestMove(t *testing.T) {
 	{
 		board := NewDefaultBoard7()
 		board.CurrentPlayer = Green
-		bestMove := board.FindBestMove()
-		assert.Equal(t, []CellIdentifier{{2, 0}, {4, 0}}, bestMove)
+		bestMove := board.FindBestMoveIn30s()
+		assert.Equal(t, []CellIdentifier{{3, 0}, {3, 1}}, bestMove)
 	}
 
 	{
@@ -27,13 +27,13 @@ func TestFindBestMove(t *testing.T) {
 
 		{
 			board.CurrentPlayer = Green
-			bestMove := board.FindBestMove()
-			assert.Equal(t, []CellIdentifier{{2, 6}, {3, 6}}, bestMove)
+			bestMove := board.FindBestMoveIn30s()
+			assert.Equal(t, []CellIdentifier{{3, 0}, {3, 1}}, bestMove)
 		}
 		{
 			board.CurrentPlayer = Red
-			bestMove := board.FindBestMove()
-			assert.Equal(t, []CellIdentifier{{0, 4}, {0, 3}}, bestMove)
+			bestMove := board.FindBestMoveIn30s()
+			assert.Equal(t, []CellIdentifier{{6, 3}, {5, 3}}, bestMove)
 		}
 	}
 
@@ -51,12 +51,12 @@ func TestFindBestMove(t *testing.T) {
 
 		{
 			board.CurrentPlayer = Green
-			bestMove := board.FindBestMove()
+			bestMove := board.FindBestMoveIn30s()
 			assert.Equal(t, []CellIdentifier{{0, 3}, {2, 3}, {4, 3}, {4, 5}}, bestMove)
 		}
 		{
 			board.CurrentPlayer = Red
-			bestMove := board.FindBestMove()
+			bestMove := board.FindBestMoveIn30s()
 			assert.Equal(t, []CellIdentifier{{6, 5}, {4, 5}, {4, 3}, {2, 3}}, bestMove)
 		}
 	}
@@ -197,11 +197,11 @@ func TestBestMovesWin(t *testing.T) {
 		}
 		board.CurrentPlayer = Green
 
-		assert.Nil(t, board.movePawn(board.FindBestMove()))
-		assert.Nil(t, board.movePawn(board.FindBestMove()))
-		assert.Nil(t, board.movePawn(board.FindBestMove()))
-		assert.Nil(t, board.movePawn(board.FindBestMove()))
-		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMoveIn30s()))
+		assert.Nil(t, board.movePawn(board.FindBestMoveIn30s()))
+		assert.Nil(t, board.movePawn(board.FindBestMoveIn30s()))
+		assert.Nil(t, board.movePawn(board.FindBestMoveIn30s()))
+		assert.Nil(t, board.movePawn(board.FindBestMoveIn30s()))
 
 		assert.Equal(t, Green, board.GetWinner())
 	}
@@ -219,13 +219,13 @@ func TestBestMovesWin(t *testing.T) {
 		}
 		board.CurrentPlayer = Green
 
-		assert.Nil(t, board.movePawn(board.FindBestMove()))
-		assert.Nil(t, board.movePawn(board.FindBestMove()))
-		assert.Nil(t, board.movePawn(board.FindBestMove()))
-		assert.Nil(t, board.movePawn(board.FindBestMove()))
-		assert.Nil(t, board.movePawn(board.FindBestMove()))
-		assert.Nil(t, board.movePawn(board.FindBestMove()))
-		assert.Nil(t, board.movePawn(board.FindBestMove()))
+		assert.Nil(t, board.movePawn(board.FindBestMoveIn30s()))
+		assert.Nil(t, board.movePawn(board.FindBestMoveIn30s()))
+		assert.Nil(t, board.movePawn(board.FindBestMoveIn30s()))
+		assert.Nil(t, board.movePawn(board.FindBestMoveIn30s()))
+		assert.Nil(t, board.movePawn(board.FindBestMoveIn30s()))
+		assert.Nil(t, board.movePawn(board.FindBestMoveIn30s()))
+		assert.Nil(t, board.movePawn(board.FindBestMoveIn30s()))
 
 		assert.Equal(t, Green, board.GetWinner())
 	}

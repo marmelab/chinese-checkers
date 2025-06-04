@@ -73,9 +73,16 @@ export async function evaluateGame(game: Game): Promise<GameEvaluation> {
 	);
 }
 
-export async function getHint(game: Game): Promise<CellIdentifier[]> {
+/**
+ * @param game The game for which to find the best move.
+ * @param time Maximum time in seconds to find the best move.
+ */
+export async function getHint(
+	game: Game,
+	time?: number,
+): Promise<CellIdentifier[]> {
 	return z.array(zCellIdentifier).parse(
-		await fetchApi("/api/v1/games/hint", {
+		await fetchApi("/api/v1/games/hint" + (time ? `?time=${time}` : ""), {
 			method: "POST",
 			body: JSON.stringify(game),
 		}),
