@@ -15,6 +15,7 @@ import (
 var gameStateFilePath string
 var serializedMoveList string
 var boardSizeIdentifier string
+var botMode bool
 
 // Initialize a game state by using the provided state file path if there is one.
 func InitGameState() (*game.BoardState, error) {
@@ -88,6 +89,8 @@ func RunCli() error {
 	chineseCheckersCommand.PersistentFlags().StringVarP(&serializedMoveList, "move", "m", "", "Move a pawn from a start position to an end position.")
 	// Add a board size flag.
 	chineseCheckersCommand.PersistentFlags().StringVarP(&boardSizeIdentifier, "board-size", "", "", "Set the board size to start with.")
+	// Add a flag for watching a game played by robots.
+	chineseCheckersCommand.PersistentFlags().BoolVarP(&botMode, "bots", "b", false, "The robot plays the game.")
 
 	// Execute the command and return the error.
 	return chineseCheckersCommand.Execute()
@@ -139,18 +142,22 @@ func runGameLoop(board *game.BoardState) {
 			println()
 			break
 		} else {
-			println()
+			if botMode {
+				input = game.MoveToString(board.FindBestMoveIn30s())
+			} else {
+				println()
 
-			// Prompt the current player for a new move list.
-			fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", board.CurrentPlayer.ColoredName())
-			input = ""
-			fmt.Scanln(&input)
-			println()
+				// Prompt the current player for a new move list.
+				fmt.Printf("%s to play, move a pawn (e.g. a2,a4): ", board.CurrentPlayer.ColoredName())
+				input = ""
+				fmt.Scanln(&input)
+				println()
 
-			// The provided move is empty, exit the game.
-			if len(input) == 0 {
-				println("Bye bye!")
-				break
+				// The provided move is empty, exit the game.
+				if len(input) == 0 {
+					println("Bye bye!")
+					break
+				}
 			}
 
 			// Try to move the pawn and store the error if there is one.

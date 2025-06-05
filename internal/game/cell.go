@@ -81,3 +81,13 @@ func (cell CellIdentifier) InMask(cellsMask [][]Cell) bool {
 
 	return cellsMask[cell.Row][cell.Column] > 0
 }
+
+func MoveToString(move []CellIdentifier) string {
+	cells := make([]string, len(move))
+
+	for index := range move {
+		cells[index] = move[index].String()
+	}
+
+	return strings.Join(cells, ",")
+}
