@@ -6,7 +6,7 @@ ENV GO111MODULE=on \
 
 RUN apt-get update && \
     apt-get install -y make && \
-    go install honnef.co/go/tools/cmd/staticcheck@latest
+    go install honnef.co/go/tools/cmd/staticcheck@v0.6.1
 
 WORKDIR /app
 
